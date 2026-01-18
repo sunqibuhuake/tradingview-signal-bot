@@ -14,14 +14,24 @@ class CryptoTradingBot {
   private notificationService: NotificationService;
   private signalManager: SignalManager;
   private activeCharts: Set<any>;
+  private totalSignals: number = 0;
+  private monitoredMarkets: number = 0;
 
   constructor() {
+    // Print banner
+    logger.banner('1.0.0');
+    
+    logger.info('正在初始化加密货币监控机器人...');
+    
     validateConfig();
+    logger.success('配置验证通过');
 
     this.tradingViewService = new TradingViewService();
     this.notificationService = new NotificationService();
     this.signalManager = new SignalManager(config.bot.crypto.duplicateWindow);
     this.activeCharts = new Set();
+
+    logger.divider();
   }
 
   /**
@@ -42,6 +52,7 @@ class CryptoTradingBot {
       );
 
       this.activeCharts.add(chart);
+      this.monitoredMarkets++;
       logger.debug(`开始监控: ${market.id}`);
     } catch (error) {
       logger.error(`监控市场失败: ${market.id}`, error);
@@ -74,20 +85,41 @@ class CryptoTradingBot {
 
       // Record signal
       this.signalManager.recordSignal(market.id, action, currentTime);
+      this.totalSignals++;
 
       // Extract symbol from market ID (e.g., "BINANCE:BTCUSDT" -> "BTCUSDT")
       const symbol = market.id.split(':')[1] || market.id;
 
-      // Send notification
-      await this.notificationService.sendCryptoSignal({
+      // Print signal
+      logger.signal({
         market: symbol,
         action,
         price: chartItem.close,
-        indicatorName: indInfo.name,
-        timestamp: new Date(),
+        indicator: indInfo.name,
       });
 
-      logger.info(`交易信号: ${symbol} - ${action} @ ${chartItem.close}`);
+      // Update market overview
+      logger.marketOverview({
+        name: '加密货币市场',
+        totalMarkets: this.monitoredMarkets,
+        activeMarkets: this.signalManager.getStats().totalMarkets,
+        signals: this.totalSignals,
+        status: 'running',
+      });
+
+      // Send notification
+      try {
+        await this.notificationService.sendCryptoSignal({
+          market: symbol,
+          action,
+          price: chartItem.close,
+          indicatorName: indInfo.name,
+          timestamp: new Date(),
+        });
+        logger.success(`通知已发送: ${symbol}`);
+      } catch (error) {
+        logger.error(`发送通知失败: ${symbol}`, error);
+      }
     } catch (error) {
       logger.error(`处理指标更新失败: ${market.id}`, error);
     }
@@ -129,26 +161,41 @@ class CryptoTradingBot {
    * Graceful shutdown
    */
   async shutdown(): Promise<void> {
-    logger.info('正在关闭机器人...');
+    logger.divider('═');
+    logger.warn('正在关闭机器人...');
+    
+    const spinner = logger.spinner(`正在关闭 ${this.activeCharts.size} 个监控会话...`);
     
     // Close all chart sessions
+    let closed = 0;
     this.activeCharts.forEach(chart => {
       try {
         chart.delete();
+        closed++;
       } catch (error) {
-        logger.error('关闭图表会话失败:', error);
+        logger.debug('关闭图表会话失败:', error);
       }
     });
     this.activeCharts.clear();
+    
+    spinner.stop(true, `成功关闭 ${closed} 个监控会话`);
 
     // Close TradingView service
+    const serviceSpinner = logger.spinner('正在关闭 TradingView 服务...');
     await this.tradingViewService.close();
+    serviceSpinner.stop(true, 'TradingView 服务已关闭');
 
     // Print final statistics
-    const stats = this.signalManager.getStats();
-    logger.info(`最终统计 - 监控市场: ${stats.totalMarkets}, 信号数: ${stats.totalSignals}`);
+    logger.marketOverview({
+      name: '最终统计',
+      totalMarkets: this.monitoredMarkets,
+      activeMarkets: this.signalManager.getStats().totalMarkets,
+      signals: this.totalSignals,
+      status: 'stopped',
+    });
     
-    logger.info('机器人已关闭');
+    logger.success('机器人已安全关闭');
+    logger.divider('═');
   }
 }
 

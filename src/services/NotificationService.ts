@@ -76,8 +76,6 @@ export class NotificationService {
    */
   private async send(content: string): Promise<void> {
     try {
-      console.log('发送消息 ===>', content.split('\n')[0]);
-      
       const response = await axios.post(
         this.webhookUrl,
         {
@@ -88,12 +86,19 @@ export class NotificationService {
           headers: {
             'Content-Type': 'application/json',
           },
+          timeout: 5000,
         }
       );
 
-      console.log('消息发送成功:', response.data);
+      if (response.data.errcode === 0) {
+        return; // Success, no need to log
+      } else {
+        throw new Error(`DingTalk API error: ${response.data.errmsg}`);
+      }
     } catch (error) {
-      console.error('消息发送失败:', error);
+      if (axios.isAxiosError(error)) {
+        throw new Error(`Failed to send notification: ${error.message}`);
+      }
       throw error;
     }
   }

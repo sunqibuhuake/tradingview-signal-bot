@@ -2,15 +2,35 @@
 
 A TypeScript-based bot for monitoring TradingView signals and sending notifications via DingTalk webhook.
 
-## Features
+## ✨ Features
 
 - 🔄 **Real-time Monitoring**: Monitor A-share stocks and crypto markets
 - 📊 **Custom Indicators**: Support for TradingView custom indicators
 - 🔔 **DingTalk Notifications**: Send trading signals via DingTalk webhook
 - 🛡️ **Type Safety**: Built with TypeScript for better code quality
 - 🏗️ **Modular Architecture**: Clean separation of concerns
-- 📝 **Logging**: Comprehensive logging system
+- 📝 **Beautiful Logging**: Enhanced logging system with colors and animations
 - 🔄 **Signal Deduplication**: Prevent duplicate signal notifications
+- 🎨 **Sci-Fi UI**: Modern terminal UI with progress bars and spinners
+
+## 📸 Screenshots
+
+### Trading Signal Display
+```
+╔════════════════════════════════════════════════════════════╗
+║  TRADING SIGNAL                                            ║
+╠════════════════════════════════════════════════════════════╣
+║  Market     : BTCUSDT                                      ║
+║  Action     : 📈 BUY                                       ║
+║  Price      : 45000.00                                     ║
+║  Indicator  : Custom EMA                                   ║
+╚════════════════════════════════════════════════════════════╝
+```
+
+### Progress Display
+```
+[████████████████░░░░░░░░░░░░░░] 60% (30/50) 正在扫描: 招商银行 600036
+```
 
 ## Prerequisites
 

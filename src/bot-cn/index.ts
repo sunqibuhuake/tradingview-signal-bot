@@ -16,6 +16,7 @@ class ChinaStockBot {
   private notificationService: NotificationService;
   private signalManager: SignalManager;
   private stocks: Stock[];
+  private totalSignals: number = 0;
 
   constructor() {
     validateConfig();
@@ -34,14 +35,14 @@ class ChinaStockBot {
   /**
    * Process a single stock
    */
-  private async processStock(stock: Stock, indInfo: any, indic: any): Promise<void> {
+  private async processStock(stock: Stock, indInfo: any, indic: any, index: number): Promise<void> {
     try {
-      logger.debug(`处理股票: ${stock.name} (${stock.code})`);
+      logger.progress(index + 1, this.stocks.length, `正在扫描: ${stock.name} (${stock.code})`);
 
       // Search for market
       const markets = await this.tradingViewService.searchMarkets(`SSE:${stock.code}`, 'stock');
       if (markets.length === 0) {
-        logger.warn(`未找到市场: ${stock.code}`);
+        logger.debug(`未找到市场: ${stock.code}`);
         return;
       }
 
@@ -53,7 +54,7 @@ class ChinaStockBot {
       });
 
       if (!result || !result.indItem || !result.item) {
-        logger.warn(`无法读取指标数据: ${stock.code}`);
+        logger.debug(`无法读取指标数据: ${stock.code}`);
         return;
       }
 
@@ -72,17 +73,29 @@ class ChinaStockBot {
 
         // Record signal
         this.signalManager.recordSignal(stock.code, action);
+        this.totalSignals++;
 
-        // Send notification
-        await this.notificationService.sendChinaStockSignal({
+        // Print signal
+        logger.signal({
           market: marketName,
           action,
           price: item.close,
-          indicatorName: indInfo.name,
-          timestamp: new Date(),
+          indicator: indInfo.name,
         });
 
-        logger.info(`交易信号: ${marketName} - ${action} @ ${item.close}`);
+        // Send notification
+        try {
+          await this.notificationService.sendChinaStockSignal({
+            market: marketName,
+            action,
+            price: item.close,
+            indicatorName: indInfo.name,
+            timestamp: new Date(),
+          });
+          logger.success(`通知已发送: ${marketName}`);
+        } catch (error) {
+          logger.error(`发送通知失败: ${marketName}`, error);
+        }
       }
     } catch (error) {
       logger.error(`处理股票失败: ${stock.name}`, error);
@@ -94,29 +107,53 @@ class ChinaStockBot {
    */
   async run(): Promise<void> {
     try {
-      logger.info('启动 A股监控机器人...');
+      logger.title('A股市场扫描开始');
 
       // Get indicator
+      const spinner = logger.spinner('正在加载指标配置...');
       const [indInfo, indic] = await this.tradingViewService.getIndicator();
-      logger.info(`使用指标: ${indInfo.name}`);
+      spinner.stop(true, `指标加载成功: ${indInfo.name}`);
+
+      logger.divider();
+      logger.info(`开始扫描 ${this.stocks.length} 只股票...`);
+      logger.divider();
+
+      const startTime = Date.now();
 
       // Process all stocks
-      for (const stock of this.stocks) {
-        await this.processStock(stock, indInfo, indic);
+      for (let i = 0; i < this.stocks.length; i++) {
+        await this.processStock(this.stocks[i], indInfo, indic, i);
       }
 
-      // Print statistics
+      const duration = ((Date.now() - startTime) / 1000).toFixed(2);
+
+      logger.divider();
+      logger.success(`扫描完成，耗时: ${duration}秒`);
+
+      // Print market overview
       const stats = this.signalManager.getStats();
-      logger.info(`扫描完成 - 监控市场: ${stats.totalMarkets}, 信号数: ${stats.totalSignals}`);
+      logger.marketOverview({
+        name: 'A股市场',
+        totalMarkets: this.stocks.length,
+        activeMarkets: stats.totalMarkets,
+        signals: this.totalSignals,
+        status: 'running',
+      });
+
+      // Print runtime statistics
+      logger.printStats();
 
       // Schedule next run
-      logger.info(`等待下次执行 (${config.bot.cn.checkInterval / 1000 / 60 / 60} 小时)...`);
+      const nextRunHours = config.bot.cn.checkInterval / 1000 / 60 / 60;
+      logger.info(`下次扫描将在 ${nextRunHours} 小时后执行`);
+      logger.divider('═');
+      
       setTimeout(() => this.run(), config.bot.cn.checkInterval);
     } catch (error) {
       logger.error('执行失败:', error);
       
       // Retry after 5 minutes on error
-      logger.info('5分钟后重试...');
+      logger.warn('5分钟后将自动重试...');
       setTimeout(() => this.run(), 5 * 60 * 1000);
     }
   }
@@ -125,9 +162,30 @@ class ChinaStockBot {
    * Graceful shutdown
    */
   async shutdown(): Promise<void> {
-    logger.info('正在关闭机器人...');
-    await this.tradingViewService.close();
-    logger.info('机器人已关闭');
+    logger.divider('═');
+    logger.warn('正在关闭机器人...');
+    
+    const spinner = logger.spinner('正在清理资源...');
+    
+    try {
+      await this.tradingViewService.close();
+      spinner.stop(true, '资源清理完成');
+      
+      // Final statistics
+      logger.marketOverview({
+        name: '最终统计',
+        totalMarkets: this.stocks.length,
+        activeMarkets: this.signalManager.getStats().totalMarkets,
+        signals: this.totalSignals,
+        status: 'stopped',
+      });
+      
+      logger.success('机器人已安全关闭');
+      logger.divider('═');
+    } catch (error) {
+      spinner.stop(false, '清理资源时发生错误');
+      logger.error('关闭失败:', error);
+    }
   }
 }
 
