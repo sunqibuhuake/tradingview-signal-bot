@@ -1,0 +1,44 @@
+{
+  "name": "TradingView-Signal-Bot",
+  "version": "1.0.0",
+  "main": "dist/bot-cn/index.js",
+  "dependencies": {
+    "@mathieuc/tradingview": "^3.5.2",
+    "axios": "^1.13.2",
+    "dayjs": "^1.11.19",
+    "dotenv": "^16.6.1",
+    "jszip": "^3.10.1",
+    "ws": "^7.5.10"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.5",
+    "@types/ws": "^8.5.10",
+    "@typescript-eslint/eslint-plugin": "^6.19.0",
+    "@typescript-eslint/parser": "^6.19.0",
+    "eslint": "^8.56.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-import-resolver-node": "^0.3.9",
+    "eslint-module-utils": "^2.12.1",
+    "eslint-plugin-import": "^2.32.0",
+    "typescript": "^5.3.3",
+    "vitest": "^1.2.0",
+    "tsx": "^4.7.0"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start:cn": "node dist/bot-cn/index.js",
+    "start:crypto": "node dist/bot-crypto/index.js",
+    "dev:cn": "tsx src/bot-cn/index.ts",
+    "dev:crypto": "tsx src/bot-crypto/index.ts",
+    "lint": "eslint src/**/*.ts",
+    "lint:fix": "eslint src/**/*.ts --fix",
+    "clean": "rm -rf dist",
+    "test": "vitest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mathieu2301/TradingView-API.git"
+  },
+  "author": "",
+  "license": "ISC"
+}
