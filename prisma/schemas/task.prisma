@@ -1,0 +1,96 @@
+// 任务状态枚举
+enum TaskStatus {
+  ACTIVE    // 活跃
+  PAUSED    // 暂停
+  STOPPED   // 停止
+  ERROR     // 错误
+}
+
+// 执行模式枚举
+enum ExecutionMode {
+  REALTIME  // 实时监控
+  SCHEDULED // 定时扫描
+}
+
+// 时间周期枚举（对应 TradingView timeframe）
+enum Timeframe {
+  M1   // 1分钟
+  M5   // 5分钟
+  M15  // 15分钟
+  M30  // 30分钟
+  H1   // 1小时
+  H4   // 4小时
+  D1   // 日线
+  W1   // 周线
+  MN1  // 月线
+}
+
+// 任务表
+model Task {
+  id            String        @id @default(cuid())
+  name          String        // 任务名称
+  description   String?       // 任务描述
+  
+  // 关联标的
+  marketId      String
+  market        Market        @relation(fields: [marketId], references: [id], onDelete: Cascade)
+  
+  // 执行配置
+  timeframe     Timeframe     @default(M5) // 时间周期
+  range         Int           @default(500) // K线数量
+  executionMode ExecutionMode @default(REALTIME) // 执行模式
+  
+  // 定时任务配置（仅 SCHEDULED 模式使用）
+  cronExpression String?      // Cron 表达式，如 "0 0 9 * * *" 表示每天9点
+  scheduleInterval Int?       // 执行间隔（毫秒），如 86400000 表示24小时
+  
+  // 任务状态
+  status        TaskStatus    @default(ACTIVE)
+  lastExecutedAt DateTime?    // 最后执行时间
+  nextExecutionAt DateTime?   // 下次执行时间（仅 SCHEDULED 模式）
+  errorMessage  String?       // 错误信息
+  
+  // 通知配置
+  enableNotification Boolean  @default(true)
+  notificationChannels Json?  // 通知渠道配置，如 {"dingtalk": true, "email": false}
+  
+  // 创建者（可选，未来用户功能）
+  createdBy     String?       // 用户ID
+  
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  
+  // 关联
+  taskIndicators TaskIndicator[]
+  executions     TaskExecution[]
+  
+  @@index([marketId])
+  @@index([status])
+  @@index([executionMode])
+  @@index([createdBy])
+  @@map(name: "tasks")
+}
+
+// 任务-指标关联表（多对多）
+model TaskIndicator {
+  id          String    @id @default(cuid())
+  
+  taskId      String
+  task        Task      @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  
+  indicatorId String
+  indicator   Indicator @relation(fields: [indicatorId], references: [id], onDelete: Cascade)
+  
+  // 指标优先级或权重（可选）
+  priority    Int       @default(0)
+  
+  // 该任务特定的指标配置覆盖
+  overrideParameters Json?
+  
+  createdAt   DateTime  @default(now())
+  
+  @@unique([taskId, indicatorId])
+  @@index([taskId])
+  @@index([indicatorId])
+  @@map(name: "task_indicators")
+}

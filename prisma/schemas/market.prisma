@@ -1,0 +1,38 @@
+// 市场类型枚举
+enum MarketType {
+  A_STOCK      // A股
+  CRYPTO       // 加密货币
+  US_STOCK     // 美股
+  HK_STOCK     // 港股
+  FOREX        // 外汇
+  FUTURES      // 期货
+  INDEX        // 指数
+}
+
+// 标的表
+model Market {
+  id          String     @id @default(cuid())
+  name        String     // 标的名称，如 "比特币", "招商银行"
+  code        String     // 标的代码，如 "BTCUSDT", "600036"
+  symbol      String     // 完整交易所代码，如 "BINANCE:BTCUSDT", "SSE:600036"
+  type        MarketType // 市场类型
+  icon        String?    // 图标 URL
+  description String?    // 描述信息
+  exchange    String?    // 交易所名称
+  isActive    Boolean    @default(true) // 是否启用
+  
+  // 元数据
+  metadata    Json?      // 存储额外信息，如市值、行业等
+  
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  
+  // 关联
+  tasks       Task[]
+  
+  @@unique([symbol]) // 交易所代码唯一
+  @@index([type])
+  @@index([code])
+  @@index([isActive])
+  @@map(name: "markets")
+}

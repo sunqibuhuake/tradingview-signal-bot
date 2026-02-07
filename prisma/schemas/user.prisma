@@ -1,0 +1,27 @@
+enum Role {
+  USER
+  ADMIN
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  role      Role     @default(USER)  
+  name      String?
+  credits   Int      @default(0) // 用户钻石余额
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  sessions          Session[]
+}
+
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expires      DateTime
+}

@@ -1,0 +1,355 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "postgresql"
+}
+
+generator client {
+  provider               = "prisma-client-js"
+  previewFeatures        = ["relationJoins"]
+  output                 = "../generated/prisma"
+  // runtime                = "nodejs"
+  generatedFileExtension = "ts"
+  importFileExtension    = "ts"
+}
+
+// 执行结果状态枚举
+enum ExecutionStatus {
+  SUCCESS // 成功
+  FAILED // 失败
+  TIMEOUT // 超时
+  PARTIAL // 部分成功（多指标时部分失败）
+}
+
+// 信号类型枚举
+enum SignalType {
+  BUY // 买入
+  SELL // 卖出
+  NEUTRAL // 中性
+}
+
+// 任务执行结果表
+model TaskExecution {
+  id String @id @default(cuid())
+
+  // 关联任务
+  taskId String
+  task   Task   @relation(fields: [taskId], references: [id], onDelete: Cascade)
+
+  // 执行信息
+  status     ExecutionStatus
+  executedAt DateTime        @default(now())
+  duration   Int? // 执行耗时（毫秒）
+
+  // 市场数据快照
+  marketPrice  Float? // 执行时的市场价格
+  marketVolume Float? // 成交量
+  marketData   Json? // 完整 K线数据
+
+  // 错误信息
+  errorMessage String? @db.Text
+  errorStack   String? @db.Text
+
+  // 通知状态
+  notificationSent  Boolean @default(false)
+  notificationError String?
+
+  createdAt DateTime @default(now())
+
+  // 关联指标结果
+  indicatorResults IndicatorResult[]
+
+  @@index([taskId])
+  @@index([executedAt])
+  @@index([status])
+  @@map(name: "task_executions")
+}
+
+// 指标结果表（存储每个指标的具体输出）
+model IndicatorResult {
+  id String @id @default(cuid())
+
+  // 关联执行记录
+  executionId String
+  execution   TaskExecution @relation(fields: [executionId], references: [id], onDelete: Cascade)
+
+  // 关联指标
+  indicatorId   String
+  indicatorName String // 冗余存储指标名称，方便查询
+
+  // 指标输出结果（灵活存储）
+  outputs Json // 完整输出数据，如 {"Buy_Alert": 1, "Sell_Alert": 0, "FAST_EMA": 45000.5, "SLOW_EMA": 44800.2}
+
+  // 提取的关键信号
+  signal         SignalType? // 综合信号判断
+  signalStrength Float? // 信号强度 (0-1)
+
+  // 具体字段（方便查询和统计）
+  buyAlert  Boolean? // 买入信号
+  sellAlert Boolean? // 卖出信号
+
+  // 数值指标（支持自定义字段）
+  customValues Json? // 其他自定义数值，如 {"RSI": 65.5, "MACD": 123.4}
+
+  createdAt DateTime @default(now())
+
+  @@index([executionId])
+  @@index([indicatorId])
+  @@index([signal])
+  @@index([buyAlert])
+  @@index([sellAlert])
+  @@map(name: "indicator_results")
+}
+
+// 信号统计表（可选，用于快速查询和分析）
+model SignalStatistics {
+  id String @id @default(cuid())
+
+  // 维度
+  marketId    String
+  indicatorId String
+  timeframe   String
+  date        DateTime // 统计日期（按天）
+
+  // 统计数据
+  totalSignals Int    @default(0)
+  buySignals   Int    @default(0)
+  sellSignals  Int    @default(0)
+  successRate  Float? // 成功率（需要后续回测数据）
+
+  // 价格统计
+  avgPrice Float?
+  minPrice Float?
+  maxPrice Float?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([marketId, indicatorId, timeframe, date])
+  @@index([marketId])
+  @@index([indicatorId])
+  @@index([date])
+  @@map(name: "signal_statistics")
+}
+
+// 指标表
+model Indicator {
+  id            String  @id @default(cuid())
+  name          String // 指标名称，如 "EMA 交叉策略"
+  tradingViewId String // TradingView 指标 ID，如 "USER;d442347285584c9da91f3b74d7875057"
+  description   String? @db.Text // 指标描述
+  author        String? // 指标作者
+  version       String? // 版本号
+
+  // 指标配置
+  parameters   Json? // 指标参数配置
+  outputFields Json // 输出字段定义，如 {"Buy_Alert": "boolean", "Sell_Alert": "boolean", "FAST_EMA": "number"}
+
+  // 使用说明
+  documentation String? @db.Text // 使用文档
+
+  isActive Boolean @default(true)
+  isPublic Boolean @default(false) // 是否公开可用
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // 关联
+  taskIndicators TaskIndicator[]
+
+  @@unique([tradingViewId])
+  @@index([isActive])
+  @@index([isPublic])
+  @@map(name: "indicators")
+}
+
+// 用户登录IP
+model UserLoginIp {
+  id        String   @id @default(uuid())
+  userId    String
+  ipAddress String
+  userAgent String?
+  location  String?
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([ipAddress])
+  @@map(name: "user_login_ips")
+}
+
+// common log
+model CommonLog {
+  id        String   @id @default(uuid())
+  userId    String?
+  action    String // 动作类型
+  detail    String? // 详细信息
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([action])
+  @@map(name: "common_logs")
+}
+
+// 市场类型枚举
+enum MarketType {
+  A_STOCK // A股
+  CRYPTO // 加密货币
+  US_STOCK // 美股
+  HK_STOCK // 港股
+  FOREX // 外汇
+  FUTURES // 期货
+  INDEX // 指数
+}
+
+// 标的表
+model Market {
+  id          String     @id @default(cuid())
+  name        String // 标的名称，如 "比特币", "招商银行"
+  code        String // 标的代码，如 "BTCUSDT", "600036"
+  symbol      String // 完整交易所代码，如 "BINANCE:BTCUSDT", "SSE:600036"
+  type        MarketType // 市场类型
+  icon        String? // 图标 URL
+  description String? // 描述信息
+  exchange    String? // 交易所名称
+  isActive    Boolean    @default(true) // 是否启用
+
+  // 元数据
+  metadata Json? // 存储额外信息，如市值、行业等
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // 关联
+  tasks Task[]
+
+  @@unique([symbol]) // 交易所代码唯一
+  @@index([type])
+  @@index([code])
+  @@index([isActive])
+  @@map(name: "markets")
+}
+
+// 任务状态枚举
+enum TaskStatus {
+  ACTIVE // 活跃
+  PAUSED // 暂停
+  STOPPED // 停止
+  ERROR // 错误
+}
+
+// 执行模式枚举
+enum ExecutionMode {
+  REALTIME // 实时监控
+  SCHEDULED // 定时扫描
+}
+
+// 时间周期枚举（对应 TradingView timeframe）
+enum Timeframe {
+  M1 // 1分钟
+  M5 // 5分钟
+  M15 // 15分钟
+  M30 // 30分钟
+  H1 // 1小时
+  H4 // 4小时
+  D1 // 日线
+  W1 // 周线
+  MN1 // 月线
+}
+
+// 任务表
+model Task {
+  id          String  @id @default(cuid())
+  name        String // 任务名称
+  description String? // 任务描述
+
+  // 关联标的
+  marketId String
+  market   Market @relation(fields: [marketId], references: [id], onDelete: Cascade)
+
+  // 执行配置
+  timeframe     Timeframe     @default(M5) // 时间周期
+  range         Int           @default(500) // K线数量
+  executionMode ExecutionMode @default(REALTIME) // 执行模式
+
+  // 定时任务配置（仅 SCHEDULED 模式使用）
+  cronExpression   String? // Cron 表达式，如 "0 0 9 * * *" 表示每天9点
+  scheduleInterval Int? // 执行间隔（毫秒），如 86400000 表示24小时
+
+  // 任务状态
+  status          TaskStatus @default(ACTIVE)
+  lastExecutedAt  DateTime? // 最后执行时间
+  nextExecutionAt DateTime? // 下次执行时间（仅 SCHEDULED 模式）
+  errorMessage    String? // 错误信息
+
+  // 通知配置
+  enableNotification   Boolean @default(true)
+  notificationChannels Json? // 通知渠道配置，如 {"dingtalk": true, "email": false}
+
+  // 创建者（可选，未来用户功能）
+  createdBy String? // 用户ID
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // 关联
+  taskIndicators TaskIndicator[]
+  executions     TaskExecution[]
+
+  @@index([marketId])
+  @@index([status])
+  @@index([executionMode])
+  @@index([createdBy])
+  @@map(name: "tasks")
+}
+
+// 任务-指标关联表（多对多）
+model TaskIndicator {
+  id String @id @default(cuid())
+
+  taskId String
+  task   Task   @relation(fields: [taskId], references: [id], onDelete: Cascade)
+
+  indicatorId String
+  indicator   Indicator @relation(fields: [indicatorId], references: [id], onDelete: Cascade)
+
+  // 指标优先级或权重（可选）
+  priority Int @default(0)
+
+  // 该任务特定的指标配置覆盖
+  overrideParameters Json?
+
+  createdAt DateTime @default(now())
+
+  @@unique([taskId, indicatorId])
+  @@index([taskId])
+  @@index([indicatorId])
+  @@map(name: "task_indicators")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+model User {
+  id       String  @id @default(cuid())
+  email    String  @unique
+  password String
+  role     Role    @default(USER)
+  name     String?
+  credits  Int     @default(0) // 用户钻石余额
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  sessions Session[]
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expires      DateTime
+}

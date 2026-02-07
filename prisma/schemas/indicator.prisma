@@ -1,0 +1,30 @@
+// 指标表
+model Indicator {
+  id             String   @id @default(cuid())
+  name           String   // 指标名称，如 "EMA 交叉策略"
+  tradingViewId  String   // TradingView 指标 ID，如 "USER;d442347285584c9da91f3b74d7875057"
+  description    String?  @db.Text // 指标描述
+  author         String?  // 指标作者
+  version        String?  // 版本号
+  
+  // 指标配置
+  parameters     Json?    // 指标参数配置
+  outputFields   Json     // 输出字段定义，如 {"Buy_Alert": "boolean", "Sell_Alert": "boolean", "FAST_EMA": "number"}
+  
+  // 使用说明
+  documentation  String?  @db.Text // 使用文档
+  
+  isActive       Boolean  @default(true)
+  isPublic       Boolean  @default(false) // 是否公开可用
+  
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  
+  // 关联
+  taskIndicators TaskIndicator[]
+  
+  @@unique([tradingViewId])
+  @@index([isActive])
+  @@index([isPublic])
+  @@map(name: "indicators")
+}

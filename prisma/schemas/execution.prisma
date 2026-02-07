@@ -1,0 +1,118 @@
+// 执行结果状态枚举
+enum ExecutionStatus {
+  SUCCESS   // 成功
+  FAILED    // 失败
+  TIMEOUT   // 超时
+  PARTIAL   // 部分成功（多指标时部分失败）
+}
+
+// 信号类型枚举
+enum SignalType {
+  BUY       // 买入
+  SELL      // 卖出
+  NEUTRAL   // 中性
+}
+
+// 任务执行结果表
+model TaskExecution {
+  id            String          @id @default(cuid())
+  
+  // 关联任务
+  taskId        String
+  task          Task            @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  
+  // 执行信息
+  status        ExecutionStatus
+  executedAt    DateTime        @default(now())
+  duration      Int?            // 执行耗时（毫秒）
+  
+  // 市场数据快照
+  marketPrice   Float?          // 执行时的市场价格
+  marketVolume  Float?          // 成交量
+  marketData    Json?           // 完整 K线数据
+  
+  // 错误信息
+  errorMessage  String?         @db.Text
+  errorStack    String?         @db.Text
+  
+  // 通知状态
+  notificationSent Boolean      @default(false)
+  notificationError String?
+  
+  createdAt     DateTime        @default(now())
+  
+  // 关联指标结果
+  indicatorResults IndicatorResult[]
+  
+  @@index([taskId])
+  @@index([executedAt])
+  @@index([status])
+  @@map(name: "task_executions")
+}
+
+// 指标结果表（存储每个指标的具体输出）
+model IndicatorResult {
+  id              String        @id @default(cuid())
+  
+  // 关联执行记录
+  executionId     String
+  execution       TaskExecution @relation(fields: [executionId], references: [id], onDelete: Cascade)
+  
+  // 关联指标
+  indicatorId     String
+  indicatorName   String        // 冗余存储指标名称，方便查询
+  
+  // 指标输出结果（灵活存储）
+  outputs         Json          // 完整输出数据，如 {"Buy_Alert": 1, "Sell_Alert": 0, "FAST_EMA": 45000.5, "SLOW_EMA": 44800.2}
+  
+  // 提取的关键信号
+  signal          SignalType?   // 综合信号判断
+  signalStrength  Float?        // 信号强度 (0-1)
+  
+  // 具体字段（方便查询和统计）
+  buyAlert        Boolean?      // 买入信号
+  sellAlert       Boolean?      // 卖出信号
+  
+  // 数值指标（支持自定义字段）
+  customValues    Json?         // 其他自定义数值，如 {"RSI": 65.5, "MACD": 123.4}
+  
+  createdAt       DateTime      @default(now())
+  
+  @@index([executionId])
+  @@index([indicatorId])
+  @@index([signal])
+  @@index([buyAlert])
+  @@index([sellAlert])
+  @@map(name: "indicator_results")
+}
+
+// 信号统计表（可选，用于快速查询和分析）
+model SignalStatistics {
+  id            String     @id @default(cuid())
+  
+  // 维度
+  marketId      String
+  indicatorId   String
+  timeframe     String
+  date          DateTime   // 统计日期（按天）
+  
+  // 统计数据
+  totalSignals  Int        @default(0)
+  buySignals    Int        @default(0)
+  sellSignals   Int        @default(0)
+  successRate   Float?     // 成功率（需要后续回测数据）
+  
+  // 价格统计
+  avgPrice      Float?
+  minPrice      Float?
+  maxPrice      Float?
+  
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+  
+  @@unique([marketId, indicatorId, timeframe, date])
+  @@index([marketId])
+  @@index([indicatorId])
+  @@index([date])
+  @@map(name: "signal_statistics")
+}

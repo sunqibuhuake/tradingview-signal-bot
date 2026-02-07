@@ -1,0 +1,30 @@
+// 用户登录IP
+model UserLoginIp {
+  id        String   @id @default(uuid())
+  userId    String
+  ipAddress String
+  userAgent String?
+  location  String?
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([ipAddress])
+  @@map(name: "user_login_ips")
+}
+
+
+// common log
+model CommonLog {
+  id        String   @id @default(uuid())
+  userId    String?
+  action    String // 动作类型
+  detail    String? // 详细信息
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([action])
+  @@map(name: "common_logs")
+}
+
+
+
