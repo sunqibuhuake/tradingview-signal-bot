@@ -68,6 +68,11 @@ export type User = $Result.DefaultSelection<Prisma.$UserPayload>
  * 
  */
 export type Session = $Result.DefaultSelection<Prisma.$SessionPayload>
+/**
+ * Model DingTalkWebhook
+ * 
+ */
+export type DingTalkWebhook = $Result.DefaultSelection<Prisma.$DingTalkWebhookPayload>
 
 /**
  * Enums
@@ -105,6 +110,15 @@ export const MarketType: {
 export type MarketType = (typeof MarketType)[keyof typeof MarketType]
 
 
+export const CryptoType: {
+  SPOT: 'SPOT',
+  PERPETUAL: 'PERPETUAL',
+  FUTURES: 'FUTURES'
+};
+
+export type CryptoType = (typeof CryptoType)[keyof typeof CryptoType]
+
+
 export const TaskStatus: {
   ACTIVE: 'ACTIVE',
   PAUSED: 'PAUSED',
@@ -125,10 +139,14 @@ export type ExecutionMode = (typeof ExecutionMode)[keyof typeof ExecutionMode]
 
 export const Timeframe: {
   M1: 'M1',
+  M3: 'M3',
   M5: 'M5',
   M15: 'M15',
   M30: 'M30',
+  M45: 'M45',
   H1: 'H1',
+  H2: 'H2',
+  H3: 'H3',
   H4: 'H4',
   D1: 'D1',
   W1: 'W1',
@@ -158,6 +176,10 @@ export const SignalType: typeof $Enums.SignalType
 export type MarketType = $Enums.MarketType
 
 export const MarketType: typeof $Enums.MarketType
+
+export type CryptoType = $Enums.CryptoType
+
+export const CryptoType: typeof $Enums.CryptoType
 
 export type TaskStatus = $Enums.TaskStatus
 
@@ -401,6 +423,16 @@ export class PrismaClient<
     * ```
     */
   get session(): Prisma.SessionDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.dingTalkWebhook`: Exposes CRUD operations for the **DingTalkWebhook** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more DingTalkWebhooks
+    * const dingTalkWebhooks = await prisma.dingTalkWebhook.findMany()
+    * ```
+    */
+  get dingTalkWebhook(): Prisma.DingTalkWebhookDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -845,7 +877,8 @@ export namespace Prisma {
     Task: 'Task',
     TaskIndicator: 'TaskIndicator',
     User: 'User',
-    Session: 'Session'
+    Session: 'Session',
+    DingTalkWebhook: 'DingTalkWebhook'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -861,7 +894,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "taskExecution" | "indicatorResult" | "signalStatistics" | "indicator" | "userLoginIp" | "commonLog" | "market" | "task" | "taskIndicator" | "user" | "session"
+      modelProps: "taskExecution" | "indicatorResult" | "signalStatistics" | "indicator" | "userLoginIp" | "commonLog" | "market" | "task" | "taskIndicator" | "user" | "session" | "dingTalkWebhook"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1679,6 +1712,80 @@ export namespace Prisma {
           }
         }
       }
+      DingTalkWebhook: {
+        payload: Prisma.$DingTalkWebhookPayload<ExtArgs>
+        fields: Prisma.DingTalkWebhookFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.DingTalkWebhookFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DingTalkWebhookPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.DingTalkWebhookFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DingTalkWebhookPayload>
+          }
+          findFirst: {
+            args: Prisma.DingTalkWebhookFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DingTalkWebhookPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.DingTalkWebhookFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DingTalkWebhookPayload>
+          }
+          findMany: {
+            args: Prisma.DingTalkWebhookFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DingTalkWebhookPayload>[]
+          }
+          create: {
+            args: Prisma.DingTalkWebhookCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DingTalkWebhookPayload>
+          }
+          createMany: {
+            args: Prisma.DingTalkWebhookCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.DingTalkWebhookCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DingTalkWebhookPayload>[]
+          }
+          delete: {
+            args: Prisma.DingTalkWebhookDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DingTalkWebhookPayload>
+          }
+          update: {
+            args: Prisma.DingTalkWebhookUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DingTalkWebhookPayload>
+          }
+          deleteMany: {
+            args: Prisma.DingTalkWebhookDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.DingTalkWebhookUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.DingTalkWebhookUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DingTalkWebhookPayload>[]
+          }
+          upsert: {
+            args: Prisma.DingTalkWebhookUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DingTalkWebhookPayload>
+          }
+          aggregate: {
+            args: Prisma.DingTalkWebhookAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateDingTalkWebhook>
+          }
+          groupBy: {
+            args: Prisma.DingTalkWebhookGroupByArgs<ExtArgs>
+            result: $Utils.Optional<DingTalkWebhookGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.DingTalkWebhookCountArgs<ExtArgs>
+            result: $Utils.Optional<DingTalkWebhookCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1798,6 +1905,7 @@ export namespace Prisma {
     taskIndicator?: TaskIndicatorOmit
     user?: UserOmit
     session?: SessionOmit
+    dingTalkWebhook?: DingTalkWebhookOmit
   }
 
   /* Types for Logging */
@@ -2034,6 +2142,37 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountSessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: SessionWhereInput
+  }
+
+
+  /**
+   * Count Type DingTalkWebhookCountOutputType
+   */
+
+  export type DingTalkWebhookCountOutputType = {
+    tasks: number
+  }
+
+  export type DingTalkWebhookCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    tasks?: boolean | DingTalkWebhookCountOutputTypeCountTasksArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * DingTalkWebhookCountOutputType without action
+   */
+  export type DingTalkWebhookCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DingTalkWebhookCountOutputType
+     */
+    select?: DingTalkWebhookCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * DingTalkWebhookCountOutputType without action
+   */
+  export type DingTalkWebhookCountOutputTypeCountTasksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TaskWhereInput
   }
 
 
@@ -8832,8 +8971,18 @@ export namespace Prisma {
 
   export type AggregateMarket = {
     _count: MarketCountAggregateOutputType | null
+    _avg: MarketAvgAggregateOutputType | null
+    _sum: MarketSumAggregateOutputType | null
     _min: MarketMinAggregateOutputType | null
     _max: MarketMaxAggregateOutputType | null
+  }
+
+  export type MarketAvgAggregateOutputType = {
+    sortOrder: number | null
+  }
+
+  export type MarketSumAggregateOutputType = {
+    sortOrder: number | null
   }
 
   export type MarketMinAggregateOutputType = {
@@ -8842,10 +8991,22 @@ export namespace Prisma {
     code: string | null
     symbol: string | null
     type: $Enums.MarketType | null
-    icon: string | null
-    description: string | null
     exchange: string | null
+    fullExchangeName: string | null
+    displayName: string | null
+    description: string | null
+    icon: string | null
+    cryptoType: $Enums.CryptoType | null
+    baseCurrency: string | null
+    quoteCurrency: string | null
+    industry: string | null
+    sector: string | null
     isActive: boolean | null
+    isPriority: boolean | null
+    sortOrder: number | null
+    lastSyncAt: Date | null
+    syncStatus: string | null
+    syncError: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -8856,10 +9017,22 @@ export namespace Prisma {
     code: string | null
     symbol: string | null
     type: $Enums.MarketType | null
-    icon: string | null
-    description: string | null
     exchange: string | null
+    fullExchangeName: string | null
+    displayName: string | null
+    description: string | null
+    icon: string | null
+    cryptoType: $Enums.CryptoType | null
+    baseCurrency: string | null
+    quoteCurrency: string | null
+    industry: string | null
+    sector: string | null
     isActive: boolean | null
+    isPriority: boolean | null
+    sortOrder: number | null
+    lastSyncAt: Date | null
+    syncStatus: string | null
+    syncError: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -8870,10 +9043,22 @@ export namespace Prisma {
     code: number
     symbol: number
     type: number
-    icon: number
-    description: number
     exchange: number
+    fullExchangeName: number
+    displayName: number
+    description: number
+    icon: number
+    cryptoType: number
+    baseCurrency: number
+    quoteCurrency: number
+    industry: number
+    sector: number
     isActive: number
+    isPriority: number
+    sortOrder: number
+    lastSyncAt: number
+    syncStatus: number
+    syncError: number
     metadata: number
     createdAt: number
     updatedAt: number
@@ -8881,16 +9066,36 @@ export namespace Prisma {
   }
 
 
+  export type MarketAvgAggregateInputType = {
+    sortOrder?: true
+  }
+
+  export type MarketSumAggregateInputType = {
+    sortOrder?: true
+  }
+
   export type MarketMinAggregateInputType = {
     id?: true
     name?: true
     code?: true
     symbol?: true
     type?: true
-    icon?: true
-    description?: true
     exchange?: true
+    fullExchangeName?: true
+    displayName?: true
+    description?: true
+    icon?: true
+    cryptoType?: true
+    baseCurrency?: true
+    quoteCurrency?: true
+    industry?: true
+    sector?: true
     isActive?: true
+    isPriority?: true
+    sortOrder?: true
+    lastSyncAt?: true
+    syncStatus?: true
+    syncError?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -8901,10 +9106,22 @@ export namespace Prisma {
     code?: true
     symbol?: true
     type?: true
-    icon?: true
-    description?: true
     exchange?: true
+    fullExchangeName?: true
+    displayName?: true
+    description?: true
+    icon?: true
+    cryptoType?: true
+    baseCurrency?: true
+    quoteCurrency?: true
+    industry?: true
+    sector?: true
     isActive?: true
+    isPriority?: true
+    sortOrder?: true
+    lastSyncAt?: true
+    syncStatus?: true
+    syncError?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -8915,10 +9132,22 @@ export namespace Prisma {
     code?: true
     symbol?: true
     type?: true
-    icon?: true
-    description?: true
     exchange?: true
+    fullExchangeName?: true
+    displayName?: true
+    description?: true
+    icon?: true
+    cryptoType?: true
+    baseCurrency?: true
+    quoteCurrency?: true
+    industry?: true
+    sector?: true
     isActive?: true
+    isPriority?: true
+    sortOrder?: true
+    lastSyncAt?: true
+    syncStatus?: true
+    syncError?: true
     metadata?: true
     createdAt?: true
     updatedAt?: true
@@ -8963,6 +9192,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: MarketAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: MarketSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: MarketMinAggregateInputType
@@ -8993,6 +9234,8 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: MarketCountAggregateInputType | true
+    _avg?: MarketAvgAggregateInputType
+    _sum?: MarketSumAggregateInputType
     _min?: MarketMinAggregateInputType
     _max?: MarketMaxAggregateInputType
   }
@@ -9003,14 +9246,28 @@ export namespace Prisma {
     code: string
     symbol: string
     type: $Enums.MarketType
-    icon: string | null
-    description: string | null
     exchange: string | null
+    fullExchangeName: string | null
+    displayName: string | null
+    description: string | null
+    icon: string | null
+    cryptoType: $Enums.CryptoType | null
+    baseCurrency: string | null
+    quoteCurrency: string | null
+    industry: string | null
+    sector: string | null
     isActive: boolean
+    isPriority: boolean
+    sortOrder: number
+    lastSyncAt: Date | null
+    syncStatus: string | null
+    syncError: string | null
     metadata: JsonValue | null
     createdAt: Date
     updatedAt: Date
     _count: MarketCountAggregateOutputType | null
+    _avg: MarketAvgAggregateOutputType | null
+    _sum: MarketSumAggregateOutputType | null
     _min: MarketMinAggregateOutputType | null
     _max: MarketMaxAggregateOutputType | null
   }
@@ -9035,10 +9292,22 @@ export namespace Prisma {
     code?: boolean
     symbol?: boolean
     type?: boolean
-    icon?: boolean
-    description?: boolean
     exchange?: boolean
+    fullExchangeName?: boolean
+    displayName?: boolean
+    description?: boolean
+    icon?: boolean
+    cryptoType?: boolean
+    baseCurrency?: boolean
+    quoteCurrency?: boolean
+    industry?: boolean
+    sector?: boolean
     isActive?: boolean
+    isPriority?: boolean
+    sortOrder?: boolean
+    lastSyncAt?: boolean
+    syncStatus?: boolean
+    syncError?: boolean
     metadata?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -9052,10 +9321,22 @@ export namespace Prisma {
     code?: boolean
     symbol?: boolean
     type?: boolean
-    icon?: boolean
-    description?: boolean
     exchange?: boolean
+    fullExchangeName?: boolean
+    displayName?: boolean
+    description?: boolean
+    icon?: boolean
+    cryptoType?: boolean
+    baseCurrency?: boolean
+    quoteCurrency?: boolean
+    industry?: boolean
+    sector?: boolean
     isActive?: boolean
+    isPriority?: boolean
+    sortOrder?: boolean
+    lastSyncAt?: boolean
+    syncStatus?: boolean
+    syncError?: boolean
     metadata?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -9067,10 +9348,22 @@ export namespace Prisma {
     code?: boolean
     symbol?: boolean
     type?: boolean
-    icon?: boolean
-    description?: boolean
     exchange?: boolean
+    fullExchangeName?: boolean
+    displayName?: boolean
+    description?: boolean
+    icon?: boolean
+    cryptoType?: boolean
+    baseCurrency?: boolean
+    quoteCurrency?: boolean
+    industry?: boolean
+    sector?: boolean
     isActive?: boolean
+    isPriority?: boolean
+    sortOrder?: boolean
+    lastSyncAt?: boolean
+    syncStatus?: boolean
+    syncError?: boolean
     metadata?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -9082,16 +9375,28 @@ export namespace Prisma {
     code?: boolean
     symbol?: boolean
     type?: boolean
-    icon?: boolean
-    description?: boolean
     exchange?: boolean
+    fullExchangeName?: boolean
+    displayName?: boolean
+    description?: boolean
+    icon?: boolean
+    cryptoType?: boolean
+    baseCurrency?: boolean
+    quoteCurrency?: boolean
+    industry?: boolean
+    sector?: boolean
     isActive?: boolean
+    isPriority?: boolean
+    sortOrder?: boolean
+    lastSyncAt?: boolean
+    syncStatus?: boolean
+    syncError?: boolean
     metadata?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type MarketOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "code" | "symbol" | "type" | "icon" | "description" | "exchange" | "isActive" | "metadata" | "createdAt" | "updatedAt", ExtArgs["result"]["market"]>
+  export type MarketOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "code" | "symbol" | "type" | "exchange" | "fullExchangeName" | "displayName" | "description" | "icon" | "cryptoType" | "baseCurrency" | "quoteCurrency" | "industry" | "sector" | "isActive" | "isPriority" | "sortOrder" | "lastSyncAt" | "syncStatus" | "syncError" | "metadata" | "createdAt" | "updatedAt", ExtArgs["result"]["market"]>
   export type MarketInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     tasks?: boolean | Market$tasksArgs<ExtArgs>
     _count?: boolean | MarketCountOutputTypeDefaultArgs<ExtArgs>
@@ -9110,10 +9415,22 @@ export namespace Prisma {
       code: string
       symbol: string
       type: $Enums.MarketType
-      icon: string | null
-      description: string | null
       exchange: string | null
+      fullExchangeName: string | null
+      displayName: string | null
+      description: string | null
+      icon: string | null
+      cryptoType: $Enums.CryptoType | null
+      baseCurrency: string | null
+      quoteCurrency: string | null
+      industry: string | null
+      sector: string | null
       isActive: boolean
+      isPriority: boolean
+      sortOrder: number
+      lastSyncAt: Date | null
+      syncStatus: string | null
+      syncError: string | null
       metadata: Prisma.JsonValue | null
       createdAt: Date
       updatedAt: Date
@@ -9546,10 +9863,22 @@ export namespace Prisma {
     readonly code: FieldRef<"Market", 'String'>
     readonly symbol: FieldRef<"Market", 'String'>
     readonly type: FieldRef<"Market", 'MarketType'>
-    readonly icon: FieldRef<"Market", 'String'>
-    readonly description: FieldRef<"Market", 'String'>
     readonly exchange: FieldRef<"Market", 'String'>
+    readonly fullExchangeName: FieldRef<"Market", 'String'>
+    readonly displayName: FieldRef<"Market", 'String'>
+    readonly description: FieldRef<"Market", 'String'>
+    readonly icon: FieldRef<"Market", 'String'>
+    readonly cryptoType: FieldRef<"Market", 'CryptoType'>
+    readonly baseCurrency: FieldRef<"Market", 'String'>
+    readonly quoteCurrency: FieldRef<"Market", 'String'>
+    readonly industry: FieldRef<"Market", 'String'>
+    readonly sector: FieldRef<"Market", 'String'>
     readonly isActive: FieldRef<"Market", 'Boolean'>
+    readonly isPriority: FieldRef<"Market", 'Boolean'>
+    readonly sortOrder: FieldRef<"Market", 'Int'>
+    readonly lastSyncAt: FieldRef<"Market", 'DateTime'>
+    readonly syncStatus: FieldRef<"Market", 'String'>
+    readonly syncError: FieldRef<"Market", 'String'>
     readonly metadata: FieldRef<"Market", 'Json'>
     readonly createdAt: FieldRef<"Market", 'DateTime'>
     readonly updatedAt: FieldRef<"Market", 'DateTime'>
@@ -10029,6 +10358,7 @@ export namespace Prisma {
     nextExecutionAt: Date | null
     errorMessage: string | null
     enableNotification: boolean | null
+    dingTalkWebhookId: string | null
     createdBy: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -10049,6 +10379,7 @@ export namespace Prisma {
     nextExecutionAt: Date | null
     errorMessage: string | null
     enableNotification: boolean | null
+    dingTalkWebhookId: string | null
     createdBy: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -10070,6 +10401,7 @@ export namespace Prisma {
     errorMessage: number
     enableNotification: number
     notificationChannels: number
+    dingTalkWebhookId: number
     createdBy: number
     createdAt: number
     updatedAt: number
@@ -10102,6 +10434,7 @@ export namespace Prisma {
     nextExecutionAt?: true
     errorMessage?: true
     enableNotification?: true
+    dingTalkWebhookId?: true
     createdBy?: true
     createdAt?: true
     updatedAt?: true
@@ -10122,6 +10455,7 @@ export namespace Prisma {
     nextExecutionAt?: true
     errorMessage?: true
     enableNotification?: true
+    dingTalkWebhookId?: true
     createdBy?: true
     createdAt?: true
     updatedAt?: true
@@ -10143,6 +10477,7 @@ export namespace Prisma {
     errorMessage?: true
     enableNotification?: true
     notificationChannels?: true
+    dingTalkWebhookId?: true
     createdBy?: true
     createdAt?: true
     updatedAt?: true
@@ -10251,6 +10586,7 @@ export namespace Prisma {
     errorMessage: string | null
     enableNotification: boolean
     notificationChannels: JsonValue | null
+    dingTalkWebhookId: string | null
     createdBy: string | null
     createdAt: Date
     updatedAt: Date
@@ -10291,10 +10627,12 @@ export namespace Prisma {
     errorMessage?: boolean
     enableNotification?: boolean
     notificationChannels?: boolean
+    dingTalkWebhookId?: boolean
     createdBy?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     market?: boolean | MarketDefaultArgs<ExtArgs>
+    dingTalkWebhook?: boolean | Task$dingTalkWebhookArgs<ExtArgs>
     taskIndicators?: boolean | Task$taskIndicatorsArgs<ExtArgs>
     executions?: boolean | Task$executionsArgs<ExtArgs>
     _count?: boolean | TaskCountOutputTypeDefaultArgs<ExtArgs>
@@ -10316,10 +10654,12 @@ export namespace Prisma {
     errorMessage?: boolean
     enableNotification?: boolean
     notificationChannels?: boolean
+    dingTalkWebhookId?: boolean
     createdBy?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     market?: boolean | MarketDefaultArgs<ExtArgs>
+    dingTalkWebhook?: boolean | Task$dingTalkWebhookArgs<ExtArgs>
   }, ExtArgs["result"]["task"]>
 
   export type TaskSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -10338,10 +10678,12 @@ export namespace Prisma {
     errorMessage?: boolean
     enableNotification?: boolean
     notificationChannels?: boolean
+    dingTalkWebhookId?: boolean
     createdBy?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     market?: boolean | MarketDefaultArgs<ExtArgs>
+    dingTalkWebhook?: boolean | Task$dingTalkWebhookArgs<ExtArgs>
   }, ExtArgs["result"]["task"]>
 
   export type TaskSelectScalar = {
@@ -10360,29 +10702,34 @@ export namespace Prisma {
     errorMessage?: boolean
     enableNotification?: boolean
     notificationChannels?: boolean
+    dingTalkWebhookId?: boolean
     createdBy?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type TaskOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "marketId" | "timeframe" | "range" | "executionMode" | "cronExpression" | "scheduleInterval" | "status" | "lastExecutedAt" | "nextExecutionAt" | "errorMessage" | "enableNotification" | "notificationChannels" | "createdBy" | "createdAt" | "updatedAt", ExtArgs["result"]["task"]>
+  export type TaskOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "marketId" | "timeframe" | "range" | "executionMode" | "cronExpression" | "scheduleInterval" | "status" | "lastExecutedAt" | "nextExecutionAt" | "errorMessage" | "enableNotification" | "notificationChannels" | "dingTalkWebhookId" | "createdBy" | "createdAt" | "updatedAt", ExtArgs["result"]["task"]>
   export type TaskInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     market?: boolean | MarketDefaultArgs<ExtArgs>
+    dingTalkWebhook?: boolean | Task$dingTalkWebhookArgs<ExtArgs>
     taskIndicators?: boolean | Task$taskIndicatorsArgs<ExtArgs>
     executions?: boolean | Task$executionsArgs<ExtArgs>
     _count?: boolean | TaskCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type TaskIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     market?: boolean | MarketDefaultArgs<ExtArgs>
+    dingTalkWebhook?: boolean | Task$dingTalkWebhookArgs<ExtArgs>
   }
   export type TaskIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     market?: boolean | MarketDefaultArgs<ExtArgs>
+    dingTalkWebhook?: boolean | Task$dingTalkWebhookArgs<ExtArgs>
   }
 
   export type $TaskPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Task"
     objects: {
       market: Prisma.$MarketPayload<ExtArgs>
+      dingTalkWebhook: Prisma.$DingTalkWebhookPayload<ExtArgs> | null
       taskIndicators: Prisma.$TaskIndicatorPayload<ExtArgs>[]
       executions: Prisma.$TaskExecutionPayload<ExtArgs>[]
     }
@@ -10402,6 +10749,7 @@ export namespace Prisma {
       errorMessage: string | null
       enableNotification: boolean
       notificationChannels: Prisma.JsonValue | null
+      dingTalkWebhookId: string | null
       createdBy: string | null
       createdAt: Date
       updatedAt: Date
@@ -10800,6 +11148,7 @@ export namespace Prisma {
   export interface Prisma__TaskClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     market<T extends MarketDefaultArgs<ExtArgs> = {}>(args?: Subset<T, MarketDefaultArgs<ExtArgs>>): Prisma__MarketClient<$Result.GetResult<Prisma.$MarketPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    dingTalkWebhook<T extends Task$dingTalkWebhookArgs<ExtArgs> = {}>(args?: Subset<T, Task$dingTalkWebhookArgs<ExtArgs>>): Prisma__DingTalkWebhookClient<$Result.GetResult<Prisma.$DingTalkWebhookPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     taskIndicators<T extends Task$taskIndicatorsArgs<ExtArgs> = {}>(args?: Subset<T, Task$taskIndicatorsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TaskIndicatorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     executions<T extends Task$executionsArgs<ExtArgs> = {}>(args?: Subset<T, Task$executionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TaskExecutionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
@@ -10846,6 +11195,7 @@ export namespace Prisma {
     readonly errorMessage: FieldRef<"Task", 'String'>
     readonly enableNotification: FieldRef<"Task", 'Boolean'>
     readonly notificationChannels: FieldRef<"Task", 'Json'>
+    readonly dingTalkWebhookId: FieldRef<"Task", 'String'>
     readonly createdBy: FieldRef<"Task", 'String'>
     readonly createdAt: FieldRef<"Task", 'DateTime'>
     readonly updatedAt: FieldRef<"Task", 'DateTime'>
@@ -11251,6 +11601,25 @@ export namespace Prisma {
      * Limit how many Tasks to delete.
      */
     limit?: number
+  }
+
+  /**
+   * Task.dingTalkWebhook
+   */
+  export type Task$dingTalkWebhookArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DingTalkWebhook
+     */
+    select?: DingTalkWebhookSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DingTalkWebhook
+     */
+    omit?: DingTalkWebhookOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DingTalkWebhookInclude<ExtArgs> | null
+    where?: DingTalkWebhookWhereInput
   }
 
   /**
@@ -14645,6 +15014,1184 @@ export namespace Prisma {
 
 
   /**
+   * Model DingTalkWebhook
+   */
+
+  export type AggregateDingTalkWebhook = {
+    _count: DingTalkWebhookCountAggregateOutputType | null
+    _avg: DingTalkWebhookAvgAggregateOutputType | null
+    _sum: DingTalkWebhookSumAggregateOutputType | null
+    _min: DingTalkWebhookMinAggregateOutputType | null
+    _max: DingTalkWebhookMaxAggregateOutputType | null
+  }
+
+  export type DingTalkWebhookAvgAggregateOutputType = {
+    messageCount: number | null
+  }
+
+  export type DingTalkWebhookSumAggregateOutputType = {
+    messageCount: number | null
+  }
+
+  export type DingTalkWebhookMinAggregateOutputType = {
+    id: string | null
+    name: string | null
+    description: string | null
+    webhookUrl: string | null
+    secret: string | null
+    isActive: boolean | null
+    messageCount: number | null
+    lastUsedAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type DingTalkWebhookMaxAggregateOutputType = {
+    id: string | null
+    name: string | null
+    description: string | null
+    webhookUrl: string | null
+    secret: string | null
+    isActive: boolean | null
+    messageCount: number | null
+    lastUsedAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type DingTalkWebhookCountAggregateOutputType = {
+    id: number
+    name: number
+    description: number
+    webhookUrl: number
+    secret: number
+    isActive: number
+    messageCount: number
+    lastUsedAt: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type DingTalkWebhookAvgAggregateInputType = {
+    messageCount?: true
+  }
+
+  export type DingTalkWebhookSumAggregateInputType = {
+    messageCount?: true
+  }
+
+  export type DingTalkWebhookMinAggregateInputType = {
+    id?: true
+    name?: true
+    description?: true
+    webhookUrl?: true
+    secret?: true
+    isActive?: true
+    messageCount?: true
+    lastUsedAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type DingTalkWebhookMaxAggregateInputType = {
+    id?: true
+    name?: true
+    description?: true
+    webhookUrl?: true
+    secret?: true
+    isActive?: true
+    messageCount?: true
+    lastUsedAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type DingTalkWebhookCountAggregateInputType = {
+    id?: true
+    name?: true
+    description?: true
+    webhookUrl?: true
+    secret?: true
+    isActive?: true
+    messageCount?: true
+    lastUsedAt?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type DingTalkWebhookAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which DingTalkWebhook to aggregate.
+     */
+    where?: DingTalkWebhookWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DingTalkWebhooks to fetch.
+     */
+    orderBy?: DingTalkWebhookOrderByWithRelationInput | DingTalkWebhookOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: DingTalkWebhookWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DingTalkWebhooks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DingTalkWebhooks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned DingTalkWebhooks
+    **/
+    _count?: true | DingTalkWebhookCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: DingTalkWebhookAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: DingTalkWebhookSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: DingTalkWebhookMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: DingTalkWebhookMaxAggregateInputType
+  }
+
+  export type GetDingTalkWebhookAggregateType<T extends DingTalkWebhookAggregateArgs> = {
+        [P in keyof T & keyof AggregateDingTalkWebhook]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateDingTalkWebhook[P]>
+      : GetScalarType<T[P], AggregateDingTalkWebhook[P]>
+  }
+
+
+
+
+  export type DingTalkWebhookGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DingTalkWebhookWhereInput
+    orderBy?: DingTalkWebhookOrderByWithAggregationInput | DingTalkWebhookOrderByWithAggregationInput[]
+    by: DingTalkWebhookScalarFieldEnum[] | DingTalkWebhookScalarFieldEnum
+    having?: DingTalkWebhookScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: DingTalkWebhookCountAggregateInputType | true
+    _avg?: DingTalkWebhookAvgAggregateInputType
+    _sum?: DingTalkWebhookSumAggregateInputType
+    _min?: DingTalkWebhookMinAggregateInputType
+    _max?: DingTalkWebhookMaxAggregateInputType
+  }
+
+  export type DingTalkWebhookGroupByOutputType = {
+    id: string
+    name: string
+    description: string | null
+    webhookUrl: string
+    secret: string | null
+    isActive: boolean
+    messageCount: number
+    lastUsedAt: Date | null
+    createdAt: Date
+    updatedAt: Date
+    _count: DingTalkWebhookCountAggregateOutputType | null
+    _avg: DingTalkWebhookAvgAggregateOutputType | null
+    _sum: DingTalkWebhookSumAggregateOutputType | null
+    _min: DingTalkWebhookMinAggregateOutputType | null
+    _max: DingTalkWebhookMaxAggregateOutputType | null
+  }
+
+  type GetDingTalkWebhookGroupByPayload<T extends DingTalkWebhookGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<DingTalkWebhookGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof DingTalkWebhookGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], DingTalkWebhookGroupByOutputType[P]>
+            : GetScalarType<T[P], DingTalkWebhookGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type DingTalkWebhookSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    description?: boolean
+    webhookUrl?: boolean
+    secret?: boolean
+    isActive?: boolean
+    messageCount?: boolean
+    lastUsedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    tasks?: boolean | DingTalkWebhook$tasksArgs<ExtArgs>
+    _count?: boolean | DingTalkWebhookCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["dingTalkWebhook"]>
+
+  export type DingTalkWebhookSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    description?: boolean
+    webhookUrl?: boolean
+    secret?: boolean
+    isActive?: boolean
+    messageCount?: boolean
+    lastUsedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["dingTalkWebhook"]>
+
+  export type DingTalkWebhookSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    description?: boolean
+    webhookUrl?: boolean
+    secret?: boolean
+    isActive?: boolean
+    messageCount?: boolean
+    lastUsedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["dingTalkWebhook"]>
+
+  export type DingTalkWebhookSelectScalar = {
+    id?: boolean
+    name?: boolean
+    description?: boolean
+    webhookUrl?: boolean
+    secret?: boolean
+    isActive?: boolean
+    messageCount?: boolean
+    lastUsedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type DingTalkWebhookOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "webhookUrl" | "secret" | "isActive" | "messageCount" | "lastUsedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["dingTalkWebhook"]>
+  export type DingTalkWebhookInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    tasks?: boolean | DingTalkWebhook$tasksArgs<ExtArgs>
+    _count?: boolean | DingTalkWebhookCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type DingTalkWebhookIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type DingTalkWebhookIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+
+  export type $DingTalkWebhookPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "DingTalkWebhook"
+    objects: {
+      tasks: Prisma.$TaskPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      name: string
+      description: string | null
+      webhookUrl: string
+      secret: string | null
+      isActive: boolean
+      messageCount: number
+      lastUsedAt: Date | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["dingTalkWebhook"]>
+    composites: {}
+  }
+
+  type DingTalkWebhookGetPayload<S extends boolean | null | undefined | DingTalkWebhookDefaultArgs> = $Result.GetResult<Prisma.$DingTalkWebhookPayload, S>
+
+  type DingTalkWebhookCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<DingTalkWebhookFindManyArgs, 'select' | 'include' | 'distinct' | 'omit' | 'relationLoadStrategy'> & {
+      select?: DingTalkWebhookCountAggregateInputType | true
+    }
+
+  export interface DingTalkWebhookDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['DingTalkWebhook'], meta: { name: 'DingTalkWebhook' } }
+    /**
+     * Find zero or one DingTalkWebhook that matches the filter.
+     * @param {DingTalkWebhookFindUniqueArgs} args - Arguments to find a DingTalkWebhook
+     * @example
+     * // Get one DingTalkWebhook
+     * const dingTalkWebhook = await prisma.dingTalkWebhook.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends DingTalkWebhookFindUniqueArgs>(args: SelectSubset<T, DingTalkWebhookFindUniqueArgs<ExtArgs>>): Prisma__DingTalkWebhookClient<$Result.GetResult<Prisma.$DingTalkWebhookPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one DingTalkWebhook that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {DingTalkWebhookFindUniqueOrThrowArgs} args - Arguments to find a DingTalkWebhook
+     * @example
+     * // Get one DingTalkWebhook
+     * const dingTalkWebhook = await prisma.dingTalkWebhook.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends DingTalkWebhookFindUniqueOrThrowArgs>(args: SelectSubset<T, DingTalkWebhookFindUniqueOrThrowArgs<ExtArgs>>): Prisma__DingTalkWebhookClient<$Result.GetResult<Prisma.$DingTalkWebhookPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first DingTalkWebhook that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DingTalkWebhookFindFirstArgs} args - Arguments to find a DingTalkWebhook
+     * @example
+     * // Get one DingTalkWebhook
+     * const dingTalkWebhook = await prisma.dingTalkWebhook.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends DingTalkWebhookFindFirstArgs>(args?: SelectSubset<T, DingTalkWebhookFindFirstArgs<ExtArgs>>): Prisma__DingTalkWebhookClient<$Result.GetResult<Prisma.$DingTalkWebhookPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first DingTalkWebhook that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DingTalkWebhookFindFirstOrThrowArgs} args - Arguments to find a DingTalkWebhook
+     * @example
+     * // Get one DingTalkWebhook
+     * const dingTalkWebhook = await prisma.dingTalkWebhook.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends DingTalkWebhookFindFirstOrThrowArgs>(args?: SelectSubset<T, DingTalkWebhookFindFirstOrThrowArgs<ExtArgs>>): Prisma__DingTalkWebhookClient<$Result.GetResult<Prisma.$DingTalkWebhookPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more DingTalkWebhooks that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DingTalkWebhookFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all DingTalkWebhooks
+     * const dingTalkWebhooks = await prisma.dingTalkWebhook.findMany()
+     * 
+     * // Get first 10 DingTalkWebhooks
+     * const dingTalkWebhooks = await prisma.dingTalkWebhook.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const dingTalkWebhookWithIdOnly = await prisma.dingTalkWebhook.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends DingTalkWebhookFindManyArgs>(args?: SelectSubset<T, DingTalkWebhookFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DingTalkWebhookPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a DingTalkWebhook.
+     * @param {DingTalkWebhookCreateArgs} args - Arguments to create a DingTalkWebhook.
+     * @example
+     * // Create one DingTalkWebhook
+     * const DingTalkWebhook = await prisma.dingTalkWebhook.create({
+     *   data: {
+     *     // ... data to create a DingTalkWebhook
+     *   }
+     * })
+     * 
+     */
+    create<T extends DingTalkWebhookCreateArgs>(args: SelectSubset<T, DingTalkWebhookCreateArgs<ExtArgs>>): Prisma__DingTalkWebhookClient<$Result.GetResult<Prisma.$DingTalkWebhookPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many DingTalkWebhooks.
+     * @param {DingTalkWebhookCreateManyArgs} args - Arguments to create many DingTalkWebhooks.
+     * @example
+     * // Create many DingTalkWebhooks
+     * const dingTalkWebhook = await prisma.dingTalkWebhook.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends DingTalkWebhookCreateManyArgs>(args?: SelectSubset<T, DingTalkWebhookCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many DingTalkWebhooks and returns the data saved in the database.
+     * @param {DingTalkWebhookCreateManyAndReturnArgs} args - Arguments to create many DingTalkWebhooks.
+     * @example
+     * // Create many DingTalkWebhooks
+     * const dingTalkWebhook = await prisma.dingTalkWebhook.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many DingTalkWebhooks and only return the `id`
+     * const dingTalkWebhookWithIdOnly = await prisma.dingTalkWebhook.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends DingTalkWebhookCreateManyAndReturnArgs>(args?: SelectSubset<T, DingTalkWebhookCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DingTalkWebhookPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a DingTalkWebhook.
+     * @param {DingTalkWebhookDeleteArgs} args - Arguments to delete one DingTalkWebhook.
+     * @example
+     * // Delete one DingTalkWebhook
+     * const DingTalkWebhook = await prisma.dingTalkWebhook.delete({
+     *   where: {
+     *     // ... filter to delete one DingTalkWebhook
+     *   }
+     * })
+     * 
+     */
+    delete<T extends DingTalkWebhookDeleteArgs>(args: SelectSubset<T, DingTalkWebhookDeleteArgs<ExtArgs>>): Prisma__DingTalkWebhookClient<$Result.GetResult<Prisma.$DingTalkWebhookPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one DingTalkWebhook.
+     * @param {DingTalkWebhookUpdateArgs} args - Arguments to update one DingTalkWebhook.
+     * @example
+     * // Update one DingTalkWebhook
+     * const dingTalkWebhook = await prisma.dingTalkWebhook.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends DingTalkWebhookUpdateArgs>(args: SelectSubset<T, DingTalkWebhookUpdateArgs<ExtArgs>>): Prisma__DingTalkWebhookClient<$Result.GetResult<Prisma.$DingTalkWebhookPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more DingTalkWebhooks.
+     * @param {DingTalkWebhookDeleteManyArgs} args - Arguments to filter DingTalkWebhooks to delete.
+     * @example
+     * // Delete a few DingTalkWebhooks
+     * const { count } = await prisma.dingTalkWebhook.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends DingTalkWebhookDeleteManyArgs>(args?: SelectSubset<T, DingTalkWebhookDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more DingTalkWebhooks.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DingTalkWebhookUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many DingTalkWebhooks
+     * const dingTalkWebhook = await prisma.dingTalkWebhook.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends DingTalkWebhookUpdateManyArgs>(args: SelectSubset<T, DingTalkWebhookUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more DingTalkWebhooks and returns the data updated in the database.
+     * @param {DingTalkWebhookUpdateManyAndReturnArgs} args - Arguments to update many DingTalkWebhooks.
+     * @example
+     * // Update many DingTalkWebhooks
+     * const dingTalkWebhook = await prisma.dingTalkWebhook.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more DingTalkWebhooks and only return the `id`
+     * const dingTalkWebhookWithIdOnly = await prisma.dingTalkWebhook.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends DingTalkWebhookUpdateManyAndReturnArgs>(args: SelectSubset<T, DingTalkWebhookUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DingTalkWebhookPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one DingTalkWebhook.
+     * @param {DingTalkWebhookUpsertArgs} args - Arguments to update or create a DingTalkWebhook.
+     * @example
+     * // Update or create a DingTalkWebhook
+     * const dingTalkWebhook = await prisma.dingTalkWebhook.upsert({
+     *   create: {
+     *     // ... data to create a DingTalkWebhook
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the DingTalkWebhook we want to update
+     *   }
+     * })
+     */
+    upsert<T extends DingTalkWebhookUpsertArgs>(args: SelectSubset<T, DingTalkWebhookUpsertArgs<ExtArgs>>): Prisma__DingTalkWebhookClient<$Result.GetResult<Prisma.$DingTalkWebhookPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of DingTalkWebhooks.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DingTalkWebhookCountArgs} args - Arguments to filter DingTalkWebhooks to count.
+     * @example
+     * // Count the number of DingTalkWebhooks
+     * const count = await prisma.dingTalkWebhook.count({
+     *   where: {
+     *     // ... the filter for the DingTalkWebhooks we want to count
+     *   }
+     * })
+    **/
+    count<T extends DingTalkWebhookCountArgs>(
+      args?: Subset<T, DingTalkWebhookCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], DingTalkWebhookCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a DingTalkWebhook.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DingTalkWebhookAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends DingTalkWebhookAggregateArgs>(args: Subset<T, DingTalkWebhookAggregateArgs>): Prisma.PrismaPromise<GetDingTalkWebhookAggregateType<T>>
+
+    /**
+     * Group by DingTalkWebhook.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DingTalkWebhookGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends DingTalkWebhookGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: DingTalkWebhookGroupByArgs['orderBy'] }
+        : { orderBy?: DingTalkWebhookGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, DingTalkWebhookGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetDingTalkWebhookGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the DingTalkWebhook model
+   */
+  readonly fields: DingTalkWebhookFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for DingTalkWebhook.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__DingTalkWebhookClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    tasks<T extends DingTalkWebhook$tasksArgs<ExtArgs> = {}>(args?: Subset<T, DingTalkWebhook$tasksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the DingTalkWebhook model
+   */
+  interface DingTalkWebhookFieldRefs {
+    readonly id: FieldRef<"DingTalkWebhook", 'String'>
+    readonly name: FieldRef<"DingTalkWebhook", 'String'>
+    readonly description: FieldRef<"DingTalkWebhook", 'String'>
+    readonly webhookUrl: FieldRef<"DingTalkWebhook", 'String'>
+    readonly secret: FieldRef<"DingTalkWebhook", 'String'>
+    readonly isActive: FieldRef<"DingTalkWebhook", 'Boolean'>
+    readonly messageCount: FieldRef<"DingTalkWebhook", 'Int'>
+    readonly lastUsedAt: FieldRef<"DingTalkWebhook", 'DateTime'>
+    readonly createdAt: FieldRef<"DingTalkWebhook", 'DateTime'>
+    readonly updatedAt: FieldRef<"DingTalkWebhook", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * DingTalkWebhook findUnique
+   */
+  export type DingTalkWebhookFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DingTalkWebhook
+     */
+    select?: DingTalkWebhookSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DingTalkWebhook
+     */
+    omit?: DingTalkWebhookOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DingTalkWebhookInclude<ExtArgs> | null
+    /**
+     * Filter, which DingTalkWebhook to fetch.
+     */
+    where: DingTalkWebhookWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
+  }
+
+  /**
+   * DingTalkWebhook findUniqueOrThrow
+   */
+  export type DingTalkWebhookFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DingTalkWebhook
+     */
+    select?: DingTalkWebhookSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DingTalkWebhook
+     */
+    omit?: DingTalkWebhookOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DingTalkWebhookInclude<ExtArgs> | null
+    /**
+     * Filter, which DingTalkWebhook to fetch.
+     */
+    where: DingTalkWebhookWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
+  }
+
+  /**
+   * DingTalkWebhook findFirst
+   */
+  export type DingTalkWebhookFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DingTalkWebhook
+     */
+    select?: DingTalkWebhookSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DingTalkWebhook
+     */
+    omit?: DingTalkWebhookOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DingTalkWebhookInclude<ExtArgs> | null
+    /**
+     * Filter, which DingTalkWebhook to fetch.
+     */
+    where?: DingTalkWebhookWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DingTalkWebhooks to fetch.
+     */
+    orderBy?: DingTalkWebhookOrderByWithRelationInput | DingTalkWebhookOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for DingTalkWebhooks.
+     */
+    cursor?: DingTalkWebhookWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DingTalkWebhooks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DingTalkWebhooks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of DingTalkWebhooks.
+     */
+    distinct?: DingTalkWebhookScalarFieldEnum | DingTalkWebhookScalarFieldEnum[]
+    relationLoadStrategy?: RelationLoadStrategy
+  }
+
+  /**
+   * DingTalkWebhook findFirstOrThrow
+   */
+  export type DingTalkWebhookFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DingTalkWebhook
+     */
+    select?: DingTalkWebhookSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DingTalkWebhook
+     */
+    omit?: DingTalkWebhookOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DingTalkWebhookInclude<ExtArgs> | null
+    /**
+     * Filter, which DingTalkWebhook to fetch.
+     */
+    where?: DingTalkWebhookWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DingTalkWebhooks to fetch.
+     */
+    orderBy?: DingTalkWebhookOrderByWithRelationInput | DingTalkWebhookOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for DingTalkWebhooks.
+     */
+    cursor?: DingTalkWebhookWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DingTalkWebhooks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DingTalkWebhooks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of DingTalkWebhooks.
+     */
+    distinct?: DingTalkWebhookScalarFieldEnum | DingTalkWebhookScalarFieldEnum[]
+    relationLoadStrategy?: RelationLoadStrategy
+  }
+
+  /**
+   * DingTalkWebhook findMany
+   */
+  export type DingTalkWebhookFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DingTalkWebhook
+     */
+    select?: DingTalkWebhookSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DingTalkWebhook
+     */
+    omit?: DingTalkWebhookOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DingTalkWebhookInclude<ExtArgs> | null
+    /**
+     * Filter, which DingTalkWebhooks to fetch.
+     */
+    where?: DingTalkWebhookWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DingTalkWebhooks to fetch.
+     */
+    orderBy?: DingTalkWebhookOrderByWithRelationInput | DingTalkWebhookOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing DingTalkWebhooks.
+     */
+    cursor?: DingTalkWebhookWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DingTalkWebhooks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DingTalkWebhooks.
+     */
+    skip?: number
+    distinct?: DingTalkWebhookScalarFieldEnum | DingTalkWebhookScalarFieldEnum[]
+    relationLoadStrategy?: RelationLoadStrategy
+  }
+
+  /**
+   * DingTalkWebhook create
+   */
+  export type DingTalkWebhookCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DingTalkWebhook
+     */
+    select?: DingTalkWebhookSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DingTalkWebhook
+     */
+    omit?: DingTalkWebhookOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DingTalkWebhookInclude<ExtArgs> | null
+    /**
+     * The data needed to create a DingTalkWebhook.
+     */
+    data: XOR<DingTalkWebhookCreateInput, DingTalkWebhookUncheckedCreateInput>
+    relationLoadStrategy?: RelationLoadStrategy
+  }
+
+  /**
+   * DingTalkWebhook createMany
+   */
+  export type DingTalkWebhookCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many DingTalkWebhooks.
+     */
+    data: DingTalkWebhookCreateManyInput | DingTalkWebhookCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * DingTalkWebhook createManyAndReturn
+   */
+  export type DingTalkWebhookCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DingTalkWebhook
+     */
+    select?: DingTalkWebhookSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the DingTalkWebhook
+     */
+    omit?: DingTalkWebhookOmit<ExtArgs> | null
+    /**
+     * The data used to create many DingTalkWebhooks.
+     */
+    data: DingTalkWebhookCreateManyInput | DingTalkWebhookCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * DingTalkWebhook update
+   */
+  export type DingTalkWebhookUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DingTalkWebhook
+     */
+    select?: DingTalkWebhookSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DingTalkWebhook
+     */
+    omit?: DingTalkWebhookOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DingTalkWebhookInclude<ExtArgs> | null
+    /**
+     * The data needed to update a DingTalkWebhook.
+     */
+    data: XOR<DingTalkWebhookUpdateInput, DingTalkWebhookUncheckedUpdateInput>
+    /**
+     * Choose, which DingTalkWebhook to update.
+     */
+    where: DingTalkWebhookWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
+  }
+
+  /**
+   * DingTalkWebhook updateMany
+   */
+  export type DingTalkWebhookUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update DingTalkWebhooks.
+     */
+    data: XOR<DingTalkWebhookUpdateManyMutationInput, DingTalkWebhookUncheckedUpdateManyInput>
+    /**
+     * Filter which DingTalkWebhooks to update
+     */
+    where?: DingTalkWebhookWhereInput
+    /**
+     * Limit how many DingTalkWebhooks to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * DingTalkWebhook updateManyAndReturn
+   */
+  export type DingTalkWebhookUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DingTalkWebhook
+     */
+    select?: DingTalkWebhookSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the DingTalkWebhook
+     */
+    omit?: DingTalkWebhookOmit<ExtArgs> | null
+    /**
+     * The data used to update DingTalkWebhooks.
+     */
+    data: XOR<DingTalkWebhookUpdateManyMutationInput, DingTalkWebhookUncheckedUpdateManyInput>
+    /**
+     * Filter which DingTalkWebhooks to update
+     */
+    where?: DingTalkWebhookWhereInput
+    /**
+     * Limit how many DingTalkWebhooks to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * DingTalkWebhook upsert
+   */
+  export type DingTalkWebhookUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DingTalkWebhook
+     */
+    select?: DingTalkWebhookSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DingTalkWebhook
+     */
+    omit?: DingTalkWebhookOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DingTalkWebhookInclude<ExtArgs> | null
+    /**
+     * The filter to search for the DingTalkWebhook to update in case it exists.
+     */
+    where: DingTalkWebhookWhereUniqueInput
+    /**
+     * In case the DingTalkWebhook found by the `where` argument doesn't exist, create a new DingTalkWebhook with this data.
+     */
+    create: XOR<DingTalkWebhookCreateInput, DingTalkWebhookUncheckedCreateInput>
+    /**
+     * In case the DingTalkWebhook was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<DingTalkWebhookUpdateInput, DingTalkWebhookUncheckedUpdateInput>
+    relationLoadStrategy?: RelationLoadStrategy
+  }
+
+  /**
+   * DingTalkWebhook delete
+   */
+  export type DingTalkWebhookDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DingTalkWebhook
+     */
+    select?: DingTalkWebhookSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DingTalkWebhook
+     */
+    omit?: DingTalkWebhookOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DingTalkWebhookInclude<ExtArgs> | null
+    /**
+     * Filter which DingTalkWebhook to delete.
+     */
+    where: DingTalkWebhookWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
+  }
+
+  /**
+   * DingTalkWebhook deleteMany
+   */
+  export type DingTalkWebhookDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which DingTalkWebhooks to delete
+     */
+    where?: DingTalkWebhookWhereInput
+    /**
+     * Limit how many DingTalkWebhooks to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * DingTalkWebhook.tasks
+   */
+  export type DingTalkWebhook$tasksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Task
+     */
+    select?: TaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Task
+     */
+    omit?: TaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TaskInclude<ExtArgs> | null
+    where?: TaskWhereInput
+    orderBy?: TaskOrderByWithRelationInput | TaskOrderByWithRelationInput[]
+    cursor?: TaskWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TaskScalarFieldEnum | TaskScalarFieldEnum[]
+  }
+
+  /**
+   * DingTalkWebhook without action
+   */
+  export type DingTalkWebhookDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DingTalkWebhook
+     */
+    select?: DingTalkWebhookSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DingTalkWebhook
+     */
+    omit?: DingTalkWebhookOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DingTalkWebhookInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -14770,10 +16317,22 @@ export namespace Prisma {
     code: 'code',
     symbol: 'symbol',
     type: 'type',
-    icon: 'icon',
-    description: 'description',
     exchange: 'exchange',
+    fullExchangeName: 'fullExchangeName',
+    displayName: 'displayName',
+    description: 'description',
+    icon: 'icon',
+    cryptoType: 'cryptoType',
+    baseCurrency: 'baseCurrency',
+    quoteCurrency: 'quoteCurrency',
+    industry: 'industry',
+    sector: 'sector',
     isActive: 'isActive',
+    isPriority: 'isPriority',
+    sortOrder: 'sortOrder',
+    lastSyncAt: 'lastSyncAt',
+    syncStatus: 'syncStatus',
+    syncError: 'syncError',
     metadata: 'metadata',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
@@ -14798,6 +16357,7 @@ export namespace Prisma {
     errorMessage: 'errorMessage',
     enableNotification: 'enableNotification',
     notificationChannels: 'notificationChannels',
+    dingTalkWebhookId: 'dingTalkWebhookId',
     createdBy: 'createdBy',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
@@ -14840,6 +16400,22 @@ export namespace Prisma {
   };
 
   export type SessionScalarFieldEnum = (typeof SessionScalarFieldEnum)[keyof typeof SessionScalarFieldEnum]
+
+
+  export const DingTalkWebhookScalarFieldEnum: {
+    id: 'id',
+    name: 'name',
+    description: 'description',
+    webhookUrl: 'webhookUrl',
+    secret: 'secret',
+    isActive: 'isActive',
+    messageCount: 'messageCount',
+    lastUsedAt: 'lastUsedAt',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type DingTalkWebhookScalarFieldEnum = (typeof DingTalkWebhookScalarFieldEnum)[keyof typeof DingTalkWebhookScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -15011,6 +16587,20 @@ export namespace Prisma {
    * Reference to a field of type 'MarketType[]'
    */
   export type ListEnumMarketTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MarketType[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'CryptoType'
+   */
+  export type EnumCryptoTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CryptoType'>
+    
+
+
+  /**
+   * Reference to a field of type 'CryptoType[]'
+   */
+  export type ListEnumCryptoTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CryptoType[]'>
     
 
 
@@ -15573,10 +17163,22 @@ export namespace Prisma {
     code?: StringFilter<"Market"> | string
     symbol?: StringFilter<"Market"> | string
     type?: EnumMarketTypeFilter<"Market"> | $Enums.MarketType
-    icon?: StringNullableFilter<"Market"> | string | null
-    description?: StringNullableFilter<"Market"> | string | null
     exchange?: StringNullableFilter<"Market"> | string | null
+    fullExchangeName?: StringNullableFilter<"Market"> | string | null
+    displayName?: StringNullableFilter<"Market"> | string | null
+    description?: StringNullableFilter<"Market"> | string | null
+    icon?: StringNullableFilter<"Market"> | string | null
+    cryptoType?: EnumCryptoTypeNullableFilter<"Market"> | $Enums.CryptoType | null
+    baseCurrency?: StringNullableFilter<"Market"> | string | null
+    quoteCurrency?: StringNullableFilter<"Market"> | string | null
+    industry?: StringNullableFilter<"Market"> | string | null
+    sector?: StringNullableFilter<"Market"> | string | null
     isActive?: BoolFilter<"Market"> | boolean
+    isPriority?: BoolFilter<"Market"> | boolean
+    sortOrder?: IntFilter<"Market"> | number
+    lastSyncAt?: DateTimeNullableFilter<"Market"> | Date | string | null
+    syncStatus?: StringNullableFilter<"Market"> | string | null
+    syncError?: StringNullableFilter<"Market"> | string | null
     metadata?: JsonNullableFilter<"Market">
     createdAt?: DateTimeFilter<"Market"> | Date | string
     updatedAt?: DateTimeFilter<"Market"> | Date | string
@@ -15589,10 +17191,22 @@ export namespace Prisma {
     code?: SortOrder
     symbol?: SortOrder
     type?: SortOrder
-    icon?: SortOrderInput | SortOrder
-    description?: SortOrderInput | SortOrder
     exchange?: SortOrderInput | SortOrder
+    fullExchangeName?: SortOrderInput | SortOrder
+    displayName?: SortOrderInput | SortOrder
+    description?: SortOrderInput | SortOrder
+    icon?: SortOrderInput | SortOrder
+    cryptoType?: SortOrderInput | SortOrder
+    baseCurrency?: SortOrderInput | SortOrder
+    quoteCurrency?: SortOrderInput | SortOrder
+    industry?: SortOrderInput | SortOrder
+    sector?: SortOrderInput | SortOrder
     isActive?: SortOrder
+    isPriority?: SortOrder
+    sortOrder?: SortOrder
+    lastSyncAt?: SortOrderInput | SortOrder
+    syncStatus?: SortOrderInput | SortOrder
+    syncError?: SortOrderInput | SortOrder
     metadata?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -15602,21 +17216,34 @@ export namespace Prisma {
   export type MarketWhereUniqueInput = Prisma.AtLeast<{
     id?: string
     symbol?: string
+    exchange_code?: MarketExchangeCodeCompoundUniqueInput
     AND?: MarketWhereInput | MarketWhereInput[]
     OR?: MarketWhereInput[]
     NOT?: MarketWhereInput | MarketWhereInput[]
     name?: StringFilter<"Market"> | string
     code?: StringFilter<"Market"> | string
     type?: EnumMarketTypeFilter<"Market"> | $Enums.MarketType
-    icon?: StringNullableFilter<"Market"> | string | null
-    description?: StringNullableFilter<"Market"> | string | null
     exchange?: StringNullableFilter<"Market"> | string | null
+    fullExchangeName?: StringNullableFilter<"Market"> | string | null
+    displayName?: StringNullableFilter<"Market"> | string | null
+    description?: StringNullableFilter<"Market"> | string | null
+    icon?: StringNullableFilter<"Market"> | string | null
+    cryptoType?: EnumCryptoTypeNullableFilter<"Market"> | $Enums.CryptoType | null
+    baseCurrency?: StringNullableFilter<"Market"> | string | null
+    quoteCurrency?: StringNullableFilter<"Market"> | string | null
+    industry?: StringNullableFilter<"Market"> | string | null
+    sector?: StringNullableFilter<"Market"> | string | null
     isActive?: BoolFilter<"Market"> | boolean
+    isPriority?: BoolFilter<"Market"> | boolean
+    sortOrder?: IntFilter<"Market"> | number
+    lastSyncAt?: DateTimeNullableFilter<"Market"> | Date | string | null
+    syncStatus?: StringNullableFilter<"Market"> | string | null
+    syncError?: StringNullableFilter<"Market"> | string | null
     metadata?: JsonNullableFilter<"Market">
     createdAt?: DateTimeFilter<"Market"> | Date | string
     updatedAt?: DateTimeFilter<"Market"> | Date | string
     tasks?: TaskListRelationFilter
-  }, "id" | "symbol">
+  }, "id" | "symbol" | "exchange_code">
 
   export type MarketOrderByWithAggregationInput = {
     id?: SortOrder
@@ -15624,16 +17251,30 @@ export namespace Prisma {
     code?: SortOrder
     symbol?: SortOrder
     type?: SortOrder
-    icon?: SortOrderInput | SortOrder
-    description?: SortOrderInput | SortOrder
     exchange?: SortOrderInput | SortOrder
+    fullExchangeName?: SortOrderInput | SortOrder
+    displayName?: SortOrderInput | SortOrder
+    description?: SortOrderInput | SortOrder
+    icon?: SortOrderInput | SortOrder
+    cryptoType?: SortOrderInput | SortOrder
+    baseCurrency?: SortOrderInput | SortOrder
+    quoteCurrency?: SortOrderInput | SortOrder
+    industry?: SortOrderInput | SortOrder
+    sector?: SortOrderInput | SortOrder
     isActive?: SortOrder
+    isPriority?: SortOrder
+    sortOrder?: SortOrder
+    lastSyncAt?: SortOrderInput | SortOrder
+    syncStatus?: SortOrderInput | SortOrder
+    syncError?: SortOrderInput | SortOrder
     metadata?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: MarketCountOrderByAggregateInput
+    _avg?: MarketAvgOrderByAggregateInput
     _max?: MarketMaxOrderByAggregateInput
     _min?: MarketMinOrderByAggregateInput
+    _sum?: MarketSumOrderByAggregateInput
   }
 
   export type MarketScalarWhereWithAggregatesInput = {
@@ -15645,10 +17286,22 @@ export namespace Prisma {
     code?: StringWithAggregatesFilter<"Market"> | string
     symbol?: StringWithAggregatesFilter<"Market"> | string
     type?: EnumMarketTypeWithAggregatesFilter<"Market"> | $Enums.MarketType
-    icon?: StringNullableWithAggregatesFilter<"Market"> | string | null
-    description?: StringNullableWithAggregatesFilter<"Market"> | string | null
     exchange?: StringNullableWithAggregatesFilter<"Market"> | string | null
+    fullExchangeName?: StringNullableWithAggregatesFilter<"Market"> | string | null
+    displayName?: StringNullableWithAggregatesFilter<"Market"> | string | null
+    description?: StringNullableWithAggregatesFilter<"Market"> | string | null
+    icon?: StringNullableWithAggregatesFilter<"Market"> | string | null
+    cryptoType?: EnumCryptoTypeNullableWithAggregatesFilter<"Market"> | $Enums.CryptoType | null
+    baseCurrency?: StringNullableWithAggregatesFilter<"Market"> | string | null
+    quoteCurrency?: StringNullableWithAggregatesFilter<"Market"> | string | null
+    industry?: StringNullableWithAggregatesFilter<"Market"> | string | null
+    sector?: StringNullableWithAggregatesFilter<"Market"> | string | null
     isActive?: BoolWithAggregatesFilter<"Market"> | boolean
+    isPriority?: BoolWithAggregatesFilter<"Market"> | boolean
+    sortOrder?: IntWithAggregatesFilter<"Market"> | number
+    lastSyncAt?: DateTimeNullableWithAggregatesFilter<"Market"> | Date | string | null
+    syncStatus?: StringNullableWithAggregatesFilter<"Market"> | string | null
+    syncError?: StringNullableWithAggregatesFilter<"Market"> | string | null
     metadata?: JsonNullableWithAggregatesFilter<"Market">
     createdAt?: DateTimeWithAggregatesFilter<"Market"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Market"> | Date | string
@@ -15673,10 +17326,12 @@ export namespace Prisma {
     errorMessage?: StringNullableFilter<"Task"> | string | null
     enableNotification?: BoolFilter<"Task"> | boolean
     notificationChannels?: JsonNullableFilter<"Task">
+    dingTalkWebhookId?: StringNullableFilter<"Task"> | string | null
     createdBy?: StringNullableFilter<"Task"> | string | null
     createdAt?: DateTimeFilter<"Task"> | Date | string
     updatedAt?: DateTimeFilter<"Task"> | Date | string
     market?: XOR<MarketScalarRelationFilter, MarketWhereInput>
+    dingTalkWebhook?: XOR<DingTalkWebhookNullableScalarRelationFilter, DingTalkWebhookWhereInput> | null
     taskIndicators?: TaskIndicatorListRelationFilter
     executions?: TaskExecutionListRelationFilter
   }
@@ -15697,10 +17352,12 @@ export namespace Prisma {
     errorMessage?: SortOrderInput | SortOrder
     enableNotification?: SortOrder
     notificationChannels?: SortOrderInput | SortOrder
+    dingTalkWebhookId?: SortOrderInput | SortOrder
     createdBy?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     market?: MarketOrderByWithRelationInput
+    dingTalkWebhook?: DingTalkWebhookOrderByWithRelationInput
     taskIndicators?: TaskIndicatorOrderByRelationAggregateInput
     executions?: TaskExecutionOrderByRelationAggregateInput
   }
@@ -15724,10 +17381,12 @@ export namespace Prisma {
     errorMessage?: StringNullableFilter<"Task"> | string | null
     enableNotification?: BoolFilter<"Task"> | boolean
     notificationChannels?: JsonNullableFilter<"Task">
+    dingTalkWebhookId?: StringNullableFilter<"Task"> | string | null
     createdBy?: StringNullableFilter<"Task"> | string | null
     createdAt?: DateTimeFilter<"Task"> | Date | string
     updatedAt?: DateTimeFilter<"Task"> | Date | string
     market?: XOR<MarketScalarRelationFilter, MarketWhereInput>
+    dingTalkWebhook?: XOR<DingTalkWebhookNullableScalarRelationFilter, DingTalkWebhookWhereInput> | null
     taskIndicators?: TaskIndicatorListRelationFilter
     executions?: TaskExecutionListRelationFilter
   }, "id">
@@ -15748,6 +17407,7 @@ export namespace Prisma {
     errorMessage?: SortOrderInput | SortOrder
     enableNotification?: SortOrder
     notificationChannels?: SortOrderInput | SortOrder
+    dingTalkWebhookId?: SortOrderInput | SortOrder
     createdBy?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -15777,6 +17437,7 @@ export namespace Prisma {
     errorMessage?: StringNullableWithAggregatesFilter<"Task"> | string | null
     enableNotification?: BoolWithAggregatesFilter<"Task"> | boolean
     notificationChannels?: JsonNullableWithAggregatesFilter<"Task">
+    dingTalkWebhookId?: StringNullableWithAggregatesFilter<"Task"> | string | null
     createdBy?: StringNullableWithAggregatesFilter<"Task"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Task"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Task"> | Date | string
@@ -15968,6 +17629,88 @@ export namespace Prisma {
     sessionToken?: StringWithAggregatesFilter<"Session"> | string
     userId?: StringWithAggregatesFilter<"Session"> | string
     expires?: DateTimeWithAggregatesFilter<"Session"> | Date | string
+  }
+
+  export type DingTalkWebhookWhereInput = {
+    AND?: DingTalkWebhookWhereInput | DingTalkWebhookWhereInput[]
+    OR?: DingTalkWebhookWhereInput[]
+    NOT?: DingTalkWebhookWhereInput | DingTalkWebhookWhereInput[]
+    id?: StringFilter<"DingTalkWebhook"> | string
+    name?: StringFilter<"DingTalkWebhook"> | string
+    description?: StringNullableFilter<"DingTalkWebhook"> | string | null
+    webhookUrl?: StringFilter<"DingTalkWebhook"> | string
+    secret?: StringNullableFilter<"DingTalkWebhook"> | string | null
+    isActive?: BoolFilter<"DingTalkWebhook"> | boolean
+    messageCount?: IntFilter<"DingTalkWebhook"> | number
+    lastUsedAt?: DateTimeNullableFilter<"DingTalkWebhook"> | Date | string | null
+    createdAt?: DateTimeFilter<"DingTalkWebhook"> | Date | string
+    updatedAt?: DateTimeFilter<"DingTalkWebhook"> | Date | string
+    tasks?: TaskListRelationFilter
+  }
+
+  export type DingTalkWebhookOrderByWithRelationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrderInput | SortOrder
+    webhookUrl?: SortOrder
+    secret?: SortOrderInput | SortOrder
+    isActive?: SortOrder
+    messageCount?: SortOrder
+    lastUsedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    tasks?: TaskOrderByRelationAggregateInput
+  }
+
+  export type DingTalkWebhookWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: DingTalkWebhookWhereInput | DingTalkWebhookWhereInput[]
+    OR?: DingTalkWebhookWhereInput[]
+    NOT?: DingTalkWebhookWhereInput | DingTalkWebhookWhereInput[]
+    name?: StringFilter<"DingTalkWebhook"> | string
+    description?: StringNullableFilter<"DingTalkWebhook"> | string | null
+    webhookUrl?: StringFilter<"DingTalkWebhook"> | string
+    secret?: StringNullableFilter<"DingTalkWebhook"> | string | null
+    isActive?: BoolFilter<"DingTalkWebhook"> | boolean
+    messageCount?: IntFilter<"DingTalkWebhook"> | number
+    lastUsedAt?: DateTimeNullableFilter<"DingTalkWebhook"> | Date | string | null
+    createdAt?: DateTimeFilter<"DingTalkWebhook"> | Date | string
+    updatedAt?: DateTimeFilter<"DingTalkWebhook"> | Date | string
+    tasks?: TaskListRelationFilter
+  }, "id">
+
+  export type DingTalkWebhookOrderByWithAggregationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrderInput | SortOrder
+    webhookUrl?: SortOrder
+    secret?: SortOrderInput | SortOrder
+    isActive?: SortOrder
+    messageCount?: SortOrder
+    lastUsedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: DingTalkWebhookCountOrderByAggregateInput
+    _avg?: DingTalkWebhookAvgOrderByAggregateInput
+    _max?: DingTalkWebhookMaxOrderByAggregateInput
+    _min?: DingTalkWebhookMinOrderByAggregateInput
+    _sum?: DingTalkWebhookSumOrderByAggregateInput
+  }
+
+  export type DingTalkWebhookScalarWhereWithAggregatesInput = {
+    AND?: DingTalkWebhookScalarWhereWithAggregatesInput | DingTalkWebhookScalarWhereWithAggregatesInput[]
+    OR?: DingTalkWebhookScalarWhereWithAggregatesInput[]
+    NOT?: DingTalkWebhookScalarWhereWithAggregatesInput | DingTalkWebhookScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"DingTalkWebhook"> | string
+    name?: StringWithAggregatesFilter<"DingTalkWebhook"> | string
+    description?: StringNullableWithAggregatesFilter<"DingTalkWebhook"> | string | null
+    webhookUrl?: StringWithAggregatesFilter<"DingTalkWebhook"> | string
+    secret?: StringNullableWithAggregatesFilter<"DingTalkWebhook"> | string | null
+    isActive?: BoolWithAggregatesFilter<"DingTalkWebhook"> | boolean
+    messageCount?: IntWithAggregatesFilter<"DingTalkWebhook"> | number
+    lastUsedAt?: DateTimeNullableWithAggregatesFilter<"DingTalkWebhook"> | Date | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"DingTalkWebhook"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"DingTalkWebhook"> | Date | string
   }
 
   export type TaskExecutionCreateInput = {
@@ -16542,10 +18285,22 @@ export namespace Prisma {
     code: string
     symbol: string
     type: $Enums.MarketType
-    icon?: string | null
-    description?: string | null
     exchange?: string | null
+    fullExchangeName?: string | null
+    displayName?: string | null
+    description?: string | null
+    icon?: string | null
+    cryptoType?: $Enums.CryptoType | null
+    baseCurrency?: string | null
+    quoteCurrency?: string | null
+    industry?: string | null
+    sector?: string | null
     isActive?: boolean
+    isPriority?: boolean
+    sortOrder?: number
+    lastSyncAt?: Date | string | null
+    syncStatus?: string | null
+    syncError?: string | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -16558,10 +18313,22 @@ export namespace Prisma {
     code: string
     symbol: string
     type: $Enums.MarketType
-    icon?: string | null
-    description?: string | null
     exchange?: string | null
+    fullExchangeName?: string | null
+    displayName?: string | null
+    description?: string | null
+    icon?: string | null
+    cryptoType?: $Enums.CryptoType | null
+    baseCurrency?: string | null
+    quoteCurrency?: string | null
+    industry?: string | null
+    sector?: string | null
     isActive?: boolean
+    isPriority?: boolean
+    sortOrder?: number
+    lastSyncAt?: Date | string | null
+    syncStatus?: string | null
+    syncError?: string | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -16574,10 +18341,22 @@ export namespace Prisma {
     code?: StringFieldUpdateOperationsInput | string
     symbol?: StringFieldUpdateOperationsInput | string
     type?: EnumMarketTypeFieldUpdateOperationsInput | $Enums.MarketType
-    icon?: NullableStringFieldUpdateOperationsInput | string | null
-    description?: NullableStringFieldUpdateOperationsInput | string | null
     exchange?: NullableStringFieldUpdateOperationsInput | string | null
+    fullExchangeName?: NullableStringFieldUpdateOperationsInput | string | null
+    displayName?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    icon?: NullableStringFieldUpdateOperationsInput | string | null
+    cryptoType?: NullableEnumCryptoTypeFieldUpdateOperationsInput | $Enums.CryptoType | null
+    baseCurrency?: NullableStringFieldUpdateOperationsInput | string | null
+    quoteCurrency?: NullableStringFieldUpdateOperationsInput | string | null
+    industry?: NullableStringFieldUpdateOperationsInput | string | null
+    sector?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    isPriority?: BoolFieldUpdateOperationsInput | boolean
+    sortOrder?: IntFieldUpdateOperationsInput | number
+    lastSyncAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    syncStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    syncError?: NullableStringFieldUpdateOperationsInput | string | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -16590,10 +18369,22 @@ export namespace Prisma {
     code?: StringFieldUpdateOperationsInput | string
     symbol?: StringFieldUpdateOperationsInput | string
     type?: EnumMarketTypeFieldUpdateOperationsInput | $Enums.MarketType
-    icon?: NullableStringFieldUpdateOperationsInput | string | null
-    description?: NullableStringFieldUpdateOperationsInput | string | null
     exchange?: NullableStringFieldUpdateOperationsInput | string | null
+    fullExchangeName?: NullableStringFieldUpdateOperationsInput | string | null
+    displayName?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    icon?: NullableStringFieldUpdateOperationsInput | string | null
+    cryptoType?: NullableEnumCryptoTypeFieldUpdateOperationsInput | $Enums.CryptoType | null
+    baseCurrency?: NullableStringFieldUpdateOperationsInput | string | null
+    quoteCurrency?: NullableStringFieldUpdateOperationsInput | string | null
+    industry?: NullableStringFieldUpdateOperationsInput | string | null
+    sector?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    isPriority?: BoolFieldUpdateOperationsInput | boolean
+    sortOrder?: IntFieldUpdateOperationsInput | number
+    lastSyncAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    syncStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    syncError?: NullableStringFieldUpdateOperationsInput | string | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -16606,10 +18397,22 @@ export namespace Prisma {
     code: string
     symbol: string
     type: $Enums.MarketType
-    icon?: string | null
-    description?: string | null
     exchange?: string | null
+    fullExchangeName?: string | null
+    displayName?: string | null
+    description?: string | null
+    icon?: string | null
+    cryptoType?: $Enums.CryptoType | null
+    baseCurrency?: string | null
+    quoteCurrency?: string | null
+    industry?: string | null
+    sector?: string | null
     isActive?: boolean
+    isPriority?: boolean
+    sortOrder?: number
+    lastSyncAt?: Date | string | null
+    syncStatus?: string | null
+    syncError?: string | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -16621,10 +18424,22 @@ export namespace Prisma {
     code?: StringFieldUpdateOperationsInput | string
     symbol?: StringFieldUpdateOperationsInput | string
     type?: EnumMarketTypeFieldUpdateOperationsInput | $Enums.MarketType
-    icon?: NullableStringFieldUpdateOperationsInput | string | null
-    description?: NullableStringFieldUpdateOperationsInput | string | null
     exchange?: NullableStringFieldUpdateOperationsInput | string | null
+    fullExchangeName?: NullableStringFieldUpdateOperationsInput | string | null
+    displayName?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    icon?: NullableStringFieldUpdateOperationsInput | string | null
+    cryptoType?: NullableEnumCryptoTypeFieldUpdateOperationsInput | $Enums.CryptoType | null
+    baseCurrency?: NullableStringFieldUpdateOperationsInput | string | null
+    quoteCurrency?: NullableStringFieldUpdateOperationsInput | string | null
+    industry?: NullableStringFieldUpdateOperationsInput | string | null
+    sector?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    isPriority?: BoolFieldUpdateOperationsInput | boolean
+    sortOrder?: IntFieldUpdateOperationsInput | number
+    lastSyncAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    syncStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    syncError?: NullableStringFieldUpdateOperationsInput | string | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -16636,10 +18451,22 @@ export namespace Prisma {
     code?: StringFieldUpdateOperationsInput | string
     symbol?: StringFieldUpdateOperationsInput | string
     type?: EnumMarketTypeFieldUpdateOperationsInput | $Enums.MarketType
-    icon?: NullableStringFieldUpdateOperationsInput | string | null
-    description?: NullableStringFieldUpdateOperationsInput | string | null
     exchange?: NullableStringFieldUpdateOperationsInput | string | null
+    fullExchangeName?: NullableStringFieldUpdateOperationsInput | string | null
+    displayName?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    icon?: NullableStringFieldUpdateOperationsInput | string | null
+    cryptoType?: NullableEnumCryptoTypeFieldUpdateOperationsInput | $Enums.CryptoType | null
+    baseCurrency?: NullableStringFieldUpdateOperationsInput | string | null
+    quoteCurrency?: NullableStringFieldUpdateOperationsInput | string | null
+    industry?: NullableStringFieldUpdateOperationsInput | string | null
+    sector?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    isPriority?: BoolFieldUpdateOperationsInput | boolean
+    sortOrder?: IntFieldUpdateOperationsInput | number
+    lastSyncAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    syncStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    syncError?: NullableStringFieldUpdateOperationsInput | string | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -16664,6 +18491,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     market: MarketCreateNestedOneWithoutTasksInput
+    dingTalkWebhook?: DingTalkWebhookCreateNestedOneWithoutTasksInput
     taskIndicators?: TaskIndicatorCreateNestedManyWithoutTaskInput
     executions?: TaskExecutionCreateNestedManyWithoutTaskInput
   }
@@ -16684,6 +18512,7 @@ export namespace Prisma {
     errorMessage?: string | null
     enableNotification?: boolean
     notificationChannels?: NullableJsonNullValueInput | InputJsonValue
+    dingTalkWebhookId?: string | null
     createdBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -16710,6 +18539,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     market?: MarketUpdateOneRequiredWithoutTasksNestedInput
+    dingTalkWebhook?: DingTalkWebhookUpdateOneWithoutTasksNestedInput
     taskIndicators?: TaskIndicatorUpdateManyWithoutTaskNestedInput
     executions?: TaskExecutionUpdateManyWithoutTaskNestedInput
   }
@@ -16730,6 +18560,7 @@ export namespace Prisma {
     errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
     enableNotification?: BoolFieldUpdateOperationsInput | boolean
     notificationChannels?: NullableJsonNullValueInput | InputJsonValue
+    dingTalkWebhookId?: NullableStringFieldUpdateOperationsInput | string | null
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -16753,6 +18584,7 @@ export namespace Prisma {
     errorMessage?: string | null
     enableNotification?: boolean
     notificationChannels?: NullableJsonNullValueInput | InputJsonValue
+    dingTalkWebhookId?: string | null
     createdBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -16794,6 +18626,7 @@ export namespace Prisma {
     errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
     enableNotification?: BoolFieldUpdateOperationsInput | boolean
     notificationChannels?: NullableJsonNullValueInput | InputJsonValue
+    dingTalkWebhookId?: NullableStringFieldUpdateOperationsInput | string | null
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -16987,6 +18820,101 @@ export namespace Prisma {
     sessionToken?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     expires?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DingTalkWebhookCreateInput = {
+    id?: string
+    name: string
+    description?: string | null
+    webhookUrl: string
+    secret?: string | null
+    isActive?: boolean
+    messageCount?: number
+    lastUsedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    tasks?: TaskCreateNestedManyWithoutDingTalkWebhookInput
+  }
+
+  export type DingTalkWebhookUncheckedCreateInput = {
+    id?: string
+    name: string
+    description?: string | null
+    webhookUrl: string
+    secret?: string | null
+    isActive?: boolean
+    messageCount?: number
+    lastUsedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    tasks?: TaskUncheckedCreateNestedManyWithoutDingTalkWebhookInput
+  }
+
+  export type DingTalkWebhookUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    webhookUrl?: StringFieldUpdateOperationsInput | string
+    secret?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    messageCount?: IntFieldUpdateOperationsInput | number
+    lastUsedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    tasks?: TaskUpdateManyWithoutDingTalkWebhookNestedInput
+  }
+
+  export type DingTalkWebhookUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    webhookUrl?: StringFieldUpdateOperationsInput | string
+    secret?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    messageCount?: IntFieldUpdateOperationsInput | number
+    lastUsedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    tasks?: TaskUncheckedUpdateManyWithoutDingTalkWebhookNestedInput
+  }
+
+  export type DingTalkWebhookCreateManyInput = {
+    id?: string
+    name: string
+    description?: string | null
+    webhookUrl: string
+    secret?: string | null
+    isActive?: boolean
+    messageCount?: number
+    lastUsedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DingTalkWebhookUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    webhookUrl?: StringFieldUpdateOperationsInput | string
+    secret?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    messageCount?: IntFieldUpdateOperationsInput | number
+    lastUsedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DingTalkWebhookUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    webhookUrl?: StringFieldUpdateOperationsInput | string
+    secret?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    messageCount?: IntFieldUpdateOperationsInput | number
+    lastUsedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -17638,6 +19566,24 @@ export namespace Prisma {
     not?: NestedEnumMarketTypeFilter<$PrismaModel> | $Enums.MarketType
   }
 
+  export type EnumCryptoTypeNullableFilter<$PrismaModel = never> = {
+    equals?: $Enums.CryptoType | EnumCryptoTypeFieldRefInput<$PrismaModel> | null
+    in?: $Enums.CryptoType[] | ListEnumCryptoTypeFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.CryptoType[] | ListEnumCryptoTypeFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumCryptoTypeNullableFilter<$PrismaModel> | $Enums.CryptoType | null
+  }
+
+  export type DateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
   export type TaskListRelationFilter = {
     every?: TaskWhereInput
     some?: TaskWhereInput
@@ -17648,19 +19594,40 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
+  export type MarketExchangeCodeCompoundUniqueInput = {
+    exchange: string
+    code: string
+  }
+
   export type MarketCountOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
     code?: SortOrder
     symbol?: SortOrder
     type?: SortOrder
-    icon?: SortOrder
-    description?: SortOrder
     exchange?: SortOrder
+    fullExchangeName?: SortOrder
+    displayName?: SortOrder
+    description?: SortOrder
+    icon?: SortOrder
+    cryptoType?: SortOrder
+    baseCurrency?: SortOrder
+    quoteCurrency?: SortOrder
+    industry?: SortOrder
+    sector?: SortOrder
     isActive?: SortOrder
+    isPriority?: SortOrder
+    sortOrder?: SortOrder
+    lastSyncAt?: SortOrder
+    syncStatus?: SortOrder
+    syncError?: SortOrder
     metadata?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type MarketAvgOrderByAggregateInput = {
+    sortOrder?: SortOrder
   }
 
   export type MarketMaxOrderByAggregateInput = {
@@ -17669,10 +19636,22 @@ export namespace Prisma {
     code?: SortOrder
     symbol?: SortOrder
     type?: SortOrder
-    icon?: SortOrder
-    description?: SortOrder
     exchange?: SortOrder
+    fullExchangeName?: SortOrder
+    displayName?: SortOrder
+    description?: SortOrder
+    icon?: SortOrder
+    cryptoType?: SortOrder
+    baseCurrency?: SortOrder
+    quoteCurrency?: SortOrder
+    industry?: SortOrder
+    sector?: SortOrder
     isActive?: SortOrder
+    isPriority?: SortOrder
+    sortOrder?: SortOrder
+    lastSyncAt?: SortOrder
+    syncStatus?: SortOrder
+    syncError?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -17683,12 +19662,28 @@ export namespace Prisma {
     code?: SortOrder
     symbol?: SortOrder
     type?: SortOrder
-    icon?: SortOrder
-    description?: SortOrder
     exchange?: SortOrder
+    fullExchangeName?: SortOrder
+    displayName?: SortOrder
+    description?: SortOrder
+    icon?: SortOrder
+    cryptoType?: SortOrder
+    baseCurrency?: SortOrder
+    quoteCurrency?: SortOrder
+    industry?: SortOrder
+    sector?: SortOrder
     isActive?: SortOrder
+    isPriority?: SortOrder
+    sortOrder?: SortOrder
+    lastSyncAt?: SortOrder
+    syncStatus?: SortOrder
+    syncError?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type MarketSumOrderByAggregateInput = {
+    sortOrder?: SortOrder
   }
 
   export type EnumMarketTypeWithAggregatesFilter<$PrismaModel = never> = {
@@ -17699,6 +19694,30 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumMarketTypeFilter<$PrismaModel>
     _max?: NestedEnumMarketTypeFilter<$PrismaModel>
+  }
+
+  export type EnumCryptoTypeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.CryptoType | EnumCryptoTypeFieldRefInput<$PrismaModel> | null
+    in?: $Enums.CryptoType[] | ListEnumCryptoTypeFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.CryptoType[] | ListEnumCryptoTypeFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumCryptoTypeNullableWithAggregatesFilter<$PrismaModel> | $Enums.CryptoType | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedEnumCryptoTypeNullableFilter<$PrismaModel>
+    _max?: NestedEnumCryptoTypeNullableFilter<$PrismaModel>
+  }
+
+  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type EnumTimeframeFilter<$PrismaModel = never> = {
@@ -17722,20 +19741,14 @@ export namespace Prisma {
     not?: NestedEnumTaskStatusFilter<$PrismaModel> | $Enums.TaskStatus
   }
 
-  export type DateTimeNullableFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
-  }
-
   export type MarketScalarRelationFilter = {
     is?: MarketWhereInput
     isNot?: MarketWhereInput
+  }
+
+  export type DingTalkWebhookNullableScalarRelationFilter = {
+    is?: DingTalkWebhookWhereInput | null
+    isNot?: DingTalkWebhookWhereInput | null
   }
 
   export type TaskExecutionListRelationFilter = {
@@ -17764,6 +19777,7 @@ export namespace Prisma {
     errorMessage?: SortOrder
     enableNotification?: SortOrder
     notificationChannels?: SortOrder
+    dingTalkWebhookId?: SortOrder
     createdBy?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -17789,6 +19803,7 @@ export namespace Prisma {
     nextExecutionAt?: SortOrder
     errorMessage?: SortOrder
     enableNotification?: SortOrder
+    dingTalkWebhookId?: SortOrder
     createdBy?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -17809,6 +19824,7 @@ export namespace Prisma {
     nextExecutionAt?: SortOrder
     errorMessage?: SortOrder
     enableNotification?: SortOrder
+    dingTalkWebhookId?: SortOrder
     createdBy?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -17847,20 +19863,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumTaskStatusFilter<$PrismaModel>
     _max?: NestedEnumTaskStatusFilter<$PrismaModel>
-  }
-
-  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedDateTimeNullableFilter<$PrismaModel>
-    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type IndicatorScalarRelationFilter = {
@@ -17998,6 +20000,53 @@ export namespace Prisma {
     sessionToken?: SortOrder
     userId?: SortOrder
     expires?: SortOrder
+  }
+
+  export type DingTalkWebhookCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    webhookUrl?: SortOrder
+    secret?: SortOrder
+    isActive?: SortOrder
+    messageCount?: SortOrder
+    lastUsedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type DingTalkWebhookAvgOrderByAggregateInput = {
+    messageCount?: SortOrder
+  }
+
+  export type DingTalkWebhookMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    webhookUrl?: SortOrder
+    secret?: SortOrder
+    isActive?: SortOrder
+    messageCount?: SortOrder
+    lastUsedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type DingTalkWebhookMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    webhookUrl?: SortOrder
+    secret?: SortOrder
+    isActive?: SortOrder
+    messageCount?: SortOrder
+    lastUsedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type DingTalkWebhookSumOrderByAggregateInput = {
+    messageCount?: SortOrder
   }
 
   export type TaskCreateNestedOneWithoutExecutionsInput = {
@@ -18182,6 +20231,14 @@ export namespace Prisma {
     set?: $Enums.MarketType
   }
 
+  export type NullableEnumCryptoTypeFieldUpdateOperationsInput = {
+    set?: $Enums.CryptoType | null
+  }
+
+  export type NullableDateTimeFieldUpdateOperationsInput = {
+    set?: Date | string | null
+  }
+
   export type TaskUpdateManyWithoutMarketNestedInput = {
     create?: XOR<TaskCreateWithoutMarketInput, TaskUncheckedCreateWithoutMarketInput> | TaskCreateWithoutMarketInput[] | TaskUncheckedCreateWithoutMarketInput[]
     connectOrCreate?: TaskCreateOrConnectWithoutMarketInput | TaskCreateOrConnectWithoutMarketInput[]
@@ -18214,6 +20271,12 @@ export namespace Prisma {
     create?: XOR<MarketCreateWithoutTasksInput, MarketUncheckedCreateWithoutTasksInput>
     connectOrCreate?: MarketCreateOrConnectWithoutTasksInput
     connect?: MarketWhereUniqueInput
+  }
+
+  export type DingTalkWebhookCreateNestedOneWithoutTasksInput = {
+    create?: XOR<DingTalkWebhookCreateWithoutTasksInput, DingTalkWebhookUncheckedCreateWithoutTasksInput>
+    connectOrCreate?: DingTalkWebhookCreateOrConnectWithoutTasksInput
+    connect?: DingTalkWebhookWhereUniqueInput
   }
 
   export type TaskIndicatorCreateNestedManyWithoutTaskInput = {
@@ -18256,16 +20319,22 @@ export namespace Prisma {
     set?: $Enums.TaskStatus
   }
 
-  export type NullableDateTimeFieldUpdateOperationsInput = {
-    set?: Date | string | null
-  }
-
   export type MarketUpdateOneRequiredWithoutTasksNestedInput = {
     create?: XOR<MarketCreateWithoutTasksInput, MarketUncheckedCreateWithoutTasksInput>
     connectOrCreate?: MarketCreateOrConnectWithoutTasksInput
     upsert?: MarketUpsertWithoutTasksInput
     connect?: MarketWhereUniqueInput
     update?: XOR<XOR<MarketUpdateToOneWithWhereWithoutTasksInput, MarketUpdateWithoutTasksInput>, MarketUncheckedUpdateWithoutTasksInput>
+  }
+
+  export type DingTalkWebhookUpdateOneWithoutTasksNestedInput = {
+    create?: XOR<DingTalkWebhookCreateWithoutTasksInput, DingTalkWebhookUncheckedCreateWithoutTasksInput>
+    connectOrCreate?: DingTalkWebhookCreateOrConnectWithoutTasksInput
+    upsert?: DingTalkWebhookUpsertWithoutTasksInput
+    disconnect?: DingTalkWebhookWhereInput | boolean
+    delete?: DingTalkWebhookWhereInput | boolean
+    connect?: DingTalkWebhookWhereUniqueInput
+    update?: XOR<XOR<DingTalkWebhookUpdateToOneWithWhereWithoutTasksInput, DingTalkWebhookUpdateWithoutTasksInput>, DingTalkWebhookUncheckedUpdateWithoutTasksInput>
   }
 
   export type TaskIndicatorUpdateManyWithoutTaskNestedInput = {
@@ -18410,6 +20479,48 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutSessionsInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutSessionsInput, UserUpdateWithoutSessionsInput>, UserUncheckedUpdateWithoutSessionsInput>
+  }
+
+  export type TaskCreateNestedManyWithoutDingTalkWebhookInput = {
+    create?: XOR<TaskCreateWithoutDingTalkWebhookInput, TaskUncheckedCreateWithoutDingTalkWebhookInput> | TaskCreateWithoutDingTalkWebhookInput[] | TaskUncheckedCreateWithoutDingTalkWebhookInput[]
+    connectOrCreate?: TaskCreateOrConnectWithoutDingTalkWebhookInput | TaskCreateOrConnectWithoutDingTalkWebhookInput[]
+    createMany?: TaskCreateManyDingTalkWebhookInputEnvelope
+    connect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+  }
+
+  export type TaskUncheckedCreateNestedManyWithoutDingTalkWebhookInput = {
+    create?: XOR<TaskCreateWithoutDingTalkWebhookInput, TaskUncheckedCreateWithoutDingTalkWebhookInput> | TaskCreateWithoutDingTalkWebhookInput[] | TaskUncheckedCreateWithoutDingTalkWebhookInput[]
+    connectOrCreate?: TaskCreateOrConnectWithoutDingTalkWebhookInput | TaskCreateOrConnectWithoutDingTalkWebhookInput[]
+    createMany?: TaskCreateManyDingTalkWebhookInputEnvelope
+    connect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+  }
+
+  export type TaskUpdateManyWithoutDingTalkWebhookNestedInput = {
+    create?: XOR<TaskCreateWithoutDingTalkWebhookInput, TaskUncheckedCreateWithoutDingTalkWebhookInput> | TaskCreateWithoutDingTalkWebhookInput[] | TaskUncheckedCreateWithoutDingTalkWebhookInput[]
+    connectOrCreate?: TaskCreateOrConnectWithoutDingTalkWebhookInput | TaskCreateOrConnectWithoutDingTalkWebhookInput[]
+    upsert?: TaskUpsertWithWhereUniqueWithoutDingTalkWebhookInput | TaskUpsertWithWhereUniqueWithoutDingTalkWebhookInput[]
+    createMany?: TaskCreateManyDingTalkWebhookInputEnvelope
+    set?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    disconnect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    delete?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    connect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    update?: TaskUpdateWithWhereUniqueWithoutDingTalkWebhookInput | TaskUpdateWithWhereUniqueWithoutDingTalkWebhookInput[]
+    updateMany?: TaskUpdateManyWithWhereWithoutDingTalkWebhookInput | TaskUpdateManyWithWhereWithoutDingTalkWebhookInput[]
+    deleteMany?: TaskScalarWhereInput | TaskScalarWhereInput[]
+  }
+
+  export type TaskUncheckedUpdateManyWithoutDingTalkWebhookNestedInput = {
+    create?: XOR<TaskCreateWithoutDingTalkWebhookInput, TaskUncheckedCreateWithoutDingTalkWebhookInput> | TaskCreateWithoutDingTalkWebhookInput[] | TaskUncheckedCreateWithoutDingTalkWebhookInput[]
+    connectOrCreate?: TaskCreateOrConnectWithoutDingTalkWebhookInput | TaskCreateOrConnectWithoutDingTalkWebhookInput[]
+    upsert?: TaskUpsertWithWhereUniqueWithoutDingTalkWebhookInput | TaskUpsertWithWhereUniqueWithoutDingTalkWebhookInput[]
+    createMany?: TaskCreateManyDingTalkWebhookInputEnvelope
+    set?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    disconnect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    delete?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    connect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    update?: TaskUpdateWithWhereUniqueWithoutDingTalkWebhookInput | TaskUpdateWithWhereUniqueWithoutDingTalkWebhookInput[]
+    updateMany?: TaskUpdateManyWithWhereWithoutDingTalkWebhookInput | TaskUpdateManyWithWhereWithoutDingTalkWebhookInput[]
+    deleteMany?: TaskScalarWhereInput | TaskScalarWhereInput[]
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -18704,6 +20815,24 @@ export namespace Prisma {
     not?: NestedEnumMarketTypeFilter<$PrismaModel> | $Enums.MarketType
   }
 
+  export type NestedEnumCryptoTypeNullableFilter<$PrismaModel = never> = {
+    equals?: $Enums.CryptoType | EnumCryptoTypeFieldRefInput<$PrismaModel> | null
+    in?: $Enums.CryptoType[] | ListEnumCryptoTypeFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.CryptoType[] | ListEnumCryptoTypeFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumCryptoTypeNullableFilter<$PrismaModel> | $Enums.CryptoType | null
+  }
+
+  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
   export type NestedEnumMarketTypeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.MarketType | EnumMarketTypeFieldRefInput<$PrismaModel>
     in?: $Enums.MarketType[] | ListEnumMarketTypeFieldRefInput<$PrismaModel>
@@ -18712,6 +20841,30 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumMarketTypeFilter<$PrismaModel>
     _max?: NestedEnumMarketTypeFilter<$PrismaModel>
+  }
+
+  export type NestedEnumCryptoTypeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.CryptoType | EnumCryptoTypeFieldRefInput<$PrismaModel> | null
+    in?: $Enums.CryptoType[] | ListEnumCryptoTypeFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.CryptoType[] | ListEnumCryptoTypeFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumCryptoTypeNullableWithAggregatesFilter<$PrismaModel> | $Enums.CryptoType | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedEnumCryptoTypeNullableFilter<$PrismaModel>
+    _max?: NestedEnumCryptoTypeNullableFilter<$PrismaModel>
+  }
+
+  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type NestedEnumTimeframeFilter<$PrismaModel = never> = {
@@ -18733,17 +20886,6 @@ export namespace Prisma {
     in?: $Enums.TaskStatus[] | ListEnumTaskStatusFieldRefInput<$PrismaModel>
     notIn?: $Enums.TaskStatus[] | ListEnumTaskStatusFieldRefInput<$PrismaModel>
     not?: NestedEnumTaskStatusFilter<$PrismaModel> | $Enums.TaskStatus
-  }
-
-  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
   export type NestedEnumTimeframeWithAggregatesFilter<$PrismaModel = never> = {
@@ -18774,20 +20916,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumTaskStatusFilter<$PrismaModel>
     _max?: NestedEnumTaskStatusFilter<$PrismaModel>
-  }
-
-  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedDateTimeNullableFilter<$PrismaModel>
-    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type NestedEnumRoleFilter<$PrismaModel = never> = {
@@ -18826,6 +20954,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     market: MarketCreateNestedOneWithoutTasksInput
+    dingTalkWebhook?: DingTalkWebhookCreateNestedOneWithoutTasksInput
     taskIndicators?: TaskIndicatorCreateNestedManyWithoutTaskInput
   }
 
@@ -18845,6 +20974,7 @@ export namespace Prisma {
     errorMessage?: string | null
     enableNotification?: boolean
     notificationChannels?: NullableJsonNullValueInput | InputJsonValue
+    dingTalkWebhookId?: string | null
     createdBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -18922,6 +21052,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     market?: MarketUpdateOneRequiredWithoutTasksNestedInput
+    dingTalkWebhook?: DingTalkWebhookUpdateOneWithoutTasksNestedInput
     taskIndicators?: TaskIndicatorUpdateManyWithoutTaskNestedInput
   }
 
@@ -18941,6 +21072,7 @@ export namespace Prisma {
     errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
     enableNotification?: BoolFieldUpdateOperationsInput | boolean
     notificationChannels?: NullableJsonNullValueInput | InputJsonValue
+    dingTalkWebhookId?: NullableStringFieldUpdateOperationsInput | string | null
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -19132,6 +21264,7 @@ export namespace Prisma {
     createdBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    dingTalkWebhook?: DingTalkWebhookCreateNestedOneWithoutTasksInput
     taskIndicators?: TaskIndicatorCreateNestedManyWithoutTaskInput
     executions?: TaskExecutionCreateNestedManyWithoutTaskInput
   }
@@ -19151,6 +21284,7 @@ export namespace Prisma {
     errorMessage?: string | null
     enableNotification?: boolean
     notificationChannels?: NullableJsonNullValueInput | InputJsonValue
+    dingTalkWebhookId?: string | null
     createdBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -19203,6 +21337,7 @@ export namespace Prisma {
     errorMessage?: StringNullableFilter<"Task"> | string | null
     enableNotification?: BoolFilter<"Task"> | boolean
     notificationChannels?: JsonNullableFilter<"Task">
+    dingTalkWebhookId?: StringNullableFilter<"Task"> | string | null
     createdBy?: StringNullableFilter<"Task"> | string | null
     createdAt?: DateTimeFilter<"Task"> | Date | string
     updatedAt?: DateTimeFilter<"Task"> | Date | string
@@ -19214,10 +21349,22 @@ export namespace Prisma {
     code: string
     symbol: string
     type: $Enums.MarketType
-    icon?: string | null
-    description?: string | null
     exchange?: string | null
+    fullExchangeName?: string | null
+    displayName?: string | null
+    description?: string | null
+    icon?: string | null
+    cryptoType?: $Enums.CryptoType | null
+    baseCurrency?: string | null
+    quoteCurrency?: string | null
+    industry?: string | null
+    sector?: string | null
     isActive?: boolean
+    isPriority?: boolean
+    sortOrder?: number
+    lastSyncAt?: Date | string | null
+    syncStatus?: string | null
+    syncError?: string | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -19229,10 +21376,22 @@ export namespace Prisma {
     code: string
     symbol: string
     type: $Enums.MarketType
-    icon?: string | null
-    description?: string | null
     exchange?: string | null
+    fullExchangeName?: string | null
+    displayName?: string | null
+    description?: string | null
+    icon?: string | null
+    cryptoType?: $Enums.CryptoType | null
+    baseCurrency?: string | null
+    quoteCurrency?: string | null
+    industry?: string | null
+    sector?: string | null
     isActive?: boolean
+    isPriority?: boolean
+    sortOrder?: number
+    lastSyncAt?: Date | string | null
+    syncStatus?: string | null
+    syncError?: string | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -19241,6 +21400,37 @@ export namespace Prisma {
   export type MarketCreateOrConnectWithoutTasksInput = {
     where: MarketWhereUniqueInput
     create: XOR<MarketCreateWithoutTasksInput, MarketUncheckedCreateWithoutTasksInput>
+  }
+
+  export type DingTalkWebhookCreateWithoutTasksInput = {
+    id?: string
+    name: string
+    description?: string | null
+    webhookUrl: string
+    secret?: string | null
+    isActive?: boolean
+    messageCount?: number
+    lastUsedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DingTalkWebhookUncheckedCreateWithoutTasksInput = {
+    id?: string
+    name: string
+    description?: string | null
+    webhookUrl: string
+    secret?: string | null
+    isActive?: boolean
+    messageCount?: number
+    lastUsedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DingTalkWebhookCreateOrConnectWithoutTasksInput = {
+    where: DingTalkWebhookWhereUniqueInput
+    create: XOR<DingTalkWebhookCreateWithoutTasksInput, DingTalkWebhookUncheckedCreateWithoutTasksInput>
   }
 
   export type TaskIndicatorCreateWithoutTaskInput = {
@@ -19328,10 +21518,22 @@ export namespace Prisma {
     code?: StringFieldUpdateOperationsInput | string
     symbol?: StringFieldUpdateOperationsInput | string
     type?: EnumMarketTypeFieldUpdateOperationsInput | $Enums.MarketType
-    icon?: NullableStringFieldUpdateOperationsInput | string | null
-    description?: NullableStringFieldUpdateOperationsInput | string | null
     exchange?: NullableStringFieldUpdateOperationsInput | string | null
+    fullExchangeName?: NullableStringFieldUpdateOperationsInput | string | null
+    displayName?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    icon?: NullableStringFieldUpdateOperationsInput | string | null
+    cryptoType?: NullableEnumCryptoTypeFieldUpdateOperationsInput | $Enums.CryptoType | null
+    baseCurrency?: NullableStringFieldUpdateOperationsInput | string | null
+    quoteCurrency?: NullableStringFieldUpdateOperationsInput | string | null
+    industry?: NullableStringFieldUpdateOperationsInput | string | null
+    sector?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    isPriority?: BoolFieldUpdateOperationsInput | boolean
+    sortOrder?: IntFieldUpdateOperationsInput | number
+    lastSyncAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    syncStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    syncError?: NullableStringFieldUpdateOperationsInput | string | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -19343,11 +21545,60 @@ export namespace Prisma {
     code?: StringFieldUpdateOperationsInput | string
     symbol?: StringFieldUpdateOperationsInput | string
     type?: EnumMarketTypeFieldUpdateOperationsInput | $Enums.MarketType
-    icon?: NullableStringFieldUpdateOperationsInput | string | null
-    description?: NullableStringFieldUpdateOperationsInput | string | null
     exchange?: NullableStringFieldUpdateOperationsInput | string | null
+    fullExchangeName?: NullableStringFieldUpdateOperationsInput | string | null
+    displayName?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    icon?: NullableStringFieldUpdateOperationsInput | string | null
+    cryptoType?: NullableEnumCryptoTypeFieldUpdateOperationsInput | $Enums.CryptoType | null
+    baseCurrency?: NullableStringFieldUpdateOperationsInput | string | null
+    quoteCurrency?: NullableStringFieldUpdateOperationsInput | string | null
+    industry?: NullableStringFieldUpdateOperationsInput | string | null
+    sector?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    isPriority?: BoolFieldUpdateOperationsInput | boolean
+    sortOrder?: IntFieldUpdateOperationsInput | number
+    lastSyncAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    syncStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    syncError?: NullableStringFieldUpdateOperationsInput | string | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DingTalkWebhookUpsertWithoutTasksInput = {
+    update: XOR<DingTalkWebhookUpdateWithoutTasksInput, DingTalkWebhookUncheckedUpdateWithoutTasksInput>
+    create: XOR<DingTalkWebhookCreateWithoutTasksInput, DingTalkWebhookUncheckedCreateWithoutTasksInput>
+    where?: DingTalkWebhookWhereInput
+  }
+
+  export type DingTalkWebhookUpdateToOneWithWhereWithoutTasksInput = {
+    where?: DingTalkWebhookWhereInput
+    data: XOR<DingTalkWebhookUpdateWithoutTasksInput, DingTalkWebhookUncheckedUpdateWithoutTasksInput>
+  }
+
+  export type DingTalkWebhookUpdateWithoutTasksInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    webhookUrl?: StringFieldUpdateOperationsInput | string
+    secret?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    messageCount?: IntFieldUpdateOperationsInput | number
+    lastUsedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DingTalkWebhookUncheckedUpdateWithoutTasksInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    webhookUrl?: StringFieldUpdateOperationsInput | string
+    secret?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    messageCount?: IntFieldUpdateOperationsInput | number
+    lastUsedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -19422,6 +21673,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     market: MarketCreateNestedOneWithoutTasksInput
+    dingTalkWebhook?: DingTalkWebhookCreateNestedOneWithoutTasksInput
     executions?: TaskExecutionCreateNestedManyWithoutTaskInput
   }
 
@@ -19441,6 +21693,7 @@ export namespace Prisma {
     errorMessage?: string | null
     enableNotification?: boolean
     notificationChannels?: NullableJsonNullValueInput | InputJsonValue
+    dingTalkWebhookId?: string | null
     createdBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -19519,6 +21772,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     market?: MarketUpdateOneRequiredWithoutTasksNestedInput
+    dingTalkWebhook?: DingTalkWebhookUpdateOneWithoutTasksNestedInput
     executions?: TaskExecutionUpdateManyWithoutTaskNestedInput
   }
 
@@ -19538,6 +21792,7 @@ export namespace Prisma {
     errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
     enableNotification?: BoolFieldUpdateOperationsInput | boolean
     notificationChannels?: NullableJsonNullValueInput | InputJsonValue
+    dingTalkWebhookId?: NullableStringFieldUpdateOperationsInput | string | null
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -19695,6 +21950,78 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type TaskCreateWithoutDingTalkWebhookInput = {
+    id?: string
+    name: string
+    description?: string | null
+    timeframe?: $Enums.Timeframe
+    range?: number
+    executionMode?: $Enums.ExecutionMode
+    cronExpression?: string | null
+    scheduleInterval?: number | null
+    status?: $Enums.TaskStatus
+    lastExecutedAt?: Date | string | null
+    nextExecutionAt?: Date | string | null
+    errorMessage?: string | null
+    enableNotification?: boolean
+    notificationChannels?: NullableJsonNullValueInput | InputJsonValue
+    createdBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    market: MarketCreateNestedOneWithoutTasksInput
+    taskIndicators?: TaskIndicatorCreateNestedManyWithoutTaskInput
+    executions?: TaskExecutionCreateNestedManyWithoutTaskInput
+  }
+
+  export type TaskUncheckedCreateWithoutDingTalkWebhookInput = {
+    id?: string
+    name: string
+    description?: string | null
+    marketId: string
+    timeframe?: $Enums.Timeframe
+    range?: number
+    executionMode?: $Enums.ExecutionMode
+    cronExpression?: string | null
+    scheduleInterval?: number | null
+    status?: $Enums.TaskStatus
+    lastExecutedAt?: Date | string | null
+    nextExecutionAt?: Date | string | null
+    errorMessage?: string | null
+    enableNotification?: boolean
+    notificationChannels?: NullableJsonNullValueInput | InputJsonValue
+    createdBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    taskIndicators?: TaskIndicatorUncheckedCreateNestedManyWithoutTaskInput
+    executions?: TaskExecutionUncheckedCreateNestedManyWithoutTaskInput
+  }
+
+  export type TaskCreateOrConnectWithoutDingTalkWebhookInput = {
+    where: TaskWhereUniqueInput
+    create: XOR<TaskCreateWithoutDingTalkWebhookInput, TaskUncheckedCreateWithoutDingTalkWebhookInput>
+  }
+
+  export type TaskCreateManyDingTalkWebhookInputEnvelope = {
+    data: TaskCreateManyDingTalkWebhookInput | TaskCreateManyDingTalkWebhookInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type TaskUpsertWithWhereUniqueWithoutDingTalkWebhookInput = {
+    where: TaskWhereUniqueInput
+    update: XOR<TaskUpdateWithoutDingTalkWebhookInput, TaskUncheckedUpdateWithoutDingTalkWebhookInput>
+    create: XOR<TaskCreateWithoutDingTalkWebhookInput, TaskUncheckedCreateWithoutDingTalkWebhookInput>
+  }
+
+  export type TaskUpdateWithWhereUniqueWithoutDingTalkWebhookInput = {
+    where: TaskWhereUniqueInput
+    data: XOR<TaskUpdateWithoutDingTalkWebhookInput, TaskUncheckedUpdateWithoutDingTalkWebhookInput>
+  }
+
+  export type TaskUpdateManyWithWhereWithoutDingTalkWebhookInput = {
+    where: TaskScalarWhereInput
+    data: XOR<TaskUpdateManyMutationInput, TaskUncheckedUpdateManyWithoutDingTalkWebhookInput>
+  }
+
   export type IndicatorResultCreateManyExecutionInput = {
     id?: string
     indicatorId: string
@@ -19794,6 +22121,7 @@ export namespace Prisma {
     errorMessage?: string | null
     enableNotification?: boolean
     notificationChannels?: NullableJsonNullValueInput | InputJsonValue
+    dingTalkWebhookId?: string | null
     createdBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -19817,6 +22145,7 @@ export namespace Prisma {
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    dingTalkWebhook?: DingTalkWebhookUpdateOneWithoutTasksNestedInput
     taskIndicators?: TaskIndicatorUpdateManyWithoutTaskNestedInput
     executions?: TaskExecutionUpdateManyWithoutTaskNestedInput
   }
@@ -19836,6 +22165,7 @@ export namespace Prisma {
     errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
     enableNotification?: BoolFieldUpdateOperationsInput | boolean
     notificationChannels?: NullableJsonNullValueInput | InputJsonValue
+    dingTalkWebhookId?: NullableStringFieldUpdateOperationsInput | string | null
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -19858,6 +22188,7 @@ export namespace Prisma {
     errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
     enableNotification?: BoolFieldUpdateOperationsInput | boolean
     notificationChannels?: NullableJsonNullValueInput | InputJsonValue
+    dingTalkWebhookId?: NullableStringFieldUpdateOperationsInput | string | null
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -19979,6 +22310,94 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     sessionToken?: StringFieldUpdateOperationsInput | string
     expires?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TaskCreateManyDingTalkWebhookInput = {
+    id?: string
+    name: string
+    description?: string | null
+    marketId: string
+    timeframe?: $Enums.Timeframe
+    range?: number
+    executionMode?: $Enums.ExecutionMode
+    cronExpression?: string | null
+    scheduleInterval?: number | null
+    status?: $Enums.TaskStatus
+    lastExecutedAt?: Date | string | null
+    nextExecutionAt?: Date | string | null
+    errorMessage?: string | null
+    enableNotification?: boolean
+    notificationChannels?: NullableJsonNullValueInput | InputJsonValue
+    createdBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type TaskUpdateWithoutDingTalkWebhookInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    timeframe?: EnumTimeframeFieldUpdateOperationsInput | $Enums.Timeframe
+    range?: IntFieldUpdateOperationsInput | number
+    executionMode?: EnumExecutionModeFieldUpdateOperationsInput | $Enums.ExecutionMode
+    cronExpression?: NullableStringFieldUpdateOperationsInput | string | null
+    scheduleInterval?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+    lastExecutedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    nextExecutionAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    enableNotification?: BoolFieldUpdateOperationsInput | boolean
+    notificationChannels?: NullableJsonNullValueInput | InputJsonValue
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    market?: MarketUpdateOneRequiredWithoutTasksNestedInput
+    taskIndicators?: TaskIndicatorUpdateManyWithoutTaskNestedInput
+    executions?: TaskExecutionUpdateManyWithoutTaskNestedInput
+  }
+
+  export type TaskUncheckedUpdateWithoutDingTalkWebhookInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    marketId?: StringFieldUpdateOperationsInput | string
+    timeframe?: EnumTimeframeFieldUpdateOperationsInput | $Enums.Timeframe
+    range?: IntFieldUpdateOperationsInput | number
+    executionMode?: EnumExecutionModeFieldUpdateOperationsInput | $Enums.ExecutionMode
+    cronExpression?: NullableStringFieldUpdateOperationsInput | string | null
+    scheduleInterval?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+    lastExecutedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    nextExecutionAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    enableNotification?: BoolFieldUpdateOperationsInput | boolean
+    notificationChannels?: NullableJsonNullValueInput | InputJsonValue
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    taskIndicators?: TaskIndicatorUncheckedUpdateManyWithoutTaskNestedInput
+    executions?: TaskExecutionUncheckedUpdateManyWithoutTaskNestedInput
+  }
+
+  export type TaskUncheckedUpdateManyWithoutDingTalkWebhookInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    marketId?: StringFieldUpdateOperationsInput | string
+    timeframe?: EnumTimeframeFieldUpdateOperationsInput | $Enums.Timeframe
+    range?: IntFieldUpdateOperationsInput | number
+    executionMode?: EnumExecutionModeFieldUpdateOperationsInput | $Enums.ExecutionMode
+    cronExpression?: NullableStringFieldUpdateOperationsInput | string | null
+    scheduleInterval?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+    lastExecutedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    nextExecutionAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    enableNotification?: BoolFieldUpdateOperationsInput | boolean
+    notificationChannels?: NullableJsonNullValueInput | InputJsonValue
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 

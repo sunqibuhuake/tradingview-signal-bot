@@ -1,7 +1,9 @@
-import { PrismaClient } from '../generated/prisma';
+import { PrismaClient, MarketType } from '../generated/prisma';
+import { PrismaPg } from '@prisma/adapter-pg';
 import bcrypt from 'bcryptjs';
 
-const prisma = new PrismaClient();
+const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
+const prisma = new PrismaClient({ adapter });
 
 async function main() {
   console.log('🌱 开始数据库初始化...');
@@ -72,7 +74,7 @@ async function main() {
       name: '招商银行',
       code: '600036',
       symbol: 'SSE:600036',
-      type: 'A_STOCK',
+      type: MarketType.A_STOCK,
       exchange: 'SSE',
       description: '中国领先的股份制商业银行',
     },
@@ -80,7 +82,7 @@ async function main() {
       name: '贵州茅台',
       code: '600519',
       symbol: 'SSE:600519',
-      type: 'A_STOCK',
+      type: MarketType.A_STOCK,
       exchange: 'SSE',
       description: '中国白酒行业龙头企业',
     },
@@ -102,7 +104,7 @@ async function main() {
       name: '比特币',
       code: 'BTCUSDT',
       symbol: 'BINANCE:BTCUSDT',
-      type: 'CRYPTO',
+      type: MarketType.CRYPTO,
       exchange: 'BINANCE',
       description: '比特币对 USDT 交易对',
     },
@@ -110,7 +112,7 @@ async function main() {
       name: '以太坊',
       code: 'ETHUSDT',
       symbol: 'BINANCE:ETHUSDT',
-      type: 'CRYPTO',
+      type: MarketType.CRYPTO,
       exchange: 'BINANCE',
       description: '以太坊对 USDT 交易对',
     },

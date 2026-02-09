@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { authOptions } from '@/lib/auth';
 import prisma from '@/lib/prisma';
 
 // GET /api/admin/markets/[id] - 获取单个标的
 export async function GET(
-  request: NextRequest,
-  { params }: { params: { id: string } }
+  _request: NextRequest,
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions);
@@ -15,8 +15,10 @@ export async function GET(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
+    const { id } = await context.params;
+
     const market = await prisma.market.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: {
         tasks: {
           include: {
@@ -47,7 +49,7 @@ export async function GET(
 // PATCH /api/admin/markets/[id] - 更新标的
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions);
@@ -56,11 +58,12 @@ export async function PATCH(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
+    const { id } = await context.params;
     const body = await request.json();
     const { name, code, icon, description, exchange, metadata, isActive } = body;
 
     const market = await prisma.market.update({
-      where: { id: params.id },
+      where: { id },
       data: {
         ...(name && { name }),
         ...(code && { code }),
@@ -93,8 +96,8 @@ export async function PATCH(
 
 // DELETE /api/admin/markets/[id] - 删除标的
 export async function DELETE(
-  request: NextRequest,
-  { params }: { params: { id: string } }
+  _request: NextRequest,
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions);
@@ -103,9 +106,11 @@ export async function DELETE(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
+    const { id } = await context.params;
+
     // 检查是否有关联的任务
     const tasksCount = await prisma.task.count({
-      where: { marketId: params.id },
+      where: { marketId: id },
     });
 
     if (tasksCount > 0) {
@@ -116,7 +121,7 @@ export async function DELETE(
     }
 
     const market = await prisma.market.delete({
-      where: { id: params.id },
+      where: { id },
     });
 
     // 记录日志

@@ -9,7 +9,7 @@ import type { SearchMarketResult, ActionType } from '../types';
  * Crypto Trading Signal Bot
  * Monitors cryptocurrency markets in real-time and sends trading signals
  */
-class CryptoTradingBot {
+export class CryptoTradingBot {
   private tradingViewService: TradingViewService;
   private notificationService: NotificationService;
   private signalManager: SignalManager;
@@ -27,7 +27,7 @@ class CryptoTradingBot {
     logger.success('配置验证通过');
 
     this.tradingViewService = new TradingViewService();
-    this.notificationService = new NotificationService();
+    this.notificationService = new NotificationService(process.env.DINGTALK_WEBHOOK as string);
     this.signalManager = new SignalManager(config.bot.crypto.duplicateWindow);
     this.activeCharts = new Set();
 
@@ -142,7 +142,7 @@ class CryptoTradingBot {
       logger.info(`找到 ${filteredMarkets.length} 个 USDT 交易对`);
 
       // Get indicator
-      const [indInfo, indic] = await this.tradingViewService.getIndicator();
+      const [indInfo, indic] = await this.tradingViewService.getIndicator(config.tradingView.indicatorId);
       logger.info(`使用指标: ${indInfo.name}`);
 
       // Monitor all markets
@@ -151,6 +151,20 @@ class CryptoTradingBot {
       });
 
       logger.info('所有市场监控已启动');
+    } catch (error) {
+      logger.error('启动失败:', error);
+      throw error;
+    }
+  }
+
+
+  async pullMarkets(): Promise<any> {
+    try {
+      logger.info('启动加密货币监控机器人...');
+      // Get markets
+      const markets = await this.tradingViewService.searchMarkets('BINANCE:', 'crypto');
+      return markets
+
     } catch (error) {
       logger.error('启动失败:', error);
       throw error;
@@ -199,38 +213,38 @@ class CryptoTradingBot {
   }
 }
 
-// Create and run bot
-const bot = new CryptoTradingBot();
+// // Create and run bot
+// const bot = new CryptoTradingBot();
 
-// Handle graceful shutdown
-process.on('SIGINT', async () => {
-  logger.info('接收到 SIGINT 信号');
-  await bot.shutdown();
-  process.exit(0);
-});
+// // Handle graceful shutdown
+// process.on('SIGINT', async () => {
+//   logger.info('接收到 SIGINT 信号');
+//   await bot.shutdown();
+//   process.exit(0);
+// });
 
-process.on('SIGTERM', async () => {
-  logger.info('接收到 SIGTERM 信号');
-  await bot.shutdown();
-  process.exit(0);
-});
+// process.on('SIGTERM', async () => {
+//   logger.info('接收到 SIGTERM 信号');
+//   await bot.shutdown();
+//   process.exit(0);
+// });
 
-// Handle uncaught errors
-process.on('uncaughtException', async (error) => {
-  logger.error('未捕获的异常:', error);
-  await bot.shutdown();
-  process.exit(1);
-});
+// // Handle uncaught errors
+// process.on('uncaughtException', async (error) => {
+//   logger.error('未捕获的异常:', error);
+//   await bot.shutdown();
+//   process.exit(1);
+// });
 
-process.on('unhandledRejection', async (reason, promise) => {
-  logger.error('未处理的 Promise 拒绝:', reason);
-  await bot.shutdown();
-  process.exit(1);
-});
+// process.on('unhandledRejection', async (reason, promise) => {
+//   logger.error('未处理的 Promise 拒绝:', reason);
+//   await bot.shutdown();
+//   process.exit(1);
+// });
 
 // Start bot
-bot.run().catch(async (error) => {
-  logger.error('启动失败:', error);
-  await bot.shutdown();
-  process.exit(1);
-});
+// bot.run().catch(async (error) => {
+//   logger.error('启动失败:', error);
+//   await bot.shutdown();
+//   process.exit(1);
+// });

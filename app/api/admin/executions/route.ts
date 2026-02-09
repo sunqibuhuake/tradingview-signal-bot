@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { authOptions } from '@/lib/auth';
 import prisma from '@/lib/prisma';
 
 // GET /api/admin/executions - 获取任务执行结果
@@ -29,7 +29,7 @@ export async function GET(request: NextRequest) {
       if (endDate) where.executedAt.lte = new Date(endDate);
     }
 
-    const [executions, total] = await Promise.all([
+    const [executions, total, stats] = await Promise.all([
       prisma.taskExecution.findMany({
         where,
         skip: (page - 1) * limit,
@@ -41,15 +41,37 @@ export async function GET(request: NextRequest) {
               market: true,
             },
           },
-          indicatorResults: {
-            include: {
-              execution: false,
+          _count: {
+            select: {
+              indicatorResults: true,
             },
           },
         },
       }),
       prisma.taskExecution.count({ where }),
+      // 统计数据
+      prisma.taskExecution.aggregate({
+        where,
+        _count: {
+          _all: true,
+        },
+        _avg: {
+          duration: true,
+        },
+      }),
     ]);
+
+    // 计算各状态数量
+    const statusCounts = await prisma.taskExecution.groupBy({
+      by: ['status'],
+      where,
+      _count: {
+        _all: true,
+      },
+    });
+
+    const successCount = statusCounts.find(s => s.status === 'SUCCESS')?._count._all || 0;
+    const failedCount = statusCounts.find(s => s.status === 'FAILED')?._count._all || 0;
 
     return NextResponse.json({
       executions,
@@ -58,6 +80,11 @@ export async function GET(request: NextRequest) {
         limit,
         total,
         totalPages: Math.ceil(total / limit),
+      },
+      stats: {
+        successCount,
+        failedCount,
+        avgDuration: stats._avg.duration || 0,
       },
     });
   } catch (error) {

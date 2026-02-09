@@ -15,6 +15,7 @@ export class TradingViewService {
   private client: Client;
 
   constructor() {
+    console.log(`config ===> ${JSON.stringify(config.tradingView)}`)
     this.client = new TradingView.Client({
       token: config.tradingView.session,
       signature: config.tradingView.signature,
@@ -49,7 +50,6 @@ export class TradingViewService {
   ): Promise<SearchMarketResult[]> {
     return await TradingView.searchMarketV3(query, filter);
   }
-
   /**
    * Read indicator data for a market with timeout
    */

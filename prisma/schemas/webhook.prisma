@@ -1,0 +1,24 @@
+// 钉钉 Webhook 配置表
+model DingTalkWebhook {
+  id          String   @id @default(cuid())
+  name        String // Webhook 名称（如：交易团队群、VIP客户群）
+  description String? // 描述
+  webhookUrl  String // 钉钉 Webhook URL
+  secret      String? // 加签密钥（可选）
+  
+  // 状态
+  isActive    Boolean  @default(true) // 是否启用
+  
+  // 统计
+  messageCount Int     @default(0) // 发送消息数量
+  lastUsedAt   DateTime? // 最后使用时间
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // 关联
+  tasks       Task[]
+  
+  @@index([isActive])
+  @@map(name: "dingtalk_webhooks")
+}

@@ -1,0 +1,245 @@
+[
+  {
+    "id": "BINANCE:BTCUSDT",
+    "exchange": "Binance",
+    "fullExchange": "Binance",
+    "symbol": "BTCUSDT",
+    "description": "Bitcoin / TetherUS",
+    "type": "spot"
+  },
+
+  {
+    "id": "BINANCE:ETHUSDT",
+    "exchange": "Binance",
+    "fullExchange": "Binance",
+    "symbol": "ETHUSDT",
+    "description": "Ethereum / TetherUS",
+    "type": "spot"
+  },
+  {
+    "id": "BINANCE:SOLUSDT",
+    "exchange": "Binance",
+    "fullExchange": "Binance",
+    "symbol": "SOLUSDT",
+    "description": "SOL / TetherUS",
+    "type": "spot"
+  },
+  {
+    "id": "BINANCE:XRPUSDT",
+    "exchange": "Binance",
+    "fullExchange": "Binance",
+    "symbol": "XRPUSDT",
+    "description": "XRP / TetherUS",
+    "type": "spot"
+  },
+
+
+
+ 
+  {
+    "id": "BINANCE:DOGEUSDT",
+    "exchange": "Binance",
+    "fullExchange": "Binance",
+    "symbol": "DOGEUSDT",
+    "description": "Dogecoin / TetherUS",
+    "type": "spot"
+  },
+  {
+    "id": "BINANCE:BNBUSDT",
+    "exchange": "Binance",
+    "fullExchange": "Binance",
+    "symbol": "BNBUSDT",
+    "description": "Binance Coin / TetherUS",
+    "type": "spot"
+  },
+  {
+    "id": "BINANCE:ADAUSDT",
+    "exchange": "Binance",
+    "fullExchange": "Binance",
+    "symbol": "ADAUSDT",
+    "description": "Cardano / TetherUS",
+    "type": "spot"
+  },
+  {
+    "id": "BINANCE:SUIUSDT",
+    "exchange": "Binance",
+    "fullExchange": "Binance",
+    "symbol": "SUIUSDT",
+    "description": "SUI / TetherUS",
+    "type": "spot"
+  },
+
+  {
+    "id": "BINANCE:LINKUSDT",
+    "exchange": "Binance",
+    "fullExchange": "Binance",
+    "symbol": "LINKUSDT",
+    "description": "ChainLink / TetherUS",
+    "type": "spot"
+  },
+  {
+    "id": "BINANCE:ZECUSDT",
+    "exchange": "Binance",
+    "fullExchange": "Binance",
+    "symbol": "ZECUSDT",
+    "description": "Zcash / TetherUS",
+    "type": "spot"
+  },
+  {
+    "id": "BINANCE:AVAXUSDT",
+    "exchange": "Binance",
+    "fullExchange": "Binance",
+    "symbol": "AVAXUSDT",
+    "description": "AVAX / TetherUS",
+    "type": "spot"
+  },
+  {
+    "id": "BINANCE:ETHBTC",
+    "exchange": "Binance",
+    "fullExchange": "Binance",
+    "symbol": "ETHBTC",
+    "description": "Ethereum / Bitcoin",
+    "type": "spot"
+  },
+
+
+  
+  {
+    "id": "BINANCE:PEPEUSDT",
+    "exchange": "Binance",
+    "fullExchange": "Binance",
+    "symbol": "PEPEUSDT",
+    "description": "PEPE / TetherUS",
+    "type": "spot"
+  },
+
+  {
+    "id": "BINANCE:LTCUSDT",
+    "exchange": "Binance",
+    "fullExchange": "Binance",
+    "symbol": "LTCUSDT",
+    "description": "Litecoin / TetherUS",
+    "type": "spot"
+  },
+  {
+    "id": "BINANCE:DOTUSDT",
+    "exchange": "Binance",
+    "fullExchange": "Binance",
+    "symbol": "DOTUSDT",
+    "description": "DOT / TetherUS",
+    "type": "spot"
+  },
+
+
+  {
+    "id": "BINANCE:NEARUSDT",
+    "exchange": "Binance",
+    "fullExchange": "Binance",
+    "symbol": "NEARUSDT",
+    "description": "NEAR / TetherUS",
+    "type": "spot"
+  },
+
+  {
+    "id": "BINANCE:HBARUSDT",
+    "exchange": "Binance",
+    "fullExchange": "Binance",
+    "symbol": "HBARUSDT",
+    "description": "Hedera Hashgraph / TetherUS",
+    "type": "spot"
+  },
+
+
+  {
+    "id": "BINANCE:FETUSDT",
+    "exchange": "Binance",
+    "fullExchange": "Binance",
+    "symbol": "FETUSDT",
+    "description": "Fetch.AI / TetherUS",
+    "type": "spot"
+  },
+  {
+    "id": "BINANCE:AAVEUSDT",
+    "exchange": "Binance",
+    "fullExchange": "Binance",
+    "symbol": "AAVEUSDT",
+    "description": "AAVE / TetherUS",
+    "type": "spot"
+  },
+
+  {
+    "id": "BINANCE:TAOUSDT",
+    "exchange": "Binance",
+    "fullExchange": "Binance",
+    "symbol": "TAOUSDT",
+    "description": "TAO / TetherUS",
+    "type": "spot"
+  },
+  {
+    "id": "BINANCE:SHIBUSDT",
+    "exchange": "Binance",
+    "fullExchange": "Binance",
+    "symbol": "SHIBUSDT",
+    "description": "SHIB / TetherUS",
+    "type": "spot"
+  },
+
+  {
+    "id": "BINANCE:ENAUSDT",
+    "exchange": "Binance",
+    "fullExchange": "Binance",
+    "symbol": "ENAUSDT",
+    "description": "ENA / TetherUS",
+    "type": "spot"
+  },
+
+  {
+    "id": "BINANCE:PAXGUSDT",
+    "exchange": "Binance",
+    "fullExchange": "Binance",
+    "symbol": "PAXGUSDT",
+    "description": "PAX Gold / TetherUS",
+    "type": "spot"
+  },
+  {
+    "id": "BINANCE:TRXUSDT",
+    "exchange": "Binance",
+    "fullExchange": "Binance",
+    "symbol": "TRXUSDT",
+    "description": "TRON / TetherUS",
+    "type": "spot"
+  },
+  {
+    "id": "BINANCE:ARBUSDT",
+    "exchange": "Binance",
+    "fullExchange": "Binance",
+    "symbol": "ARBUSDT",
+    "description": "ARB / TetherUS",
+    "type": "spot"
+  },
+  {
+    "id": "BINANCE:RENDERUSDT",
+    "exchange": "Binance",
+    "fullExchange": "Binance",
+    "symbol": "RENDERUSDT",
+    "description": "RENDER / TetherUS",
+    "type": "spot"
+  },
+
+  {
+    "id": "BINANCE:BCHUSDT",
+    "exchange": "Binance",
+    "fullExchange": "Binance",
+    "symbol": "BCHUSDT",
+    "description": "Bitcoin Cash / TetherUS",
+    "type": "spot"
+  },
+  {
+    "id": "BINANCE:ICPUSDT",
+    "exchange": "Binance",
+    "fullExchange": "Binance",
+    "symbol": "ICPUSDT",
+    "description": "ICP / TetherUS",
+    "type": "spot"
+  }
+]

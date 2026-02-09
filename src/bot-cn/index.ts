@@ -22,7 +22,7 @@ class ChinaStockBot {
     validateConfig();
 
     this.tradingViewService = new TradingViewService();
-    this.notificationService = new NotificationService();
+    this.notificationService = new NotificationService(process.env.DINGTALK_WEBHOOK as string);
     this.signalManager = new SignalManager(); // No duplicate window for stock bot
 
     // Load stocks configuration

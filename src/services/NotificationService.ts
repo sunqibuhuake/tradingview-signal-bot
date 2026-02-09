@@ -1,6 +1,5 @@
 import axios from 'axios';
 import dayjs from 'dayjs';
-import { config } from '../config';
 import type { ActionType } from '../types';
 
 export interface NotificationPayload {
@@ -13,12 +12,16 @@ export interface NotificationPayload {
 
 /**
  * Notification Service - handles sending notifications via DingTalk
+ * 支持使用数据库配置的 Webhook 或环境变量的 Webhook
  */
 export class NotificationService {
   private webhookUrl: string;
 
-  constructor(webhookUrl?: string) {
-    this.webhookUrl = webhookUrl || config.dingTalk.webhookUrl;
+  constructor(webhookUrl: string) {
+    if (!webhookUrl) {
+      throw new Error('[NotificationService] Webhook URL is required');
+    }
+    this.webhookUrl = webhookUrl;
   }
 
   /**
@@ -91,7 +94,7 @@ export class NotificationService {
       );
 
       if (response.data.errcode === 0) {
-        return; // Success, no need to log
+        return; // Success
       } else {
         throw new Error(`DingTalk API error: ${response.data.errmsg}`);
       }

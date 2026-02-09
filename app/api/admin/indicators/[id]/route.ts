@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { authOptions } from '@/lib/auth';
 import prisma from '@/lib/prisma';
 
 export async function GET(
-  request: NextRequest,
-  { params }: { params: { id: string } }
+  _request: NextRequest,
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions);
@@ -14,8 +14,10 @@ export async function GET(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
+    const { id } = await context.params;
+
     const indicator = await prisma.indicator.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: {
         taskIndicators: {
           include: {
@@ -45,7 +47,7 @@ export async function GET(
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions);
@@ -54,10 +56,11 @@ export async function PATCH(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
+    const { id } = await context.params;
     const body = await request.json();
 
     const indicator = await prisma.indicator.update({
-      where: { id: params.id },
+      where: { id },
       data: body,
     });
 
@@ -80,8 +83,8 @@ export async function PATCH(
 }
 
 export async function DELETE(
-  request: NextRequest,
-  { params }: { params: { id: string } }
+  _request: NextRequest,
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions);
@@ -90,8 +93,10 @@ export async function DELETE(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
+    const { id } = await context.params;
+
     const tasksCount = await prisma.taskIndicator.count({
-      where: { indicatorId: params.id },
+      where: { indicatorId: id },
     });
 
     if (tasksCount > 0) {
@@ -102,7 +107,7 @@ export async function DELETE(
     }
 
     const indicator = await prisma.indicator.delete({
-      where: { id: params.id },
+      where: { id },
     });
 
     await prisma.commonLog.create({

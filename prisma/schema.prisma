@@ -2,12 +2,12 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 datasource db {
-  provider  = "postgresql"
+  provider = "postgresql"
 }
 
 generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["relationJoins"]
+  provider               = "prisma-client-js"
+  previewFeatures        = ["relationJoins"]
   output                 = "../generated/prisma"
   // runtime                = "nodejs"
   generatedFileExtension = "ts"

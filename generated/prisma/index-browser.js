@@ -211,10 +211,22 @@ exports.Prisma.MarketScalarFieldEnum = {
   code: 'code',
   symbol: 'symbol',
   type: 'type',
-  icon: 'icon',
-  description: 'description',
   exchange: 'exchange',
+  fullExchangeName: 'fullExchangeName',
+  displayName: 'displayName',
+  description: 'description',
+  icon: 'icon',
+  cryptoType: 'cryptoType',
+  baseCurrency: 'baseCurrency',
+  quoteCurrency: 'quoteCurrency',
+  industry: 'industry',
+  sector: 'sector',
   isActive: 'isActive',
+  isPriority: 'isPriority',
+  sortOrder: 'sortOrder',
+  lastSyncAt: 'lastSyncAt',
+  syncStatus: 'syncStatus',
+  syncError: 'syncError',
   metadata: 'metadata',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -236,6 +248,7 @@ exports.Prisma.TaskScalarFieldEnum = {
   errorMessage: 'errorMessage',
   enableNotification: 'enableNotification',
   notificationChannels: 'notificationChannels',
+  dingTalkWebhookId: 'dingTalkWebhookId',
   createdBy: 'createdBy',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -266,6 +279,19 @@ exports.Prisma.SessionScalarFieldEnum = {
   sessionToken: 'sessionToken',
   userId: 'userId',
   expires: 'expires'
+};
+
+exports.Prisma.DingTalkWebhookScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  webhookUrl: 'webhookUrl',
+  secret: 'secret',
+  isActive: 'isActive',
+  messageCount: 'messageCount',
+  lastUsedAt: 'lastUsedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.SortOrder = {
@@ -320,12 +346,22 @@ exports.MarketType = exports.$Enums.MarketType = {
   INDEX: 'INDEX'
 };
 
+exports.CryptoType = exports.$Enums.CryptoType = {
+  SPOT: 'SPOT',
+  PERPETUAL: 'PERPETUAL',
+  FUTURES: 'FUTURES'
+};
+
 exports.Timeframe = exports.$Enums.Timeframe = {
   M1: 'M1',
+  M3: 'M3',
   M5: 'M5',
   M15: 'M15',
   M30: 'M30',
+  M45: 'M45',
   H1: 'H1',
+  H2: 'H2',
+  H3: 'H3',
   H4: 'H4',
   D1: 'D1',
   W1: 'W1',
@@ -360,7 +396,8 @@ exports.Prisma.ModelName = {
   Task: 'Task',
   TaskIndicator: 'TaskIndicator',
   User: 'User',
-  Session: 'Session'
+  Session: 'Session',
+  DingTalkWebhook: 'DingTalkWebhook'
 };
 
 /**

@@ -1,38 +1,84 @@
 // 市场类型枚举
 enum MarketType {
-  A_STOCK      // A股
-  CRYPTO       // 加密货币
-  US_STOCK     // 美股
-  HK_STOCK     // 港股
-  FOREX        // 外汇
-  FUTURES      // 期货
-  INDEX        // 指数
+  A_STOCK // A股
+  CRYPTO // 加密货币
+  US_STOCK // 美股
+  HK_STOCK // 港股
+  FOREX // 外汇
+  FUTURES // 期货
+  INDEX // 指数
+}
+
+// 交易对类型枚举（加密货币专用）
+enum CryptoType {
+  SPOT // 现货
+  PERPETUAL // 永续合约
+  FUTURES // 期货合约
 }
 
 // 标的表
 model Market {
-  id          String     @id @default(cuid())
-  name        String     // 标的名称，如 "比特币", "招商银行"
-  code        String     // 标的代码，如 "BTCUSDT", "600036"
-  symbol      String     // 完整交易所代码，如 "BINANCE:BTCUSDT", "SSE:600036"
-  type        MarketType // 市场类型
-  icon        String?    // 图标 URL
-  description String?    // 描述信息
-  exchange    String?    // 交易所名称
-  isActive    Boolean    @default(true) // 是否启用
-  
+  id String @id @default(cuid())
+
+  // 基础信息
+  name   String // 标的名称，如 "Bitcoin", "招商银行"
+  code   String // 标的代码（不含交易所），如 "BTCUSDT", "600036"
+  symbol String // TradingView 完整标识符，如 "BINANCE:BTCUSDT", "SSE:600036"
+  type   MarketType // 市场类型
+
+  // 交易所信息
+  exchange         String? // 交易所简称，如 "Binance", "SSE"
+  fullExchangeName String? // 交易所全称，如 "Shanghai Stock Exchange"
+
+  // 显示信息
+  displayName String? // 显示名称（用于前端展示），如 "BTC/USDT", "招商银行 600036"
+  description String? // 完整描述，如 "Bitcoin / TetherUS"
+  icon        String? // 图标 URL
+
+  // 加密货币专用字段
+  cryptoType    CryptoType? // 交易对类型（仅 CRYPTO 类型使用）
+  baseCurrency  String? // 基础货币，如 "BTC"
+  quoteCurrency String? // 计价货币，如 "USDT"
+
+  // A股专用字段
+  industry String? // 所属行业
+  sector   String? // 所属板块
+
+  // 状态与配置
+  isActive   Boolean @default(true) // 是否启用
+  isPriority Boolean @default(false) // 是否优先监控
+  sortOrder  Int     @default(0) // 排序权重
+
+  // TradingView 缓存（优化性能）
+  lastSyncAt DateTime? // 最后同步时间
+  syncStatus String? // 同步状态: "success" | "failed" | "pending"
+  syncError  String? // 同步错误信息
+
   // 元数据
-  metadata    Json?      // 存储额外信息，如市值、行业等
-  
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
-  
+  metadata Json? // 存储额外信息
+  // 示例: {
+  //   "marketCap": "1000000000",
+  //   "volume24h": "50000000",
+  //   "priceChange24h": "2.5%",
+  //   "tags": ["DeFi", "Layer1"],
+  //   "officialWebsite": "https://..."
+  // }
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   // 关联
-  tasks       Task[]
-  
-  @@unique([symbol]) // 交易所代码唯一
+  tasks Task[]
+
+  // 索引优化
+  @@unique([symbol]) // TradingView 标识符唯一（核心索引）
+  @@unique([exchange, code]) // 同一交易所内代码唯一
   @@index([type])
+  @@index([type, isActive]) // 组合索引：按类型筛选活跃标的
+  @@index([exchange])
   @@index([code])
-  @@index([isActive])
+  @@index([isPriority, sortOrder]) // 组合索引：优先级排序
+  @@index([baseCurrency]) // 加密货币：按基础货币查询
+  @@index([quoteCurrency]) // 加密货币：按计价货币查询
   @@map(name: "markets")
 }

@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { authOptions } from '@/lib/auth';
 import prisma from '@/lib/prisma';
 
 export async function GET(
-  request: NextRequest,
-  { params }: { params: { id: string } }
+  _request: NextRequest,
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions);
@@ -14,8 +14,10 @@ export async function GET(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
+    const { id } = await context.params;
+
     const task = await prisma.task.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: {
         market: true,
         taskIndicators: {
@@ -23,12 +25,8 @@ export async function GET(
             indicator: true,
           },
         },
-        executions: {
-          take: 10,
-          orderBy: { executedAt: 'desc' },
-          include: {
-            indicatorResults: true,
-          },
+        _count: {
+          select: { executions: true },
         },
       },
     });
@@ -49,7 +47,7 @@ export async function GET(
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions);
@@ -58,6 +56,7 @@ export async function PATCH(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
+    const { id } = await context.params;
     const body = await request.json();
     const { indicatorIds, ...updateData } = body;
 
@@ -65,21 +64,21 @@ export async function PATCH(
     if (indicatorIds) {
       // 删除旧关联
       await prisma.taskIndicator.deleteMany({
-        where: { taskId: params.id },
+        where: { taskId: id },
       });
 
       // 创建新关联
       await prisma.taskIndicator.createMany({
-        data: indicatorIds.map((id: string, index: number) => ({
-          taskId: params.id,
-          indicatorId: id,
+        data: indicatorIds.map((indicatorId: string, index: number) => ({
+          taskId: id,
+          indicatorId,
           priority: index,
         })),
       });
     }
 
     const task = await prisma.task.update({
-      where: { id: params.id },
+      where: { id },
       data: updateData,
       include: {
         market: true,
@@ -110,8 +109,8 @@ export async function PATCH(
 }
 
 export async function DELETE(
-  request: NextRequest,
-  { params }: { params: { id: string } }
+  _request: NextRequest,
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions);
@@ -120,8 +119,10 @@ export async function DELETE(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
+    const { id } = await context.params;
+
     const task = await prisma.task.delete({
-      where: { id: params.id },
+      where: { id },
     });
 
     await prisma.commonLog.create({
