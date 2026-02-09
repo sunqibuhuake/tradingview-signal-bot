@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Play, Pause, Trash2 } from 'lucide-react';
+import { ArrowLeft, Play, Pause, Trash2, Edit } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 import type { SignalTask } from '../../types';
@@ -13,6 +13,10 @@ interface TaskDetailHeaderProps {
 
 export function TaskDetailHeader({ task, onRefetch, onBack }: TaskDetailHeaderProps) {
   const router = useRouter();
+
+  const handleEdit = () => {
+    router.push(`/admin/tasks/${task.id}/edit`);
+  };
 
   const handleToggleStatus = async () => {
     const newStatus = task.status === 'ACTIVE' ? 'PAUSED' : 'ACTIVE';
@@ -72,6 +76,11 @@ export function TaskDetailHeader({ task, onRefetch, onBack }: TaskDetailHeaderPr
       
       <div className="flex items-center gap-3">
         <StatusBadge status={task.status} />
+        
+        <Button variant="outline" onClick={handleEdit}>
+          <Edit className="mr-2 h-4 w-4" />
+          编辑任务
+        </Button>
         
         {task.status === 'ACTIVE' ? (
           <Button variant="outline" onClick={handleToggleStatus}>
