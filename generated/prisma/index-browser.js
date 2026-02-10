@@ -263,6 +263,19 @@ exports.Prisma.TaskIndicatorScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.TradingViewConfigScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  session: 'session',
+  signature: 'signature',
+  isActive: 'isActive',
+  isPrimary: 'isPrimary',
+  lastUsedAt: 'lastUsedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.UserScalarFieldEnum = {
   id: 'id',
   email: 'email',
@@ -286,7 +299,7 @@ exports.Prisma.DingTalkWebhookScalarFieldEnum = {
   name: 'name',
   description: 'description',
   webhookUrl: 'webhookUrl',
-  secret: 'secret',
+  safeWord: 'safeWord',
   isActive: 'isActive',
   messageCount: 'messageCount',
   lastUsedAt: 'lastUsedAt',
@@ -395,6 +408,7 @@ exports.Prisma.ModelName = {
   Market: 'Market',
   Task: 'Task',
   TaskIndicator: 'TaskIndicator',
+  TradingViewConfig: 'TradingViewConfig',
   User: 'User',
   Session: 'Session',
   DingTalkWebhook: 'DingTalkWebhook'

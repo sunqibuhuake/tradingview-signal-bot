@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   Table,
   TableBody,
@@ -17,6 +18,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { MoreHorizontal, Edit, Trash2, Power, PowerOff } from 'lucide-react';
 import { toast } from 'react-hot-toast';
+import { CreateWebhookDialog } from './CreateWebhookDialog';
 import type { WebhookWithCount } from '../types';
 
 interface WebhooksTableProps {
@@ -25,6 +27,8 @@ interface WebhooksTableProps {
 }
 
 export function WebhooksTable({ webhooks, onRefetch }: WebhooksTableProps) {
+  const [editingWebhook, setEditingWebhook] = useState<WebhookWithCount | null>(null);
+
   const handleToggleStatus = async (webhook: WebhookWithCount) => {
     try {
       const res = await fetch(`/api/admin/webhooks/${webhook.id}`, {
@@ -43,6 +47,10 @@ export function WebhooksTable({ webhooks, onRefetch }: WebhooksTableProps) {
     } catch (error: any) {
       toast.error(error.message || '操作失败');
     }
+  };
+
+  const handleEdit = (webhook: WebhookWithCount) => {
+    setEditingWebhook(webhook);
   };
 
   const handleDelete = async (webhook: WebhookWithCount) => {
@@ -86,102 +94,115 @@ export function WebhooksTable({ webhooks, onRefetch }: WebhooksTableProps) {
   };
 
   return (
-    <div className="rounded-lg border bg-card">
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>名称</TableHead>
-            <TableHead>Webhook URL</TableHead>
-            <TableHead className="text-center">状态</TableHead>
-            <TableHead className="text-center">关联任务</TableHead>
-            <TableHead className="text-center">消息数</TableHead>
-            <TableHead className="text-center">最后使用</TableHead>
-            <TableHead className="text-center">创建时间</TableHead>
-            <TableHead className="text-center">操作</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {webhooks.map((webhook) => (
-            <TableRow key={webhook.id}>
-              <TableCell>
-                <div>
-                  <div className="font-medium">{webhook.name}</div>
-                  {webhook.description && (
-                    <div className="text-sm text-muted-foreground mt-0.5">
-                      {webhook.description}
-                    </div>
-                  )}
-                </div>
-              </TableCell>
-
-              <TableCell>
-                <div className="font-mono text-xs text-muted-foreground">
-                  {maskWebhookUrl(webhook.webhookUrl)}
-                </div>
-              </TableCell>
-
-              <TableCell className="text-center">
-                <Badge variant={webhook.isActive ? 'default' : 'secondary'}>
-                  {webhook.isActive ? '启用' : '禁用'}
-                </Badge>
-              </TableCell>
-
-              <TableCell className="text-center">
-                <span className="font-medium">{webhook._count.tasks}</span>
-              </TableCell>
-
-              <TableCell className="text-center">
-                <span className="text-muted-foreground">{webhook.messageCount}</span>
-              </TableCell>
-
-              <TableCell className="text-center text-xs text-muted-foreground">
-                {webhook.lastUsedAt ? formatDate(webhook.lastUsedAt) : '-'}
-              </TableCell>
-
-              <TableCell className="text-center text-xs text-muted-foreground">
-                {formatDate(webhook.createdAt)}
-              </TableCell>
-
-              <TableCell className="text-center">
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="sm">
-                      <MoreHorizontal className="h-4 w-4" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuItem onClick={() => handleToggleStatus(webhook)}>
-                      {webhook.isActive ? (
-                        <>
-                          <PowerOff className="mr-2 h-4 w-4" />
-                          禁用
-                        </>
-                      ) : (
-                        <>
-                          <Power className="mr-2 h-4 w-4" />
-                          启用
-                        </>
-                      )}
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <Edit className="mr-2 h-4 w-4" />
-                      编辑
-                    </DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem
-                      className="text-destructive"
-                      onClick={() => handleDelete(webhook)}
-                    >
-                      <Trash2 className="mr-2 h-4 w-4" />
-                      删除
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </TableCell>
+    <>
+      <div className="rounded-lg border bg-card">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>名称</TableHead>
+              <TableHead>Webhook URL</TableHead>
+              <TableHead className="text-center">状态</TableHead>
+              <TableHead className="text-center">关联任务</TableHead>
+              <TableHead className="text-center">消息数</TableHead>
+              <TableHead className="text-center">最后使用</TableHead>
+              <TableHead className="text-center">创建时间</TableHead>
+              <TableHead className="text-center">操作</TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </div>
+          </TableHeader>
+          <TableBody>
+            {webhooks.map((webhook) => (
+              <TableRow key={webhook.id}>
+                <TableCell>
+                  <div>
+                    <div className="font-medium">{webhook.name}</div>
+                    {webhook.description && (
+                      <div className="text-sm text-muted-foreground mt-0.5">
+                        {webhook.description}
+                      </div>
+                    )}
+                  </div>
+                </TableCell>
+
+                <TableCell>
+                  <div className="font-mono text-xs text-muted-foreground">
+                    {maskWebhookUrl(webhook.webhookUrl)}
+                  </div>
+                </TableCell>
+
+                <TableCell className="text-center">
+                  <Badge variant={webhook.isActive ? 'default' : 'secondary'}>
+                    {webhook.isActive ? '启用' : '禁用'}
+                  </Badge>
+                </TableCell>
+
+                <TableCell className="text-center">
+                  <span className="font-medium">{webhook._count.tasks}</span>
+                </TableCell>
+
+                <TableCell className="text-center">
+                  <span className="text-muted-foreground">{webhook.messageCount}</span>
+                </TableCell>
+
+                <TableCell className="text-center text-xs text-muted-foreground">
+                  {webhook.lastUsedAt ? formatDate(webhook.lastUsedAt) : '-'}
+                </TableCell>
+
+                <TableCell className="text-center text-xs text-muted-foreground">
+                  {formatDate(webhook.createdAt)}
+                </TableCell>
+
+                <TableCell className="text-center">
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" size="sm">
+                        <MoreHorizontal className="h-4 w-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem onClick={() => handleToggleStatus(webhook)}>
+                        {webhook.isActive ? (
+                          <>
+                            <PowerOff className="mr-2 h-4 w-4" />
+                            禁用
+                          </>
+                        ) : (
+                          <>
+                            <Power className="mr-2 h-4 w-4" />
+                            启用
+                          </>
+                        )}
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => handleEdit(webhook)}>
+                        <Edit className="mr-2 h-4 w-4" />
+                        编辑
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem
+                        className="text-destructive"
+                        onClick={() => handleDelete(webhook)}
+                      >
+                        <Trash2 className="mr-2 h-4 w-4" />
+                        删除
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
+
+      {/* 编辑对话框 */}
+      <CreateWebhookDialog
+        open={!!editingWebhook}
+        onOpenChange={(open) => !open && setEditingWebhook(null)}
+        onSuccess={() => {
+          setEditingWebhook(null);
+          onRefetch();
+        }}
+        webhook={editingWebhook || undefined}
+      />
+    </>
   );
 }

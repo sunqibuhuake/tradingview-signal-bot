@@ -10,18 +10,29 @@ export interface NotificationPayload {
   timestamp: Date;
 }
 
+export interface NotificationConfig {
+  webhookUrl: string;
+  safeWord: string;
+}
+
 /**
  * Notification Service - handles sending notifications via DingTalk
  * 支持使用数据库配置的 Webhook 或环境变量的 Webhook
+ * 安全词会自动添加到消息内容中，确保通过钉钉自定义关键词验证
  */
 export class NotificationService {
   private webhookUrl: string;
+  private safeWord: string;
 
-  constructor(webhookUrl: string) {
-    if (!webhookUrl) {
+  constructor(config: NotificationConfig) {
+    if (!config.webhookUrl) {
       throw new Error('[NotificationService] Webhook URL is required');
     }
-    this.webhookUrl = webhookUrl;
+    if (!config.safeWord) {
+      throw new Error('[NotificationService] Safe word is required');
+    }
+    this.webhookUrl = config.webhookUrl;
+    this.safeWord = config.safeWord;
   }
 
   /**
@@ -32,7 +43,7 @@ export class NotificationService {
     const actionName = action === 'Buy' ? '买入' : '卖出';
 
     const content = [
-      'A股 Trading Signal',
+      `【${this.safeWord}】A股 Trading Signal`,
       `标的：${market}`,
       `操作：${actionName}`,
       `价格：${price}`,
@@ -51,7 +62,7 @@ export class NotificationService {
     const actionType = action === 'Buy' ? 'Long' : 'Short';
 
     const content = [
-      'Crypto Trading Signal',
+      `【${this.safeWord}】Crypto Trading Signal`,
       `交易对：${market}`,
       `操作：${action} / ${actionType}`,
       `价格：${price}`,
@@ -67,7 +78,7 @@ export class NotificationService {
    */
   async sendCustom(title: string, details: Record<string, any>): Promise<void> {
     const content = [
-      title,
+      `【${this.safeWord}】${title}`,
       ...Object.entries(details).map(([key, value]) => `${key}：${value}`),
     ].join('\n');
 

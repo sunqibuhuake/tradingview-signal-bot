@@ -7,6 +7,7 @@ import {
   Clock,
   Calendar,
   Bell,
+  Webhook,
 } from 'lucide-react';
 import type { SignalTask } from '../../types';
 import { ModeBadge } from '../../components/ModeBadge';
@@ -142,7 +143,7 @@ export function TaskDetailContent({ task }: TaskDetailContentProps) {
           <Bell className="h-5 w-5" />
           通知配置
         </h3>
-        <div className="rounded-lg border bg-card p-4">
+        <div className="rounded-lg border bg-card p-4 space-y-3">
           <div className="flex items-center justify-between">
             <span className="text-sm text-muted-foreground">启用通知</span>
             <Badge 
@@ -151,6 +152,45 @@ export function TaskDetailContent({ task }: TaskDetailContentProps) {
             >
               {task.enableNotification ? '已启用' : '已禁用'}
             </Badge>
+          </div>
+          <Separator />
+          <div>
+            <div className="flex items-center gap-2 mb-2">
+              <Webhook className="h-4 w-4 text-muted-foreground" />
+              <span className="text-sm text-muted-foreground">钉钉 Webhook</span>
+            </div>
+            {task.dingTalkWebhook ? (
+              <div className="rounded-lg bg-secondary/50 p-3 space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-medium">{task.dingTalkWebhook.name}</span>
+                  <Badge 
+                    variant={task.dingTalkWebhook.isActive ? 'default' : 'secondary'}
+                    className="text-xs"
+                  >
+                    {task.dingTalkWebhook.isActive ? '活跃' : '停用'}
+                  </Badge>
+                </div>
+                {task.dingTalkWebhook.description && (
+                  <p className="text-xs text-muted-foreground">
+                    {task.dingTalkWebhook.description}
+                  </p>
+                )}
+                <div className="flex items-center justify-between text-xs text-muted-foreground">
+                  <span>已发送 {task.dingTalkWebhook.messageCount} 条消息</span>
+                  {task.dingTalkWebhook.lastUsedAt && (
+                    <span>
+                      最后使用: {new Date(task.dingTalkWebhook.lastUsedAt).toLocaleDateString('zh-CN')}
+                    </span>
+                  )}
+                </div>
+              </div>
+            ) : (
+              <div className="rounded-lg border border-dashed bg-muted/30 p-3">
+                <p className="text-sm text-muted-foreground">
+                  未配置 Webhook，将使用环境变量中的默认配置
+                </p>
+              </div>
+            )}
           </div>
         </div>
       </div>

@@ -32,21 +32,24 @@ export class TaskExecutor {
     });
 
     let webhookUrl: string | undefined;
+    let safeWord: string | undefined;
 
     if (taskWithWebhook?.dingTalkWebhook?.isActive) {
       webhookUrl = taskWithWebhook.dingTalkWebhook.webhookUrl;
+      safeWord = taskWithWebhook.dingTalkWebhook.safeWord;
       console.log(`使用任务配置的 Webhook: ${taskWithWebhook.dingTalkWebhook.name}`);
-    } else if (process.env.DINGTALK_WEBHOOK) {
+    } else if (process.env.DINGTALK_WEBHOOK && process.env.DINGTALK_SAFE_WORD) {
       webhookUrl = process.env.DINGTALK_WEBHOOK;
+      safeWord = process.env.DINGTALK_SAFE_WORD;
       console.log('使用环境变量配置的 Webhook');
     }
 
-    if (!webhookUrl) {
-      console.warn('未配置 Webhook，将跳过通知发送');
+    if (!webhookUrl || !safeWord) {
+      console.warn('未配置 Webhook 或安全词，将跳过通知发送');
       return null;
     }
 
-    return new NotificationService(webhookUrl);
+    return new NotificationService({ webhookUrl, safeWord });
   }
 
   /**

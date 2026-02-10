@@ -6,30 +6,63 @@ import TradingView, {
   type TimeFrame,
 } from '@mathieuc/tradingview';
 import { config } from '../config';
+import { getTradingViewCredentials } from '@/lib/tradingview-config';
 import type { ReadIndicatorResult } from '../types';
 
 /**
  * TradingView Service - handles all TradingView API interactions
+ * 支持从数据库或环境变量动态获取配置
  */
 export class TradingViewService {
-  private client: Client;
+  private client: Client | null = null;
+  private credentials: { session: string; signature: string } | null = null;
 
   constructor() {
-    console.log(`config ===> ${JSON.stringify(config.tradingView)}`)
+    // 构造函数不再立即初始化客户端
+  }
+
+  /**
+   * 初始化客户端连接（延迟初始化）
+   */
+  private async ensureClient(): Promise<void> {
+    if (this.client && this.credentials) {
+      return; // 已初始化
+    }
+
+    // 获取配置
+    const config = await getTradingViewCredentials();
+    
+    console.log(`[TradingViewService] 使用配置源: ${config.source}${config.configName ? ` (${config.configName})` : ''}`);
+
+    this.credentials = {
+      session: config.session,
+      signature: config.signature,
+    };
+
     this.client = new TradingView.Client({
-      token: config.tradingView.session,
-      signature: config.tradingView.signature,
+      token: config.session,
+      signature: config.signature,
     });
+  }
+
+  /**
+   * 获取当前凭据（用于直接 API 调用）
+   */
+  private async getCredentials(): Promise<{ session: string; signature: string }> {
+    await this.ensureClient();
+    return this.credentials!;
   }
 
   /**
    * Get indicator by ID
    */
   async getIndicator(indicatorId?: string): Promise<[SearchIndicatorResult, any]> {
+    const credentials = await this.getCredentials();
     const id = indicatorId || config.tradingView.indicatorId;
+    
     const indicList = await TradingView.getPrivateIndicators(
-      config.tradingView.session,
-      config.tradingView.signature
+      credentials.session,
+      credentials.signature
     );
     
     const indic = indicList.find(item => item.id === id);
@@ -53,7 +86,7 @@ export class TradingViewService {
   /**
    * Read indicator data for a market with timeout
    */
-  readIndicator(
+  async readIndicator(
     market: SearchMarketResult,
     indic: any,
     options: {
@@ -62,10 +95,11 @@ export class TradingViewService {
       timeout?: number;
     }
   ): Promise<ReadIndicatorResult | null> {
+    await this.ensureClient();
     const { timeframe, range, timeout = 10000 } = options;
 
     return new Promise((resolve) => {
-      const chart = new this.client.Session.Chart();
+      const chart = new this.client!.Session.Chart();
       
       chart.setMarket(market.id, {
         timeframe,
@@ -101,7 +135,7 @@ export class TradingViewService {
   /**
    * Create a chart session for real-time monitoring
    */
-  createChartSession(
+  async createChartSession(
     market: SearchMarketResult,
     indic: any,
     options: {
@@ -109,9 +143,10 @@ export class TradingViewService {
       range: number;
     },
     onUpdate: (indItem: any, chartItem: any) => void
-  ): ChartSession {
+  ): Promise<ChartSession> {
+    await this.ensureClient();
     const { timeframe, range } = options;
-    const chart = new this.client.Session.Chart();
+    const chart = new this.client!.Session.Chart();
 
     chart.setMarket(market.id, {
       timeframe,
@@ -137,6 +172,10 @@ export class TradingViewService {
    * Close the client connection
    */
   async close(): Promise<void> {
-    await this.client.end();
+    if (this.client) {
+      await this.client.end();
+      this.client = null;
+      this.credentials = null;
+    }
   }
 }

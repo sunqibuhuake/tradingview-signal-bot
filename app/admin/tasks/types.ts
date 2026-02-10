@@ -1,4 +1,4 @@
-import { ExecutionMode, Indicator, Market, Task as PrismaTask, TaskIndicator as PrismaTaskIndicator, TaskStatus, Timeframe } from "@/generated/prisma";
+import { ExecutionMode, Indicator, Market, Task as PrismaTask, TaskIndicator as PrismaTaskIndicator, TaskStatus, Timeframe, DingTalkWebhook } from "@/generated/prisma";
 
 // Re-export Prisma Task for use in other modules
 export type Task = PrismaTask;
@@ -18,6 +18,7 @@ export type SignalTask  = PrismaTask & {
   // createdAt: string;
   // updatedAt: string;
   market:  Market;
+  dingTalkWebhook?: DingTalkWebhook | null;
   taskIndicators: Array<PrismaTaskIndicator & { indicator: Indicator }>;
   _count: {
     executions: number;

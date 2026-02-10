@@ -59,6 +59,11 @@ export type Task = $Result.DefaultSelection<Prisma.$TaskPayload>
  */
 export type TaskIndicator = $Result.DefaultSelection<Prisma.$TaskIndicatorPayload>
 /**
+ * Model TradingViewConfig
+ * 
+ */
+export type TradingViewConfig = $Result.DefaultSelection<Prisma.$TradingViewConfigPayload>
+/**
  * Model User
  * 
  */
@@ -403,6 +408,16 @@ export class PrismaClient<
     * ```
     */
   get taskIndicator(): Prisma.TaskIndicatorDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.tradingViewConfig`: Exposes CRUD operations for the **TradingViewConfig** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more TradingViewConfigs
+    * const tradingViewConfigs = await prisma.tradingViewConfig.findMany()
+    * ```
+    */
+  get tradingViewConfig(): Prisma.TradingViewConfigDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.user`: Exposes CRUD operations for the **User** model.
@@ -876,6 +891,7 @@ export namespace Prisma {
     Market: 'Market',
     Task: 'Task',
     TaskIndicator: 'TaskIndicator',
+    TradingViewConfig: 'TradingViewConfig',
     User: 'User',
     Session: 'Session',
     DingTalkWebhook: 'DingTalkWebhook'
@@ -894,7 +910,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "taskExecution" | "indicatorResult" | "signalStatistics" | "indicator" | "userLoginIp" | "commonLog" | "market" | "task" | "taskIndicator" | "user" | "session" | "dingTalkWebhook"
+      modelProps: "taskExecution" | "indicatorResult" | "signalStatistics" | "indicator" | "userLoginIp" | "commonLog" | "market" | "task" | "taskIndicator" | "tradingViewConfig" | "user" | "session" | "dingTalkWebhook"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1564,6 +1580,80 @@ export namespace Prisma {
           }
         }
       }
+      TradingViewConfig: {
+        payload: Prisma.$TradingViewConfigPayload<ExtArgs>
+        fields: Prisma.TradingViewConfigFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.TradingViewConfigFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TradingViewConfigPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.TradingViewConfigFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TradingViewConfigPayload>
+          }
+          findFirst: {
+            args: Prisma.TradingViewConfigFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TradingViewConfigPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.TradingViewConfigFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TradingViewConfigPayload>
+          }
+          findMany: {
+            args: Prisma.TradingViewConfigFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TradingViewConfigPayload>[]
+          }
+          create: {
+            args: Prisma.TradingViewConfigCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TradingViewConfigPayload>
+          }
+          createMany: {
+            args: Prisma.TradingViewConfigCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.TradingViewConfigCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TradingViewConfigPayload>[]
+          }
+          delete: {
+            args: Prisma.TradingViewConfigDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TradingViewConfigPayload>
+          }
+          update: {
+            args: Prisma.TradingViewConfigUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TradingViewConfigPayload>
+          }
+          deleteMany: {
+            args: Prisma.TradingViewConfigDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.TradingViewConfigUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.TradingViewConfigUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TradingViewConfigPayload>[]
+          }
+          upsert: {
+            args: Prisma.TradingViewConfigUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TradingViewConfigPayload>
+          }
+          aggregate: {
+            args: Prisma.TradingViewConfigAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateTradingViewConfig>
+          }
+          groupBy: {
+            args: Prisma.TradingViewConfigGroupByArgs<ExtArgs>
+            result: $Utils.Optional<TradingViewConfigGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.TradingViewConfigCountArgs<ExtArgs>
+            result: $Utils.Optional<TradingViewConfigCountAggregateOutputType> | number
+          }
+        }
+      }
       User: {
         payload: Prisma.$UserPayload<ExtArgs>
         fields: Prisma.UserFieldRefs
@@ -1903,6 +1993,7 @@ export namespace Prisma {
     market?: MarketOmit
     task?: TaskOmit
     taskIndicator?: TaskIndicatorOmit
+    tradingViewConfig?: TradingViewConfigOmit
     user?: UserOmit
     session?: SessionOmit
     dingTalkWebhook?: DingTalkWebhookOmit
@@ -12808,6 +12899,1075 @@ export namespace Prisma {
 
 
   /**
+   * Model TradingViewConfig
+   */
+
+  export type AggregateTradingViewConfig = {
+    _count: TradingViewConfigCountAggregateOutputType | null
+    _min: TradingViewConfigMinAggregateOutputType | null
+    _max: TradingViewConfigMaxAggregateOutputType | null
+  }
+
+  export type TradingViewConfigMinAggregateOutputType = {
+    id: string | null
+    name: string | null
+    description: string | null
+    session: string | null
+    signature: string | null
+    isActive: boolean | null
+    isPrimary: boolean | null
+    lastUsedAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type TradingViewConfigMaxAggregateOutputType = {
+    id: string | null
+    name: string | null
+    description: string | null
+    session: string | null
+    signature: string | null
+    isActive: boolean | null
+    isPrimary: boolean | null
+    lastUsedAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type TradingViewConfigCountAggregateOutputType = {
+    id: number
+    name: number
+    description: number
+    session: number
+    signature: number
+    isActive: number
+    isPrimary: number
+    lastUsedAt: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type TradingViewConfigMinAggregateInputType = {
+    id?: true
+    name?: true
+    description?: true
+    session?: true
+    signature?: true
+    isActive?: true
+    isPrimary?: true
+    lastUsedAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type TradingViewConfigMaxAggregateInputType = {
+    id?: true
+    name?: true
+    description?: true
+    session?: true
+    signature?: true
+    isActive?: true
+    isPrimary?: true
+    lastUsedAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type TradingViewConfigCountAggregateInputType = {
+    id?: true
+    name?: true
+    description?: true
+    session?: true
+    signature?: true
+    isActive?: true
+    isPrimary?: true
+    lastUsedAt?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type TradingViewConfigAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which TradingViewConfig to aggregate.
+     */
+    where?: TradingViewConfigWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TradingViewConfigs to fetch.
+     */
+    orderBy?: TradingViewConfigOrderByWithRelationInput | TradingViewConfigOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: TradingViewConfigWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TradingViewConfigs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TradingViewConfigs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned TradingViewConfigs
+    **/
+    _count?: true | TradingViewConfigCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: TradingViewConfigMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: TradingViewConfigMaxAggregateInputType
+  }
+
+  export type GetTradingViewConfigAggregateType<T extends TradingViewConfigAggregateArgs> = {
+        [P in keyof T & keyof AggregateTradingViewConfig]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateTradingViewConfig[P]>
+      : GetScalarType<T[P], AggregateTradingViewConfig[P]>
+  }
+
+
+
+
+  export type TradingViewConfigGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TradingViewConfigWhereInput
+    orderBy?: TradingViewConfigOrderByWithAggregationInput | TradingViewConfigOrderByWithAggregationInput[]
+    by: TradingViewConfigScalarFieldEnum[] | TradingViewConfigScalarFieldEnum
+    having?: TradingViewConfigScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: TradingViewConfigCountAggregateInputType | true
+    _min?: TradingViewConfigMinAggregateInputType
+    _max?: TradingViewConfigMaxAggregateInputType
+  }
+
+  export type TradingViewConfigGroupByOutputType = {
+    id: string
+    name: string
+    description: string | null
+    session: string
+    signature: string
+    isActive: boolean
+    isPrimary: boolean
+    lastUsedAt: Date | null
+    createdAt: Date
+    updatedAt: Date
+    _count: TradingViewConfigCountAggregateOutputType | null
+    _min: TradingViewConfigMinAggregateOutputType | null
+    _max: TradingViewConfigMaxAggregateOutputType | null
+  }
+
+  type GetTradingViewConfigGroupByPayload<T extends TradingViewConfigGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<TradingViewConfigGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof TradingViewConfigGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], TradingViewConfigGroupByOutputType[P]>
+            : GetScalarType<T[P], TradingViewConfigGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type TradingViewConfigSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    description?: boolean
+    session?: boolean
+    signature?: boolean
+    isActive?: boolean
+    isPrimary?: boolean
+    lastUsedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["tradingViewConfig"]>
+
+  export type TradingViewConfigSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    description?: boolean
+    session?: boolean
+    signature?: boolean
+    isActive?: boolean
+    isPrimary?: boolean
+    lastUsedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["tradingViewConfig"]>
+
+  export type TradingViewConfigSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    description?: boolean
+    session?: boolean
+    signature?: boolean
+    isActive?: boolean
+    isPrimary?: boolean
+    lastUsedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["tradingViewConfig"]>
+
+  export type TradingViewConfigSelectScalar = {
+    id?: boolean
+    name?: boolean
+    description?: boolean
+    session?: boolean
+    signature?: boolean
+    isActive?: boolean
+    isPrimary?: boolean
+    lastUsedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type TradingViewConfigOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "session" | "signature" | "isActive" | "isPrimary" | "lastUsedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["tradingViewConfig"]>
+
+  export type $TradingViewConfigPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "TradingViewConfig"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      name: string
+      description: string | null
+      session: string
+      signature: string
+      isActive: boolean
+      isPrimary: boolean
+      lastUsedAt: Date | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["tradingViewConfig"]>
+    composites: {}
+  }
+
+  type TradingViewConfigGetPayload<S extends boolean | null | undefined | TradingViewConfigDefaultArgs> = $Result.GetResult<Prisma.$TradingViewConfigPayload, S>
+
+  type TradingViewConfigCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<TradingViewConfigFindManyArgs, 'select' | 'include' | 'distinct' | 'omit' | 'relationLoadStrategy'> & {
+      select?: TradingViewConfigCountAggregateInputType | true
+    }
+
+  export interface TradingViewConfigDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['TradingViewConfig'], meta: { name: 'TradingViewConfig' } }
+    /**
+     * Find zero or one TradingViewConfig that matches the filter.
+     * @param {TradingViewConfigFindUniqueArgs} args - Arguments to find a TradingViewConfig
+     * @example
+     * // Get one TradingViewConfig
+     * const tradingViewConfig = await prisma.tradingViewConfig.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends TradingViewConfigFindUniqueArgs>(args: SelectSubset<T, TradingViewConfigFindUniqueArgs<ExtArgs>>): Prisma__TradingViewConfigClient<$Result.GetResult<Prisma.$TradingViewConfigPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one TradingViewConfig that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {TradingViewConfigFindUniqueOrThrowArgs} args - Arguments to find a TradingViewConfig
+     * @example
+     * // Get one TradingViewConfig
+     * const tradingViewConfig = await prisma.tradingViewConfig.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends TradingViewConfigFindUniqueOrThrowArgs>(args: SelectSubset<T, TradingViewConfigFindUniqueOrThrowArgs<ExtArgs>>): Prisma__TradingViewConfigClient<$Result.GetResult<Prisma.$TradingViewConfigPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first TradingViewConfig that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TradingViewConfigFindFirstArgs} args - Arguments to find a TradingViewConfig
+     * @example
+     * // Get one TradingViewConfig
+     * const tradingViewConfig = await prisma.tradingViewConfig.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends TradingViewConfigFindFirstArgs>(args?: SelectSubset<T, TradingViewConfigFindFirstArgs<ExtArgs>>): Prisma__TradingViewConfigClient<$Result.GetResult<Prisma.$TradingViewConfigPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first TradingViewConfig that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TradingViewConfigFindFirstOrThrowArgs} args - Arguments to find a TradingViewConfig
+     * @example
+     * // Get one TradingViewConfig
+     * const tradingViewConfig = await prisma.tradingViewConfig.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends TradingViewConfigFindFirstOrThrowArgs>(args?: SelectSubset<T, TradingViewConfigFindFirstOrThrowArgs<ExtArgs>>): Prisma__TradingViewConfigClient<$Result.GetResult<Prisma.$TradingViewConfigPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more TradingViewConfigs that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TradingViewConfigFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all TradingViewConfigs
+     * const tradingViewConfigs = await prisma.tradingViewConfig.findMany()
+     * 
+     * // Get first 10 TradingViewConfigs
+     * const tradingViewConfigs = await prisma.tradingViewConfig.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const tradingViewConfigWithIdOnly = await prisma.tradingViewConfig.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends TradingViewConfigFindManyArgs>(args?: SelectSubset<T, TradingViewConfigFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TradingViewConfigPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a TradingViewConfig.
+     * @param {TradingViewConfigCreateArgs} args - Arguments to create a TradingViewConfig.
+     * @example
+     * // Create one TradingViewConfig
+     * const TradingViewConfig = await prisma.tradingViewConfig.create({
+     *   data: {
+     *     // ... data to create a TradingViewConfig
+     *   }
+     * })
+     * 
+     */
+    create<T extends TradingViewConfigCreateArgs>(args: SelectSubset<T, TradingViewConfigCreateArgs<ExtArgs>>): Prisma__TradingViewConfigClient<$Result.GetResult<Prisma.$TradingViewConfigPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many TradingViewConfigs.
+     * @param {TradingViewConfigCreateManyArgs} args - Arguments to create many TradingViewConfigs.
+     * @example
+     * // Create many TradingViewConfigs
+     * const tradingViewConfig = await prisma.tradingViewConfig.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends TradingViewConfigCreateManyArgs>(args?: SelectSubset<T, TradingViewConfigCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many TradingViewConfigs and returns the data saved in the database.
+     * @param {TradingViewConfigCreateManyAndReturnArgs} args - Arguments to create many TradingViewConfigs.
+     * @example
+     * // Create many TradingViewConfigs
+     * const tradingViewConfig = await prisma.tradingViewConfig.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many TradingViewConfigs and only return the `id`
+     * const tradingViewConfigWithIdOnly = await prisma.tradingViewConfig.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends TradingViewConfigCreateManyAndReturnArgs>(args?: SelectSubset<T, TradingViewConfigCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TradingViewConfigPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a TradingViewConfig.
+     * @param {TradingViewConfigDeleteArgs} args - Arguments to delete one TradingViewConfig.
+     * @example
+     * // Delete one TradingViewConfig
+     * const TradingViewConfig = await prisma.tradingViewConfig.delete({
+     *   where: {
+     *     // ... filter to delete one TradingViewConfig
+     *   }
+     * })
+     * 
+     */
+    delete<T extends TradingViewConfigDeleteArgs>(args: SelectSubset<T, TradingViewConfigDeleteArgs<ExtArgs>>): Prisma__TradingViewConfigClient<$Result.GetResult<Prisma.$TradingViewConfigPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one TradingViewConfig.
+     * @param {TradingViewConfigUpdateArgs} args - Arguments to update one TradingViewConfig.
+     * @example
+     * // Update one TradingViewConfig
+     * const tradingViewConfig = await prisma.tradingViewConfig.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends TradingViewConfigUpdateArgs>(args: SelectSubset<T, TradingViewConfigUpdateArgs<ExtArgs>>): Prisma__TradingViewConfigClient<$Result.GetResult<Prisma.$TradingViewConfigPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more TradingViewConfigs.
+     * @param {TradingViewConfigDeleteManyArgs} args - Arguments to filter TradingViewConfigs to delete.
+     * @example
+     * // Delete a few TradingViewConfigs
+     * const { count } = await prisma.tradingViewConfig.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends TradingViewConfigDeleteManyArgs>(args?: SelectSubset<T, TradingViewConfigDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more TradingViewConfigs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TradingViewConfigUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many TradingViewConfigs
+     * const tradingViewConfig = await prisma.tradingViewConfig.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends TradingViewConfigUpdateManyArgs>(args: SelectSubset<T, TradingViewConfigUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more TradingViewConfigs and returns the data updated in the database.
+     * @param {TradingViewConfigUpdateManyAndReturnArgs} args - Arguments to update many TradingViewConfigs.
+     * @example
+     * // Update many TradingViewConfigs
+     * const tradingViewConfig = await prisma.tradingViewConfig.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more TradingViewConfigs and only return the `id`
+     * const tradingViewConfigWithIdOnly = await prisma.tradingViewConfig.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends TradingViewConfigUpdateManyAndReturnArgs>(args: SelectSubset<T, TradingViewConfigUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TradingViewConfigPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one TradingViewConfig.
+     * @param {TradingViewConfigUpsertArgs} args - Arguments to update or create a TradingViewConfig.
+     * @example
+     * // Update or create a TradingViewConfig
+     * const tradingViewConfig = await prisma.tradingViewConfig.upsert({
+     *   create: {
+     *     // ... data to create a TradingViewConfig
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the TradingViewConfig we want to update
+     *   }
+     * })
+     */
+    upsert<T extends TradingViewConfigUpsertArgs>(args: SelectSubset<T, TradingViewConfigUpsertArgs<ExtArgs>>): Prisma__TradingViewConfigClient<$Result.GetResult<Prisma.$TradingViewConfigPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of TradingViewConfigs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TradingViewConfigCountArgs} args - Arguments to filter TradingViewConfigs to count.
+     * @example
+     * // Count the number of TradingViewConfigs
+     * const count = await prisma.tradingViewConfig.count({
+     *   where: {
+     *     // ... the filter for the TradingViewConfigs we want to count
+     *   }
+     * })
+    **/
+    count<T extends TradingViewConfigCountArgs>(
+      args?: Subset<T, TradingViewConfigCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], TradingViewConfigCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a TradingViewConfig.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TradingViewConfigAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends TradingViewConfigAggregateArgs>(args: Subset<T, TradingViewConfigAggregateArgs>): Prisma.PrismaPromise<GetTradingViewConfigAggregateType<T>>
+
+    /**
+     * Group by TradingViewConfig.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TradingViewConfigGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends TradingViewConfigGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: TradingViewConfigGroupByArgs['orderBy'] }
+        : { orderBy?: TradingViewConfigGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, TradingViewConfigGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetTradingViewConfigGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the TradingViewConfig model
+   */
+  readonly fields: TradingViewConfigFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for TradingViewConfig.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__TradingViewConfigClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the TradingViewConfig model
+   */
+  interface TradingViewConfigFieldRefs {
+    readonly id: FieldRef<"TradingViewConfig", 'String'>
+    readonly name: FieldRef<"TradingViewConfig", 'String'>
+    readonly description: FieldRef<"TradingViewConfig", 'String'>
+    readonly session: FieldRef<"TradingViewConfig", 'String'>
+    readonly signature: FieldRef<"TradingViewConfig", 'String'>
+    readonly isActive: FieldRef<"TradingViewConfig", 'Boolean'>
+    readonly isPrimary: FieldRef<"TradingViewConfig", 'Boolean'>
+    readonly lastUsedAt: FieldRef<"TradingViewConfig", 'DateTime'>
+    readonly createdAt: FieldRef<"TradingViewConfig", 'DateTime'>
+    readonly updatedAt: FieldRef<"TradingViewConfig", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * TradingViewConfig findUnique
+   */
+  export type TradingViewConfigFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TradingViewConfig
+     */
+    select?: TradingViewConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TradingViewConfig
+     */
+    omit?: TradingViewConfigOmit<ExtArgs> | null
+    /**
+     * Filter, which TradingViewConfig to fetch.
+     */
+    where: TradingViewConfigWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
+  }
+
+  /**
+   * TradingViewConfig findUniqueOrThrow
+   */
+  export type TradingViewConfigFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TradingViewConfig
+     */
+    select?: TradingViewConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TradingViewConfig
+     */
+    omit?: TradingViewConfigOmit<ExtArgs> | null
+    /**
+     * Filter, which TradingViewConfig to fetch.
+     */
+    where: TradingViewConfigWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
+  }
+
+  /**
+   * TradingViewConfig findFirst
+   */
+  export type TradingViewConfigFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TradingViewConfig
+     */
+    select?: TradingViewConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TradingViewConfig
+     */
+    omit?: TradingViewConfigOmit<ExtArgs> | null
+    /**
+     * Filter, which TradingViewConfig to fetch.
+     */
+    where?: TradingViewConfigWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TradingViewConfigs to fetch.
+     */
+    orderBy?: TradingViewConfigOrderByWithRelationInput | TradingViewConfigOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for TradingViewConfigs.
+     */
+    cursor?: TradingViewConfigWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TradingViewConfigs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TradingViewConfigs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TradingViewConfigs.
+     */
+    distinct?: TradingViewConfigScalarFieldEnum | TradingViewConfigScalarFieldEnum[]
+    relationLoadStrategy?: RelationLoadStrategy
+  }
+
+  /**
+   * TradingViewConfig findFirstOrThrow
+   */
+  export type TradingViewConfigFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TradingViewConfig
+     */
+    select?: TradingViewConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TradingViewConfig
+     */
+    omit?: TradingViewConfigOmit<ExtArgs> | null
+    /**
+     * Filter, which TradingViewConfig to fetch.
+     */
+    where?: TradingViewConfigWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TradingViewConfigs to fetch.
+     */
+    orderBy?: TradingViewConfigOrderByWithRelationInput | TradingViewConfigOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for TradingViewConfigs.
+     */
+    cursor?: TradingViewConfigWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TradingViewConfigs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TradingViewConfigs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TradingViewConfigs.
+     */
+    distinct?: TradingViewConfigScalarFieldEnum | TradingViewConfigScalarFieldEnum[]
+    relationLoadStrategy?: RelationLoadStrategy
+  }
+
+  /**
+   * TradingViewConfig findMany
+   */
+  export type TradingViewConfigFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TradingViewConfig
+     */
+    select?: TradingViewConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TradingViewConfig
+     */
+    omit?: TradingViewConfigOmit<ExtArgs> | null
+    /**
+     * Filter, which TradingViewConfigs to fetch.
+     */
+    where?: TradingViewConfigWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TradingViewConfigs to fetch.
+     */
+    orderBy?: TradingViewConfigOrderByWithRelationInput | TradingViewConfigOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing TradingViewConfigs.
+     */
+    cursor?: TradingViewConfigWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TradingViewConfigs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TradingViewConfigs.
+     */
+    skip?: number
+    distinct?: TradingViewConfigScalarFieldEnum | TradingViewConfigScalarFieldEnum[]
+    relationLoadStrategy?: RelationLoadStrategy
+  }
+
+  /**
+   * TradingViewConfig create
+   */
+  export type TradingViewConfigCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TradingViewConfig
+     */
+    select?: TradingViewConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TradingViewConfig
+     */
+    omit?: TradingViewConfigOmit<ExtArgs> | null
+    /**
+     * The data needed to create a TradingViewConfig.
+     */
+    data: XOR<TradingViewConfigCreateInput, TradingViewConfigUncheckedCreateInput>
+    relationLoadStrategy?: RelationLoadStrategy
+  }
+
+  /**
+   * TradingViewConfig createMany
+   */
+  export type TradingViewConfigCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many TradingViewConfigs.
+     */
+    data: TradingViewConfigCreateManyInput | TradingViewConfigCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * TradingViewConfig createManyAndReturn
+   */
+  export type TradingViewConfigCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TradingViewConfig
+     */
+    select?: TradingViewConfigSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the TradingViewConfig
+     */
+    omit?: TradingViewConfigOmit<ExtArgs> | null
+    /**
+     * The data used to create many TradingViewConfigs.
+     */
+    data: TradingViewConfigCreateManyInput | TradingViewConfigCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * TradingViewConfig update
+   */
+  export type TradingViewConfigUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TradingViewConfig
+     */
+    select?: TradingViewConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TradingViewConfig
+     */
+    omit?: TradingViewConfigOmit<ExtArgs> | null
+    /**
+     * The data needed to update a TradingViewConfig.
+     */
+    data: XOR<TradingViewConfigUpdateInput, TradingViewConfigUncheckedUpdateInput>
+    /**
+     * Choose, which TradingViewConfig to update.
+     */
+    where: TradingViewConfigWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
+  }
+
+  /**
+   * TradingViewConfig updateMany
+   */
+  export type TradingViewConfigUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update TradingViewConfigs.
+     */
+    data: XOR<TradingViewConfigUpdateManyMutationInput, TradingViewConfigUncheckedUpdateManyInput>
+    /**
+     * Filter which TradingViewConfigs to update
+     */
+    where?: TradingViewConfigWhereInput
+    /**
+     * Limit how many TradingViewConfigs to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * TradingViewConfig updateManyAndReturn
+   */
+  export type TradingViewConfigUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TradingViewConfig
+     */
+    select?: TradingViewConfigSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the TradingViewConfig
+     */
+    omit?: TradingViewConfigOmit<ExtArgs> | null
+    /**
+     * The data used to update TradingViewConfigs.
+     */
+    data: XOR<TradingViewConfigUpdateManyMutationInput, TradingViewConfigUncheckedUpdateManyInput>
+    /**
+     * Filter which TradingViewConfigs to update
+     */
+    where?: TradingViewConfigWhereInput
+    /**
+     * Limit how many TradingViewConfigs to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * TradingViewConfig upsert
+   */
+  export type TradingViewConfigUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TradingViewConfig
+     */
+    select?: TradingViewConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TradingViewConfig
+     */
+    omit?: TradingViewConfigOmit<ExtArgs> | null
+    /**
+     * The filter to search for the TradingViewConfig to update in case it exists.
+     */
+    where: TradingViewConfigWhereUniqueInput
+    /**
+     * In case the TradingViewConfig found by the `where` argument doesn't exist, create a new TradingViewConfig with this data.
+     */
+    create: XOR<TradingViewConfigCreateInput, TradingViewConfigUncheckedCreateInput>
+    /**
+     * In case the TradingViewConfig was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<TradingViewConfigUpdateInput, TradingViewConfigUncheckedUpdateInput>
+    relationLoadStrategy?: RelationLoadStrategy
+  }
+
+  /**
+   * TradingViewConfig delete
+   */
+  export type TradingViewConfigDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TradingViewConfig
+     */
+    select?: TradingViewConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TradingViewConfig
+     */
+    omit?: TradingViewConfigOmit<ExtArgs> | null
+    /**
+     * Filter which TradingViewConfig to delete.
+     */
+    where: TradingViewConfigWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
+  }
+
+  /**
+   * TradingViewConfig deleteMany
+   */
+  export type TradingViewConfigDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which TradingViewConfigs to delete
+     */
+    where?: TradingViewConfigWhereInput
+    /**
+     * Limit how many TradingViewConfigs to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * TradingViewConfig without action
+   */
+  export type TradingViewConfigDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TradingViewConfig
+     */
+    select?: TradingViewConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TradingViewConfig
+     */
+    omit?: TradingViewConfigOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Model User
    */
 
@@ -15038,7 +16198,7 @@ export namespace Prisma {
     name: string | null
     description: string | null
     webhookUrl: string | null
-    secret: string | null
+    safeWord: string | null
     isActive: boolean | null
     messageCount: number | null
     lastUsedAt: Date | null
@@ -15051,7 +16211,7 @@ export namespace Prisma {
     name: string | null
     description: string | null
     webhookUrl: string | null
-    secret: string | null
+    safeWord: string | null
     isActive: boolean | null
     messageCount: number | null
     lastUsedAt: Date | null
@@ -15064,7 +16224,7 @@ export namespace Prisma {
     name: number
     description: number
     webhookUrl: number
-    secret: number
+    safeWord: number
     isActive: number
     messageCount: number
     lastUsedAt: number
@@ -15087,7 +16247,7 @@ export namespace Prisma {
     name?: true
     description?: true
     webhookUrl?: true
-    secret?: true
+    safeWord?: true
     isActive?: true
     messageCount?: true
     lastUsedAt?: true
@@ -15100,7 +16260,7 @@ export namespace Prisma {
     name?: true
     description?: true
     webhookUrl?: true
-    secret?: true
+    safeWord?: true
     isActive?: true
     messageCount?: true
     lastUsedAt?: true
@@ -15113,7 +16273,7 @@ export namespace Prisma {
     name?: true
     description?: true
     webhookUrl?: true
-    secret?: true
+    safeWord?: true
     isActive?: true
     messageCount?: true
     lastUsedAt?: true
@@ -15213,7 +16373,7 @@ export namespace Prisma {
     name: string
     description: string | null
     webhookUrl: string
-    secret: string | null
+    safeWord: string
     isActive: boolean
     messageCount: number
     lastUsedAt: Date | null
@@ -15245,7 +16405,7 @@ export namespace Prisma {
     name?: boolean
     description?: boolean
     webhookUrl?: boolean
-    secret?: boolean
+    safeWord?: boolean
     isActive?: boolean
     messageCount?: boolean
     lastUsedAt?: boolean
@@ -15260,7 +16420,7 @@ export namespace Prisma {
     name?: boolean
     description?: boolean
     webhookUrl?: boolean
-    secret?: boolean
+    safeWord?: boolean
     isActive?: boolean
     messageCount?: boolean
     lastUsedAt?: boolean
@@ -15273,7 +16433,7 @@ export namespace Prisma {
     name?: boolean
     description?: boolean
     webhookUrl?: boolean
-    secret?: boolean
+    safeWord?: boolean
     isActive?: boolean
     messageCount?: boolean
     lastUsedAt?: boolean
@@ -15286,7 +16446,7 @@ export namespace Prisma {
     name?: boolean
     description?: boolean
     webhookUrl?: boolean
-    secret?: boolean
+    safeWord?: boolean
     isActive?: boolean
     messageCount?: boolean
     lastUsedAt?: boolean
@@ -15294,7 +16454,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type DingTalkWebhookOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "webhookUrl" | "secret" | "isActive" | "messageCount" | "lastUsedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["dingTalkWebhook"]>
+  export type DingTalkWebhookOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "webhookUrl" | "safeWord" | "isActive" | "messageCount" | "lastUsedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["dingTalkWebhook"]>
   export type DingTalkWebhookInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     tasks?: boolean | DingTalkWebhook$tasksArgs<ExtArgs>
     _count?: boolean | DingTalkWebhookCountOutputTypeDefaultArgs<ExtArgs>
@@ -15312,7 +16472,7 @@ export namespace Prisma {
       name: string
       description: string | null
       webhookUrl: string
-      secret: string | null
+      safeWord: string
       isActive: boolean
       messageCount: number
       lastUsedAt: Date | null
@@ -15746,7 +16906,7 @@ export namespace Prisma {
     readonly name: FieldRef<"DingTalkWebhook", 'String'>
     readonly description: FieldRef<"DingTalkWebhook", 'String'>
     readonly webhookUrl: FieldRef<"DingTalkWebhook", 'String'>
-    readonly secret: FieldRef<"DingTalkWebhook", 'String'>
+    readonly safeWord: FieldRef<"DingTalkWebhook", 'String'>
     readonly isActive: FieldRef<"DingTalkWebhook", 'Boolean'>
     readonly messageCount: FieldRef<"DingTalkWebhook", 'Int'>
     readonly lastUsedAt: FieldRef<"DingTalkWebhook", 'DateTime'>
@@ -16378,6 +17538,22 @@ export namespace Prisma {
   export type TaskIndicatorScalarFieldEnum = (typeof TaskIndicatorScalarFieldEnum)[keyof typeof TaskIndicatorScalarFieldEnum]
 
 
+  export const TradingViewConfigScalarFieldEnum: {
+    id: 'id',
+    name: 'name',
+    description: 'description',
+    session: 'session',
+    signature: 'signature',
+    isActive: 'isActive',
+    isPrimary: 'isPrimary',
+    lastUsedAt: 'lastUsedAt',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type TradingViewConfigScalarFieldEnum = (typeof TradingViewConfigScalarFieldEnum)[keyof typeof TradingViewConfigScalarFieldEnum]
+
+
   export const UserScalarFieldEnum: {
     id: 'id',
     email: 'email',
@@ -16407,7 +17583,7 @@ export namespace Prisma {
     name: 'name',
     description: 'description',
     webhookUrl: 'webhookUrl',
-    secret: 'secret',
+    safeWord: 'safeWord',
     isActive: 'isActive',
     messageCount: 'messageCount',
     lastUsedAt: 'lastUsedAt',
@@ -17509,6 +18685,83 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"TaskIndicator"> | Date | string
   }
 
+  export type TradingViewConfigWhereInput = {
+    AND?: TradingViewConfigWhereInput | TradingViewConfigWhereInput[]
+    OR?: TradingViewConfigWhereInput[]
+    NOT?: TradingViewConfigWhereInput | TradingViewConfigWhereInput[]
+    id?: StringFilter<"TradingViewConfig"> | string
+    name?: StringFilter<"TradingViewConfig"> | string
+    description?: StringNullableFilter<"TradingViewConfig"> | string | null
+    session?: StringFilter<"TradingViewConfig"> | string
+    signature?: StringFilter<"TradingViewConfig"> | string
+    isActive?: BoolFilter<"TradingViewConfig"> | boolean
+    isPrimary?: BoolFilter<"TradingViewConfig"> | boolean
+    lastUsedAt?: DateTimeNullableFilter<"TradingViewConfig"> | Date | string | null
+    createdAt?: DateTimeFilter<"TradingViewConfig"> | Date | string
+    updatedAt?: DateTimeFilter<"TradingViewConfig"> | Date | string
+  }
+
+  export type TradingViewConfigOrderByWithRelationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrderInput | SortOrder
+    session?: SortOrder
+    signature?: SortOrder
+    isActive?: SortOrder
+    isPrimary?: SortOrder
+    lastUsedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type TradingViewConfigWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    name?: string
+    AND?: TradingViewConfigWhereInput | TradingViewConfigWhereInput[]
+    OR?: TradingViewConfigWhereInput[]
+    NOT?: TradingViewConfigWhereInput | TradingViewConfigWhereInput[]
+    description?: StringNullableFilter<"TradingViewConfig"> | string | null
+    session?: StringFilter<"TradingViewConfig"> | string
+    signature?: StringFilter<"TradingViewConfig"> | string
+    isActive?: BoolFilter<"TradingViewConfig"> | boolean
+    isPrimary?: BoolFilter<"TradingViewConfig"> | boolean
+    lastUsedAt?: DateTimeNullableFilter<"TradingViewConfig"> | Date | string | null
+    createdAt?: DateTimeFilter<"TradingViewConfig"> | Date | string
+    updatedAt?: DateTimeFilter<"TradingViewConfig"> | Date | string
+  }, "id" | "name">
+
+  export type TradingViewConfigOrderByWithAggregationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrderInput | SortOrder
+    session?: SortOrder
+    signature?: SortOrder
+    isActive?: SortOrder
+    isPrimary?: SortOrder
+    lastUsedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: TradingViewConfigCountOrderByAggregateInput
+    _max?: TradingViewConfigMaxOrderByAggregateInput
+    _min?: TradingViewConfigMinOrderByAggregateInput
+  }
+
+  export type TradingViewConfigScalarWhereWithAggregatesInput = {
+    AND?: TradingViewConfigScalarWhereWithAggregatesInput | TradingViewConfigScalarWhereWithAggregatesInput[]
+    OR?: TradingViewConfigScalarWhereWithAggregatesInput[]
+    NOT?: TradingViewConfigScalarWhereWithAggregatesInput | TradingViewConfigScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"TradingViewConfig"> | string
+    name?: StringWithAggregatesFilter<"TradingViewConfig"> | string
+    description?: StringNullableWithAggregatesFilter<"TradingViewConfig"> | string | null
+    session?: StringWithAggregatesFilter<"TradingViewConfig"> | string
+    signature?: StringWithAggregatesFilter<"TradingViewConfig"> | string
+    isActive?: BoolWithAggregatesFilter<"TradingViewConfig"> | boolean
+    isPrimary?: BoolWithAggregatesFilter<"TradingViewConfig"> | boolean
+    lastUsedAt?: DateTimeNullableWithAggregatesFilter<"TradingViewConfig"> | Date | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"TradingViewConfig"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"TradingViewConfig"> | Date | string
+  }
+
   export type UserWhereInput = {
     AND?: UserWhereInput | UserWhereInput[]
     OR?: UserWhereInput[]
@@ -17639,7 +18892,7 @@ export namespace Prisma {
     name?: StringFilter<"DingTalkWebhook"> | string
     description?: StringNullableFilter<"DingTalkWebhook"> | string | null
     webhookUrl?: StringFilter<"DingTalkWebhook"> | string
-    secret?: StringNullableFilter<"DingTalkWebhook"> | string | null
+    safeWord?: StringFilter<"DingTalkWebhook"> | string
     isActive?: BoolFilter<"DingTalkWebhook"> | boolean
     messageCount?: IntFilter<"DingTalkWebhook"> | number
     lastUsedAt?: DateTimeNullableFilter<"DingTalkWebhook"> | Date | string | null
@@ -17653,7 +18906,7 @@ export namespace Prisma {
     name?: SortOrder
     description?: SortOrderInput | SortOrder
     webhookUrl?: SortOrder
-    secret?: SortOrderInput | SortOrder
+    safeWord?: SortOrder
     isActive?: SortOrder
     messageCount?: SortOrder
     lastUsedAt?: SortOrderInput | SortOrder
@@ -17670,7 +18923,7 @@ export namespace Prisma {
     name?: StringFilter<"DingTalkWebhook"> | string
     description?: StringNullableFilter<"DingTalkWebhook"> | string | null
     webhookUrl?: StringFilter<"DingTalkWebhook"> | string
-    secret?: StringNullableFilter<"DingTalkWebhook"> | string | null
+    safeWord?: StringFilter<"DingTalkWebhook"> | string
     isActive?: BoolFilter<"DingTalkWebhook"> | boolean
     messageCount?: IntFilter<"DingTalkWebhook"> | number
     lastUsedAt?: DateTimeNullableFilter<"DingTalkWebhook"> | Date | string | null
@@ -17684,7 +18937,7 @@ export namespace Prisma {
     name?: SortOrder
     description?: SortOrderInput | SortOrder
     webhookUrl?: SortOrder
-    secret?: SortOrderInput | SortOrder
+    safeWord?: SortOrder
     isActive?: SortOrder
     messageCount?: SortOrder
     lastUsedAt?: SortOrderInput | SortOrder
@@ -17705,7 +18958,7 @@ export namespace Prisma {
     name?: StringWithAggregatesFilter<"DingTalkWebhook"> | string
     description?: StringNullableWithAggregatesFilter<"DingTalkWebhook"> | string | null
     webhookUrl?: StringWithAggregatesFilter<"DingTalkWebhook"> | string
-    secret?: StringNullableWithAggregatesFilter<"DingTalkWebhook"> | string | null
+    safeWord?: StringWithAggregatesFilter<"DingTalkWebhook"> | string
     isActive?: BoolWithAggregatesFilter<"DingTalkWebhook"> | boolean
     messageCount?: IntWithAggregatesFilter<"DingTalkWebhook"> | number
     lastUsedAt?: DateTimeNullableWithAggregatesFilter<"DingTalkWebhook"> | Date | string | null
@@ -18693,6 +19946,97 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type TradingViewConfigCreateInput = {
+    id?: string
+    name: string
+    description?: string | null
+    session: string
+    signature: string
+    isActive?: boolean
+    isPrimary?: boolean
+    lastUsedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type TradingViewConfigUncheckedCreateInput = {
+    id?: string
+    name: string
+    description?: string | null
+    session: string
+    signature: string
+    isActive?: boolean
+    isPrimary?: boolean
+    lastUsedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type TradingViewConfigUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    session?: StringFieldUpdateOperationsInput | string
+    signature?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isPrimary?: BoolFieldUpdateOperationsInput | boolean
+    lastUsedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TradingViewConfigUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    session?: StringFieldUpdateOperationsInput | string
+    signature?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isPrimary?: BoolFieldUpdateOperationsInput | boolean
+    lastUsedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TradingViewConfigCreateManyInput = {
+    id?: string
+    name: string
+    description?: string | null
+    session: string
+    signature: string
+    isActive?: boolean
+    isPrimary?: boolean
+    lastUsedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type TradingViewConfigUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    session?: StringFieldUpdateOperationsInput | string
+    signature?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isPrimary?: BoolFieldUpdateOperationsInput | boolean
+    lastUsedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TradingViewConfigUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    session?: StringFieldUpdateOperationsInput | string
+    signature?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isPrimary?: BoolFieldUpdateOperationsInput | boolean
+    lastUsedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type UserCreateInput = {
     id?: string
     email: string
@@ -18827,7 +20171,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     webhookUrl: string
-    secret?: string | null
+    safeWord?: string
     isActive?: boolean
     messageCount?: number
     lastUsedAt?: Date | string | null
@@ -18841,7 +20185,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     webhookUrl: string
-    secret?: string | null
+    safeWord?: string
     isActive?: boolean
     messageCount?: number
     lastUsedAt?: Date | string | null
@@ -18855,7 +20199,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     webhookUrl?: StringFieldUpdateOperationsInput | string
-    secret?: NullableStringFieldUpdateOperationsInput | string | null
+    safeWord?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     messageCount?: IntFieldUpdateOperationsInput | number
     lastUsedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -18869,7 +20213,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     webhookUrl?: StringFieldUpdateOperationsInput | string
-    secret?: NullableStringFieldUpdateOperationsInput | string | null
+    safeWord?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     messageCount?: IntFieldUpdateOperationsInput | number
     lastUsedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -18883,7 +20227,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     webhookUrl: string
-    secret?: string | null
+    safeWord?: string
     isActive?: boolean
     messageCount?: number
     lastUsedAt?: Date | string | null
@@ -18896,7 +20240,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     webhookUrl?: StringFieldUpdateOperationsInput | string
-    secret?: NullableStringFieldUpdateOperationsInput | string | null
+    safeWord?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     messageCount?: IntFieldUpdateOperationsInput | number
     lastUsedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -18909,7 +20253,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     webhookUrl?: StringFieldUpdateOperationsInput | string
-    secret?: NullableStringFieldUpdateOperationsInput | string | null
+    safeWord?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     messageCount?: IntFieldUpdateOperationsInput | number
     lastUsedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -19908,6 +21252,45 @@ export namespace Prisma {
     priority?: SortOrder
   }
 
+  export type TradingViewConfigCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    session?: SortOrder
+    signature?: SortOrder
+    isActive?: SortOrder
+    isPrimary?: SortOrder
+    lastUsedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type TradingViewConfigMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    session?: SortOrder
+    signature?: SortOrder
+    isActive?: SortOrder
+    isPrimary?: SortOrder
+    lastUsedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type TradingViewConfigMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    session?: SortOrder
+    signature?: SortOrder
+    isActive?: SortOrder
+    isPrimary?: SortOrder
+    lastUsedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
   export type EnumRoleFilter<$PrismaModel = never> = {
     equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
     in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
@@ -20007,7 +21390,7 @@ export namespace Prisma {
     name?: SortOrder
     description?: SortOrder
     webhookUrl?: SortOrder
-    secret?: SortOrder
+    safeWord?: SortOrder
     isActive?: SortOrder
     messageCount?: SortOrder
     lastUsedAt?: SortOrder
@@ -20024,7 +21407,7 @@ export namespace Prisma {
     name?: SortOrder
     description?: SortOrder
     webhookUrl?: SortOrder
-    secret?: SortOrder
+    safeWord?: SortOrder
     isActive?: SortOrder
     messageCount?: SortOrder
     lastUsedAt?: SortOrder
@@ -20037,7 +21420,7 @@ export namespace Prisma {
     name?: SortOrder
     description?: SortOrder
     webhookUrl?: SortOrder
-    secret?: SortOrder
+    safeWord?: SortOrder
     isActive?: SortOrder
     messageCount?: SortOrder
     lastUsedAt?: SortOrder
@@ -21407,7 +22790,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     webhookUrl: string
-    secret?: string | null
+    safeWord?: string
     isActive?: boolean
     messageCount?: number
     lastUsedAt?: Date | string | null
@@ -21420,7 +22803,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     webhookUrl: string
-    secret?: string | null
+    safeWord?: string
     isActive?: boolean
     messageCount?: number
     lastUsedAt?: Date | string | null
@@ -21582,7 +22965,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     webhookUrl?: StringFieldUpdateOperationsInput | string
-    secret?: NullableStringFieldUpdateOperationsInput | string | null
+    safeWord?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     messageCount?: IntFieldUpdateOperationsInput | number
     lastUsedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -21595,7 +22978,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     webhookUrl?: StringFieldUpdateOperationsInput | string
-    secret?: NullableStringFieldUpdateOperationsInput | string | null
+    safeWord?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     messageCount?: IntFieldUpdateOperationsInput | number
     lastUsedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null

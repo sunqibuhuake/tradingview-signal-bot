@@ -17,12 +17,13 @@ async function seedWebhooks() {
       name: '默认通知群',
       description: '主要交易信号通知群',
       webhookUrl: process.env.DINGTALK_WEBHOOK || 'https://oapi.dingtalk.com/robot/send?access_token=example',
+      safeWord: process.env.DINGTALK_SAFE_WORD || '交易信号',
       isActive: true,
     },
   });
 
   console.log(`✅ 创建示例 Webhook: ${webhook.name}`);
-  console.log('💡 提示：请在后台管理界面更新为实际的 Webhook URL');
+  console.log('💡 提示：请在后台管理界面更新为实际的 Webhook URL 和安全词');
 }
 
 async function main() {

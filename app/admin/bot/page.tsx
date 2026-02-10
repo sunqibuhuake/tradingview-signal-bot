@@ -2,6 +2,10 @@
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
+import { Play, Square, RotateCw, ListTodo, CheckCircle2, PauseCircle, XCircle, Info } from 'lucide-react';
+import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 
 interface BotStatus {
   isRunning: boolean;
@@ -83,7 +87,7 @@ export default function BotControlPage() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="text-gray-500">加载中...</div>
+        <div className="text-muted-foreground">加载中...</div>
       </div>
     );
   }
@@ -92,10 +96,10 @@ export default function BotControlPage() {
     <div className="px-4 sm:px-6 lg:px-8">
       <div className="sm:flex sm:items-center">
         <div className="sm:flex-auto">
-          <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">
+          <h1 className="text-3xl font-bold text-foreground bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
             Bot 服务控制
           </h1>
-          <p className="mt-2 text-sm text-gray-700 dark:text-gray-300">
+          <p className="mt-2 text-sm text-muted-foreground">
             管理和监控交易信号机器人服务
           </p>
         </div>
@@ -103,223 +107,186 @@ export default function BotControlPage() {
 
       {/* 服务状态卡片 */}
       <div className="mt-8">
-        <div className="bg-white dark:bg-gray-800 shadow rounded-lg overflow-hidden">
-          <div className="px-6 py-8">
+        <Card className="border-primary/20 shadow-lg hover:shadow-primary/10 transition-all">
+          <CardContent className="px-6 py-8">
             <div className="flex items-center justify-between">
-              <div className="flex items-center">
-                <div
-                  className={`h-4 w-4 rounded-full mr-3 ${
+              <div className="flex items-center gap-4">
+                <Badge
+                  variant={status?.isRunning ? 'default' : 'secondary'}
+                  className={`gap-2 ${
                     status?.isRunning
-                      ? 'bg-green-500 animate-pulse'
-                      : 'bg-gray-400'
+                      ? 'bg-success/10 text-success border-success/30 animate-pulse-glow'
+                      : 'bg-muted text-muted-foreground'
                   }`}
-                ></div>
+                >
+                  <div
+                    className={`h-2 w-2 rounded-full ${
+                      status?.isRunning ? 'bg-success' : 'bg-muted-foreground'
+                    }`}
+                  />
+                  {status?.isRunning ? '运行中' : '已停止'}
+                </Badge>
                 <div>
-                  <h3 className="text-lg font-medium text-gray-900 dark:text-white">
+                  <h3 className="text-lg font-semibold text-foreground">
                     服务状态
                   </h3>
-                  <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                    {status?.isRunning ? '运行中' : '已停止'}
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    {status?.isRunning ? '所有任务正常执行' : '服务已停止'}
                   </p>
                 </div>
               </div>
 
               <div className="flex gap-3">
                 {!status?.isRunning ? (
-                  <button
+                  <Button
                     onClick={() => startMutation.mutate()}
                     disabled={startMutation.isPending}
-                    className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50"
+                    className="gap-2 bg-gradient-to-r from-success to-success/80 hover:from-success/90 hover:to-success/70"
                   >
+                    <Play className="h-4 w-4" />
                     {startMutation.isPending ? '启动中...' : '启动服务'}
-                  </button>
+                  </Button>
                 ) : (
                   <>
-                    <button
+                    <Button
                       onClick={() => restartMutation.mutate()}
                       disabled={restartMutation.isPending}
-                      className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
+                      variant="outline"
+                      className="gap-2 border-primary/30 hover:bg-primary/10"
                     >
+                      <RotateCw className="h-4 w-4" />
                       {restartMutation.isPending ? '重启中...' : '重启服务'}
-                    </button>
-                    <button
+                    </Button>
+                    <Button
                       onClick={() => stopMutation.mutate()}
                       disabled={stopMutation.isPending}
-                      className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50"
+                      variant="destructive"
+                      className="gap-2"
                     >
+                      <Square className="h-4 w-4" />
                       {stopMutation.isPending ? '停止中...' : '停止服务'}
-                    </button>
+                    </Button>
                   </>
                 )}
               </div>
             </div>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
       </div>
 
       {/* 统计信息 */}
       <div className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-        <div className="bg-white dark:bg-gray-800 overflow-hidden shadow rounded-lg">
-          <div className="p-5">
-            <div className="flex items-center">
-              <div className="flex-shrink-0">
-                <svg
-                  className="h-6 w-6 text-blue-600"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
-                  />
-                </svg>
+        <Card className="group hover:shadow-lg hover:shadow-primary/5 transition-all hover:-translate-y-1">
+          <CardContent className="p-6">
+            <div className="flex items-center gap-4">
+              <div className="flex-shrink-0 rounded-xl bg-primary/10 p-3 group-hover:bg-primary/20 transition-colors">
+                <ListTodo className="h-6 w-6 text-primary" />
               </div>
-              <div className="ml-5 w-0 flex-1">
-                <dl>
-                  <dt className="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">
-                    总任务数
-                  </dt>
-                  <dd className="text-lg font-semibold text-gray-900 dark:text-white">
-                    {status?.stats.totalTasks || 0}
-                  </dd>
-                </dl>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-muted-foreground truncate">
+                  总任务数
+                </p>
+                <p className="text-2xl font-bold text-foreground mt-1">
+                  {status?.stats.totalTasks || 0}
+                </p>
               </div>
             </div>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
 
-        <div className="bg-white dark:bg-gray-800 overflow-hidden shadow rounded-lg">
-          <div className="p-5">
-            <div className="flex items-center">
-              <div className="flex-shrink-0">
-                <svg
-                  className="h-6 w-6 text-green-600"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
+        <Card className="group hover:shadow-lg hover:shadow-success/5 transition-all hover:-translate-y-1">
+          <CardContent className="p-6">
+            <div className="flex items-center gap-4">
+              <div className="flex-shrink-0 rounded-xl bg-success/10 p-3 group-hover:bg-success/20 transition-colors">
+                <CheckCircle2 className="h-6 w-6 text-success" />
               </div>
-              <div className="ml-5 w-0 flex-1">
-                <dl>
-                  <dt className="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">
-                    运行中
-                  </dt>
-                  <dd className="text-lg font-semibold text-gray-900 dark:text-white">
-                    {status?.stats.activeTasks || 0}
-                  </dd>
-                </dl>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-muted-foreground truncate">
+                  运行中
+                </p>
+                <p className="text-2xl font-bold text-foreground mt-1">
+                  {status?.stats.activeTasks || 0}
+                </p>
               </div>
             </div>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
 
-        <div className="bg-white dark:bg-gray-800 overflow-hidden shadow rounded-lg">
-          <div className="p-5">
-            <div className="flex items-center">
-              <div className="flex-shrink-0">
-                <svg
-                  className="h-6 w-6 text-yellow-600"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
+        <Card className="group hover:shadow-lg hover:shadow-yellow-500/5 transition-all hover:-translate-y-1">
+          <CardContent className="p-6">
+            <div className="flex items-center gap-4">
+              <div className="flex-shrink-0 rounded-xl bg-yellow-500/10 p-3 group-hover:bg-yellow-500/20 transition-colors">
+                <PauseCircle className="h-6 w-6 text-yellow-600 dark:text-yellow-500" />
               </div>
-              <div className="ml-5 w-0 flex-1">
-                <dl>
-                  <dt className="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">
-                    已暂停
-                  </dt>
-                  <dd className="text-lg font-semibold text-gray-900 dark:text-white">
-                    {status?.stats.pausedTasks || 0}
-                  </dd>
-                </dl>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-muted-foreground truncate">
+                  已暂停
+                </p>
+                <p className="text-2xl font-bold text-foreground mt-1">
+                  {status?.stats.pausedTasks || 0}
+                </p>
               </div>
             </div>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
 
-        <div className="bg-white dark:bg-gray-800 overflow-hidden shadow rounded-lg">
-          <div className="p-5">
-            <div className="flex items-center">
-              <div className="flex-shrink-0">
-                <svg
-                  className="h-6 w-6 text-red-600"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
+        <Card className="group hover:shadow-lg hover:shadow-destructive/5 transition-all hover:-translate-y-1">
+          <CardContent className="p-6">
+            <div className="flex items-center gap-4">
+              <div className="flex-shrink-0 rounded-xl bg-destructive/10 p-3 group-hover:bg-destructive/20 transition-colors">
+                <XCircle className="h-6 w-6 text-destructive" />
               </div>
-              <div className="ml-5 w-0 flex-1">
-                <dl>
-                  <dt className="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">
-                    错误
-                  </dt>
-                  <dd className="text-lg font-semibold text-gray-900 dark:text-white">
-                    {status?.stats.errorTasks || 0}
-                  </dd>
-                </dl>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-muted-foreground truncate">
+                  错误
+                </p>
+                <p className="text-2xl font-bold text-foreground mt-1">
+                  {status?.stats.errorTasks || 0}
+                </p>
               </div>
             </div>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
       </div>
 
       {/* 说明信息 */}
       <div className="mt-8">
-        <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
-          <div className="flex">
-            <div className="flex-shrink-0">
-              <svg
-                className="h-5 w-5 text-blue-400"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            </div>
-            <div className="ml-3">
-              <h3 className="text-sm font-medium text-blue-800 dark:text-blue-200">
-                使用说明
-              </h3>
-              <div className="mt-2 text-sm text-blue-700 dark:text-blue-300">
-                <ul className="list-disc pl-5 space-y-1">
-                  <li>启动服务后，所有状态为"运行中"的任务将自动开始执行</li>
-                  <li>实时监控任务（加密货币）将持续监听市场信号</li>
-                  <li>定时扫描任务（A股）将按照设定的时间周期执行</li>
-                  <li>重启服务将停止所有任务并重新加载配置</li>
-                </ul>
+        <Card className="border-primary/20 bg-primary/5 backdrop-blur-sm">
+          <CardContent className="p-6">
+            <div className="flex gap-4">
+              <div className="flex-shrink-0">
+                <div className="rounded-lg bg-primary/10 p-2">
+                  <Info className="h-5 w-5 text-primary" />
+                </div>
+              </div>
+              <div className="flex-1">
+                <h3 className="text-sm font-semibold text-foreground">
+                  使用说明
+                </h3>
+                <div className="mt-3 text-sm text-muted-foreground">
+                  <ul className="space-y-2">
+                    <li className="flex items-start gap-2">
+                      <CheckCircle2 className="h-4 w-4 text-success mt-0.5 flex-shrink-0" />
+                      <span>启动服务后，所有状态为"运行中"的任务将自动开始执行</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <CheckCircle2 className="h-4 w-4 text-success mt-0.5 flex-shrink-0" />
+                      <span>实时监控任务（加密货币）将持续监听市场信号</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <CheckCircle2 className="h-4 w-4 text-success mt-0.5 flex-shrink-0" />
+                      <span>定时扫描任务（A股）将按照设定的时间周期执行</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <CheckCircle2 className="h-4 w-4 text-success mt-0.5 flex-shrink-0" />
+                      <span>重启服务将停止所有任务并重新加载配置</span>
+                    </li>
+                  </ul>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );

@@ -4,7 +4,7 @@ model DingTalkWebhook {
   name        String // Webhook 名称（如：交易团队群、VIP客户群）
   description String? // 描述
   webhookUrl  String // 钉钉 Webhook URL
-  secret      String? // 加签密钥（可选）
+  safeWord    String @default("TRADING") // 安全词（必填，钉钉自定义关键词）
   
   // 状态
   isActive    Boolean  @default(true) // 是否启用

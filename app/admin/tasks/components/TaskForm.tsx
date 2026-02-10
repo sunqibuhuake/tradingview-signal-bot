@@ -137,6 +137,8 @@ export function TaskForm({ task, mode }: TaskFormProps) {
                 ...formData,
                 indicatorIds: [formData.indicatorId], // 转换为数组
                 indicatorId: undefined, // 移除单个 indicatorId 字段
+                // 如果 dingTalkWebhookId 为空字符串，转换为 null
+                dingTalkWebhookId: formData.dingTalkWebhookId || null,
             };
 
             const url = mode === 'create' 
@@ -297,7 +299,7 @@ export function TaskForm({ task, mode }: TaskFormProps) {
                                 <Select
                                     value={formData.timeframe}
                                     onValueChange={(value) =>
-                                        setFormData({ ...formData, timeframe: value })
+                                        setFormData({ ...formData, timeframe: value  })
                                     }
                                 >
                                     <SelectTrigger id="timeframe">
@@ -386,16 +388,19 @@ export function TaskForm({ task, mode }: TaskFormProps) {
                         <div className="space-y-2">
                             <Label htmlFor="webhook">钉钉 Webhook</Label>
                             <Select
-                                value={formData.dingTalkWebhookId}
+                                value={formData.dingTalkWebhookId || undefined}
                                 onValueChange={(value) =>
-                                    setFormData({ ...formData, dingTalkWebhookId: value })
+                                    setFormData({ 
+                                        ...formData, 
+                                        dingTalkWebhookId: value === '__none__' ? '' : value 
+                                    })
                                 }
                             >
                                 <SelectTrigger id="webhook">
-                                    <SelectValue placeholder="选择通知目标（可选）" />
+                                    <SelectValue placeholder="选择通知目标" />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="">不使用 Webhook</SelectItem>
+                                    <SelectItem value="__none__">不使用 Webhook</SelectItem>
                                     {webhooksData?.webhooks?.map((webhook) => (
                                         <SelectItem key={webhook.id} value={webhook.id}>
                                             {webhook.name}

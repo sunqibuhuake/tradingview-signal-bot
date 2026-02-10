@@ -65,12 +65,12 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { name, description, webhookUrl, secret, isActive } = body;
+    const { name, description, webhookUrl, safeWord, isActive } = body;
 
     // 验证必填字段
-    if (!name || !webhookUrl) {
+    if (!name || !webhookUrl || !safeWord) {
       return NextResponse.json(
-        { error: 'Missing required fields' },
+        { error: 'Missing required fields: name, webhookUrl, and safeWord are required' },
         { status: 400 }
       );
     }
@@ -91,7 +91,7 @@ export async function POST(request: NextRequest) {
         name,
         description,
         webhookUrl,
-        secret,
+        safeWord,
         isActive: isActive ?? true,
       },
     });

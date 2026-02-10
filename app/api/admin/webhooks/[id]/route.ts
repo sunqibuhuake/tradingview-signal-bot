@@ -48,7 +48,7 @@ export async function PATCH(
   try {
     const { id } = await context.params;
     const body = await request.json();
-    const { name, description, webhookUrl, secret, isActive } = body;
+    const { name, description, webhookUrl, safeWord, isActive } = body;
 
     // 验证 Webhook 是否存在
     const existingWebhook = await prisma.dingTalkWebhook.findUnique({
@@ -78,7 +78,7 @@ export async function PATCH(
         ...(name && { name }),
         ...(description !== undefined && { description }),
         ...(webhookUrl && { webhookUrl }),
-        ...(secret !== undefined && { secret }),
+        ...(safeWord && { safeWord }),
         ...(isActive !== undefined && { isActive }),
       },
     });

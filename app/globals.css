@@ -1,37 +1,179 @@
 @import "tailwindcss";
 
 @theme {
-  /* Light Theme - Forced for entire application */
+  /* Financial Trading Theme - Modern & Tech */
+  
+  /* Light Theme */
   --color-background: hsl(0 0% 100%);
-  --color-foreground: hsl(222.2 84% 4.9%);
+  --color-foreground: hsl(240 10% 3.9%);
   --color-card: hsl(0 0% 100%);
-  --color-card-foreground: hsl(222.2 84% 4.9%);
+  --color-card-foreground: hsl(240 10% 3.9%);
   --color-popover: hsl(0 0% 100%);
-  --color-popover-foreground: hsl(222.2 84% 4.9%);
-  --color-primary: hsl(221.2 83.2% 53.3%);
-  --color-primary-foreground: hsl(210 40% 98%);
-  --color-secondary: hsl(210 40% 96.1%);
-  --color-secondary-foreground: hsl(222.2 47.4% 11.2%);
-  --color-muted: hsl(210 40% 96.1%);
-  --color-muted-foreground: hsl(215.4 16.3% 46.9%);
-  --color-accent: hsl(210 40% 96.1%);
-  --color-accent-foreground: hsl(222.2 47.4% 11.2%);
+  --color-popover-foreground: hsl(240 10% 3.9%);
+  
+  /* Primary - Financial Blue/Cyan (科技金融蓝) */
+  --color-primary: hsl(199 89% 48%);
+  --color-primary-foreground: hsl(0 0% 100%);
+  
+  /* Secondary - Neutral Gray */
+  --color-secondary: hsl(240 4.8% 95.9%);
+  --color-secondary-foreground: hsl(240 5.9% 10%);
+  
+  /* Muted */
+  --color-muted: hsl(240 4.8% 95.9%);
+  --color-muted-foreground: hsl(240 3.8% 46.1%);
+  
+  /* Accent - Vibrant Gradient */
+  --color-accent: hsl(199 89% 48%);
+  --color-accent-foreground: hsl(0 0% 100%);
+  
+  /* Status Colors */
+  --color-success: hsl(142 76% 36%);
+  --color-success-foreground: hsl(0 0% 100%);
+  --color-warning: hsl(38 92% 50%);
+  --color-warning-foreground: hsl(0 0% 100%);
   --color-destructive: hsl(0 84.2% 60.2%);
-  --color-destructive-foreground: hsl(210 40% 98%);
-  --color-border: hsl(214.3 31.8% 91.4%);
-  --color-input: hsl(214.3 31.8% 91.4%);
-  --color-ring: hsl(221.2 83.2% 53.3%);
-  --radius: 0.5rem;
+  --color-destructive-foreground: hsl(0 0% 100%);
+  
+  /* Trading Specific */
+  --color-bullish: hsl(142 76% 36%);
+  --color-bearish: hsl(0 84.2% 60.2%);
+  
+  /* Borders & Inputs */
+  --color-border: hsl(240 5.9% 90%);
+  --color-input: hsl(240 5.9% 90%);
+  --color-ring: hsl(199 89% 48%);
+  
+  --radius: 0.75rem;
 }
 
 @layer base {
   * {
-    border-color: var(--color-border);
+    @apply border-border;
   }
   
   body {
-    background-color: var(--color-background);
-    color: var(--color-foreground);
+    @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
+  }
+  
+  /* Dark Theme Variables */
+  .dark {
+    --color-background: hsl(240 10% 3.9%);
+    --color-foreground: hsl(0 0% 98%);
+    --color-card: hsl(240 10% 7%);
+    --color-card-foreground: hsl(0 0% 98%);
+    --color-popover: hsl(240 10% 7%);
+    --color-popover-foreground: hsl(0 0% 98%);
+    
+    --color-primary: hsl(199 89% 48%);
+    --color-primary-foreground: hsl(0 0% 100%);
+    
+    --color-secondary: hsl(240 3.7% 15.9%);
+    --color-secondary-foreground: hsl(0 0% 98%);
+    
+    --color-muted: hsl(240 3.7% 15.9%);
+    --color-muted-foreground: hsl(240 5% 64.9%);
+    
+    --color-accent: hsl(199 89% 48%);
+    --color-accent-foreground: hsl(0 0% 100%);
+    
+    --color-success: hsl(142 76% 36%);
+    --color-warning: hsl(38 92% 50%);
+    --color-destructive: hsl(0 72% 51%);
+    
+    --color-bullish: hsl(142 76% 36%);
+    --color-bearish: hsl(0 72% 51%);
+    
+    --color-border: hsl(240 3.7% 15.9%);
+    --color-input: hsl(240 3.7% 15.9%);
+    --color-ring: hsl(199 89% 48%);
+  }
+  
+  /* Smooth Transitions */
+  * {
+    @apply transition-colors duration-200;
+  }
+  
+  /* Custom Scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    @apply bg-muted-foreground/20 rounded-full;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-muted-foreground/30;
+  }
+  
+  /* Gradient Backgrounds */
+  .gradient-primary {
+    background: linear-gradient(135deg, hsl(199 89% 48%) 0%, hsl(217 91% 60%) 100%);
+  }
+  
+  .gradient-success {
+    background: linear-gradient(135deg, hsl(142 76% 36%) 0%, hsl(160 84% 39%) 100%);
+  }
+  
+  .gradient-warning {
+    background: linear-gradient(135deg, hsl(38 92% 50%) 0%, hsl(45 93% 47%) 100%);
+  }
+  
+  .gradient-danger {
+    background: linear-gradient(135deg, hsl(0 84% 60%) 0%, hsl(348 83% 47%) 100%);
+  }
+  
+  /* Glass Morphism Effect */
+  .glass {
+    @apply bg-background/80 backdrop-blur-xl border border-border/50;
+  }
+  
+  /* Card Hover Effect */
+  .card-hover {
+    @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
+  }
+  
+  /* Shimmer Animation for Loading */
+  @keyframes shimmer {
+    0% {
+      background-position: -1000px 0;
+    }
+    100% {
+      background-position: 1000px 0;
+    }
+  }
+  
+  .animate-shimmer {
+    animation: shimmer 2s infinite linear;
+    background: linear-gradient(
+      to right,
+      transparent 0%,
+      rgba(255, 255, 255, 0.1) 50%,
+      transparent 100%
+    );
+    background-size: 1000px 100%;
+  }
+  
+  /* Pulse Animation for Status Indicators */
+  @keyframes pulse-glow {
+    0%, 100% {
+      opacity: 1;
+      box-shadow: 0 0 0 0 currentColor;
+    }
+    50% {
+      opacity: 0.8;
+      box-shadow: 0 0 12px 4px currentColor;
+    }
+  }
+  
+  .animate-pulse-glow {
+    animation: pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   }
 }

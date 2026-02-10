@@ -20,6 +20,7 @@ export async function GET(
       where: { id },
       include: {
         market: true,
+        dingTalkWebhook: true,
         taskIndicators: {
           include: {
             indicator: true,

@@ -25,12 +25,35 @@ export function Providers({ children }: { children: React.ReactNode }) {
       <QueryClientProvider client={queryClient}>
         <ThemeProvider 
           attribute="class" 
-          defaultTheme="light" 
-          enableSystem={false}
-          forcedTheme="light"
+          defaultTheme="system" 
+          enableSystem={true}
+          disableTransitionOnChange={false}
         >
           {children}
-          <Toaster position="top-right" />
+          <Toaster 
+            position="top-right"
+            toastOptions={{
+              className: 'glass',
+              style: {
+                borderRadius: '12px',
+                background: 'var(--color-card)',
+                color: 'var(--color-foreground)',
+                border: '1px solid var(--color-border)',
+              },
+              success: {
+                iconTheme: {
+                  primary: 'var(--color-success)',
+                  secondary: 'white',
+                },
+              },
+              error: {
+                iconTheme: {
+                  primary: 'var(--color-destructive)',
+                  secondary: 'white',
+                },
+              },
+            }}
+          />
         </ThemeProvider>
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
