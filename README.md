@@ -106,13 +106,42 @@ pnpm dev
 
 ### Web 平台模式 (推荐)
 
+#### 开发模式
 ```bash
-# 开发模式
 pnpm dev
+```
 
-# 生产模式
-pnpm build:next
-pnpm start:next
+#### 生产模式 - PM2 部署（推荐）
+
+```bash
+# 1. 构建应用
+pnpm build
+
+# 2. 使用 PM2 启动
+pnpm pm2:start
+
+# 3. 查看状态
+pnpm pm2:status
+
+# 4. 查看日志
+pnpm pm2:logs
+```
+
+**自动化部署脚本**：
+```bash
+# 一键部署（拉取代码、构建、重启）
+./scripts/deploy.sh
+
+# 配置开机自启动
+sudo ./scripts/setup-startup.sh
+```
+
+详细说明请查看 **[PM2 部署指南](./docs/PM2_DEPLOYMENT.md)** 📖
+
+#### 生产模式 - 传统方式
+```bash
+pnpm build
+pnpm start
 ```
 
 访问管理后台创建和管理任务。
@@ -201,8 +230,27 @@ pnpm dev:crypto         # 加密货币 Bot
 
 ### 构建
 ```bash
-pnpm build:next         # 构建 Web 平台
+pnpm build              # 构建 Web 平台（推荐使用）
+pnpm build:next         # 构建 Web 平台（同上）
 pnpm build:bot          # 构建 Bot
+```
+
+### 生产部署
+```bash
+# PM2 部署（推荐）
+pnpm pm2:start          # 启动应用
+pnpm pm2:stop           # 停止应用
+pnpm pm2:restart        # 重启应用
+pnpm pm2:logs           # 查看日志
+pnpm pm2:status         # 查看状态
+pnpm pm2:monit          # 实时监控
+
+# 自动化脚本
+./scripts/deploy.sh           # 一键部署
+sudo ./scripts/setup-startup.sh  # 配置开机自启
+
+# 传统方式
+pnpm start              # 启动 Web 平台
 ```
 
 ### 数据库
@@ -210,6 +258,7 @@ pnpm build:bot          # 构建 Bot
 pnpm prisma:studio      # 打开数据库 GUI
 pnpm prisma:migrate     # 运行迁移
 pnpm prisma:generate    # 生成 Prisma Client
+pnpm prisma:push        # 同步数据库
 pnpm prisma:seed        # 初始化数据
 ```
 
@@ -223,9 +272,11 @@ pnpm clean              # 清理构建文件
 ## 📚 文档
 
 - **[快速开始](./docs/QUICK_START.md)** - 10 分钟快速上手
+- **[PM2 部署指南](./docs/PM2_DEPLOYMENT.md)** - 生产环境部署 🆕
 - **[架构说明](./docs/ARCHITECTURE.md)** - 完整技术架构
 - **[项目原理](./docs/PROJECT_GUIDE.md)** - 核心实现原理
 - **[升级指南](./docs/SAAS_UPGRADE_GUIDE.md)** - SaaS 升级详情
+- **[信号去重机制](./docs/SIGNAL_DEDUPLICATION.md)** - 信号去重说明 🆕
 - **[日志功能](./docs/LOGGER_FEATURES.md)** - 日志系统说明
 
 ## 🎯 管理后台功能

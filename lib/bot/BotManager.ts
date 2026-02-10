@@ -32,7 +32,9 @@ class BotManager {
     console.log('🤖 启动 Bot 服务...');
 
     try {
-      this.executor = new TaskExecutor();
+      // 创建 TaskExecutor，使用 5 分钟的去重窗口期
+      // 这个配置对加密货币实时监控很重要，可以避免频繁触发重复信号
+      this.executor = new TaskExecutor(5 * 60 * 1000);
 
       // 加载所有 ACTIVE 状态的任务
       const activeTasks = await prisma.task.findMany({

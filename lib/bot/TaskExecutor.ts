@@ -2,6 +2,7 @@ import { PrismaClient, MarketType, ExecutionMode, TaskStatus, Timeframe } from '
 import TradingView, { SearchMarketResult, TimeFrame as TvTimeFrame } from '@mathieuc/tradingview';
 import { TradingViewService } from '@/src/services/TradingViewService';
 import { NotificationService } from '@/src/services/NotificationService';
+import { SignalManager } from '@/src/services/SignalManager';
 import prisma from '@/lib/prisma';
 import { SignalTask, TasksResponse } from '@/app/admin/tasks/types';
 
@@ -13,11 +14,16 @@ export class TaskExecutor {
   private tradingViewService: TradingViewService;
   private activeCharts: Map<string, any>; // taskId -> chart
   private runningTasks: Set<string>; // taskId set
+  private signalManager: SignalManager; // 信号去重管理器
 
-  constructor() {
+  constructor(duplicateWindow: number = 5 * 60 * 1000) {
     this.tradingViewService = new TradingViewService();
     this.activeCharts = new Map();
     this.runningTasks = new Set();
+    // 信号去重窗口期（默认 5 分钟）
+    // 加密货币市场建议: 5-20 分钟
+    // A股市场建议: 0（仅检查方向变化）
+    this.signalManager = new SignalManager(duplicateWindow);
   }
 
   /**
@@ -256,9 +262,25 @@ export class TaskExecutor {
     chartItem: any
   ): Promise<void> {
     try {
+      // 1️⃣ 先检查是否有信号触发
+      if (!indItem.Buy_Alert && !indItem.Sell_Alert) {
+        return; // 没有买入或卖出信号，跳过
+      }
+
       // 提取信号数据
       const action = indItem.Buy_Alert ? 'Buy' : 'Sell';
       const price = chartItem.close;
+      const currentTime = Date.now();
+
+      // 2️⃣ 检查是否为重复信号（使用任务ID和市场ID作为唯一标识）
+      const signalKey = `${task.id}_${task.market.code}`;
+      if (!this.signalManager.shouldProcessSignal(signalKey, action, currentTime)) {
+        console.log(`[去重] 跳过重复信号: ${task.market.name} - ${action}`);
+        return;
+      }
+
+      // 3️⃣ 记录信号，防止后续重复处理
+      this.signalManager.recordSignal(signalKey, action, currentTime);
 
       // 创建执行记录
       const execution = await prisma.taskExecution.create({

@@ -5,9 +5,11 @@
   "main": "dist/bot-cn/index.js",
   "scripts": {
     "dev": "next dev",
+    "build": "next build",
     "build:next": "next build",
-    "start:next": "next start",
     "build:bot": "tsc",
+    "start": "next start",
+    "start:next": "next start",
     "start:cn": "node dist/bot-cn/index.js",
     "start:crypto": "node dist/bot-crypto/index.js",
     "dev:cn": "tsx src/bot-cn/index.ts",
@@ -23,7 +25,14 @@
     "prisma:push": "prisma db push",
     "prisma:seed": "tsx prisma/seed.ts",
     "seed:markets": "tsx scripts/bot/seed-markets.ts",
-    "seed:webhooks": "tsx scripts/seed-webhooks.ts"
+    "seed:webhooks": "tsx scripts/seed-webhooks.ts",
+    "pm2:start": "pm2 start ecosystem.config.js",
+    "pm2:stop": "pm2 stop ecosystem.config.js",
+    "pm2:restart": "pm2 restart ecosystem.config.js",
+    "pm2:delete": "pm2 delete ecosystem.config.js",
+    "pm2:logs": "pm2 logs",
+    "pm2:monit": "pm2 monit",
+    "pm2:status": "pm2 status"
   },
   "dependencies": {
     "@mathieuc/tradingview": "^3.5.2",
