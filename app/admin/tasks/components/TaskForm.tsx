@@ -18,7 +18,7 @@ import { Switch } from '@/components/ui/switch';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { toast } from 'react-hot-toast';
 import { Loader2, ArrowLeft } from 'lucide-react';
-import { Market, Indicator, DingTalkWebhook } from '@/generated/prisma';
+import { Market, Indicator, DingTalkWebhook, Timeframe } from '@/generated/prisma';
 import type { SignalTask } from '../types';
 
 // API 响应类型定义
@@ -299,7 +299,7 @@ export function TaskForm({ task, mode }: TaskFormProps) {
                                 <Select
                                     value={formData.timeframe}
                                     onValueChange={(value) =>
-                                        setFormData({ ...formData, timeframe: value  })
+                                        setFormData({ ...formData, timeframe: value as Timeframe })
                                     }
                                 >
                                     <SelectTrigger id="timeframe">

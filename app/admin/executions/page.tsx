@@ -44,6 +44,11 @@ const statusConfig = {
     variant: 'destructive' as const,
     className: 'bg-destructive/10 text-destructive border-destructive/20',
   },
+  TIMEOUT: {
+    label: '超时',
+    variant: 'secondary' as const,
+    className: 'bg-yellow-500/10 text-yellow-600 dark:text-yellow-500 border-yellow-500/20',
+  },
   PARTIAL: {
     label: '部分成功',
     variant: 'secondary' as const,
