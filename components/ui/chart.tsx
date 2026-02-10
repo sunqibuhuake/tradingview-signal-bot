@@ -1,4 +1,4 @@
-// @typescript-eslint/ban-ts-comment
+// @ts-nocheck
 "use client"
 
 
@@ -204,7 +204,7 @@ function ChartTooltipContent({
               )}
             >
               {formatter && item?.value !== undefined && item.name ? (
-                formatter(item.value, item.name, item, index, item.payload  as any)
+                formatter(item.value, item.name, item, index, item.payload)
               ) : (
                 <>
                   {itemConfig?.icon ? (

@@ -27,7 +27,10 @@ export class CryptoTradingBot {
     logger.success('配置验证通过');
 
     this.tradingViewService = new TradingViewService();
-    this.notificationService = new NotificationService(process.env.DINGTALK_WEBHOOK as string);
+    this.notificationService = new NotificationService({
+      webhookUrl: process.env.DINGTALK_WEBHOOK as string,
+      safeWord: process.env.DINGTALK_SAFE_WORD as string,
+    });
     this.signalManager = new SignalManager(config.bot.crypto.duplicateWindow);
     this.activeCharts = new Set();
 
