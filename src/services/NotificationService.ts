@@ -4,7 +4,7 @@ import type { ActionType } from '../types';
 
 export interface NotificationPayload {
   market: string;
-  action: ActionType;
+  action: ActionType | 'Ignore';
   price: number;
   indicatorName: string;
   timestamp: Date;
@@ -59,18 +59,32 @@ export class NotificationService {
    */
   async sendCryptoSignal(payload: NotificationPayload): Promise<void> {
     const { market, action, price, indicatorName, timestamp } = payload;
-    const actionType = action === 'Buy' ? 'Long' : 'Short';
 
-    const content = [
-      `【${this.safeWord}】Crypto Trading Signal`,
-      `交易对：${market}`,
-      `操作：${action} / ${actionType}`,
-      `价格：${price}`,
-      `时间：${dayjs(timestamp).format('YYYY-MM-DD HH:mm:ss')}`,
-      `信号指标：5min-${indicatorName}`,
-    ].join('\n');
+    if (action === 'Ignore') {
+      await this.send(
+        [
+          `【${this.safeWord}】`,
+          `交易对：${market}`,
+          `操作：忽略`,
+          `时间：${dayjs(timestamp).format('YYYY-MM-DD HH:mm:ss')}`,
+          `信号指标：${indicatorName}`,
+        ].join('\n'),
+      )
+    } else {
+      const actionType = action === 'Buy' ? 'Long' : 'Short';
 
-    await this.send(content);
+      const content = [
+        `【${this.safeWord}】`,
+        `交易对：${market}`,
+        `操作：${action} / ${actionType}`,
+        `价格：${price}`,
+        `时间：${dayjs(timestamp).format('YYYY-MM-DD HH:mm:ss')}`,
+        `信号指标：5min-${indicatorName}`,
+      ].join('\n');
+
+      await this.send(content);
+    }
+
   }
 
   /**

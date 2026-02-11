@@ -17,7 +17,7 @@ export class SignalManager {
    */
   shouldProcessSignal(
     marketId: string,
-    action: ActionType,
+    action: ActionType | 'Ignore',
     currentTime: number = Date.now()
   ): boolean {
     const lastSignal = this.signalRecords.get(marketId);

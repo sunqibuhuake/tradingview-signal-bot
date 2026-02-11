@@ -1,4 +1,4 @@
-import { PrismaClient, MarketType, ExecutionMode, TaskStatus, Timeframe } from '../../generated/prisma';
+import { PrismaClient, MarketType, ExecutionMode, TaskStatus, Timeframe, Task } from '../../generated/prisma';
 import TradingView, { SearchMarketResult, TimeFrame as TvTimeFrame } from '@mathieuc/tradingview';
 import { TradingViewService } from '@/src/services/TradingViewService';
 import { NotificationService } from '@/src/services/NotificationService';
@@ -133,6 +133,7 @@ export class TaskExecutor {
    */
   private async startRealtimeTask(task: SignalTask, indInfo: any, indic: any): Promise<void> {
     try {
+
       // 搜索市场
       const markets = await this.tradingViewService.searchMarkets(
         task.market.symbol,
@@ -161,6 +162,43 @@ export class TaskExecutor {
           range: task.range,
         },
         async (indItem, chartItem) => {
+
+// indItem ===>
+//    {
+//   '$time': 1770712020,
+//   FAST_EMA: 69310.50947785689,
+//   SLOW_EMA: 69587.48010579325,
+//   fill_0_colorer: 1,
+//   fill_1_colorer: 2,
+//   FAST_EMA1: 69086.14391755861,
+//   SLOW_EMA1: 69310.50947785689,
+//   fill_2_colorer: 1,
+//   fill_3_colorer: 2,
+//   FAST_EMA2: 68961.12021061426,
+//   SLOW_EMA2: 69086.14391755861,
+//   fill_4_colorer: 1,
+//   fill_5_colorer: 3,
+//   FAST_EMA3: 68948.48557806309,
+//   SLOW_EMA3: 68961.12021061426,
+//   fill_6_colorer: 1,
+//   fill_7_colorer: 3,
+//   Show_VWAP: 69501.33190915249,
+//   Previous_Day_High: 71453.53,
+//   Previous_Day_Low: 68308,
+//   Sell_Signal: 0,
+//   Buy_Signal: 0,
+//   Buy_Alert: 0,
+//   Sell_Alert: 0
+// } 
+// chartItem ===>
+// {
+//   time: 1770712020,
+//   open: 69032.52,
+//   close: 69055.48,
+//   max: 69100,
+//   min: 69032.52,
+//   volume: 24.71
+// }
           await this.handleIndicatorUpdate(task, indInfo, indItem, chartItem);
         }
       );
@@ -256,19 +294,20 @@ export class TaskExecutor {
    * 处理指标更新
    */
   private async handleIndicatorUpdate(
-    task: any,
+    task: SignalTask,
     indInfo: any,
     indItem: any,
     chartItem: any
   ): Promise<void> {
     try {
       // 1️⃣ 先检查是否有信号触发
-      if (!indItem.Buy_Alert && !indItem.Sell_Alert) {
-        return; // 没有买入或卖出信号，跳过
-      }
+      // if (!indItem.Buy_Alert && !indItem.Sell_Alert) {
+      //   console.log(`[过滤] 跳过无信号触发: ${task.market.name}`);
+      //   return; // 没有买入或卖出信号，跳过
+      // }
 
       // 提取信号数据
-      const action = indItem.Buy_Alert ? 'Buy' : 'Sell';
+      const action = indItem.Buy_Alert ? 'Buy' : indItem.Sell_Alert ? 'Sell' : 'Ignore';
       const price = chartItem.close;
       const currentTime = Date.now();
 
@@ -279,9 +318,10 @@ export class TaskExecutor {
         return;
       }
 
+      if (action !== 'Ignore') {
       // 3️⃣ 记录信号，防止后续重复处理
       this.signalManager.recordSignal(signalKey, action, currentTime);
-
+      }
       // 创建执行记录
       const execution = await prisma.taskExecution.create({
         data: {
