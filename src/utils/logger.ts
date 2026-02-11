@@ -1,5 +1,6 @@
 import chalk from 'chalk';
 import dayjs from 'dayjs';
+import { ActionType } from '../types';
 
 export enum LogLevel {
   DEBUG = 0,
@@ -209,7 +210,7 @@ class Logger {
    */
   signal(data: {
     market: string;
-    action: 'Buy' | 'Sell';
+    action: ActionType
     price: number;
     indicator: string;
     confidence?: number;

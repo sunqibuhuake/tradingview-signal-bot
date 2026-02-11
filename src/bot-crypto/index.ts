@@ -3,7 +3,7 @@ import { TradingViewService } from '../services/TradingViewService';
 import { NotificationService } from '../services/NotificationService';
 import { SignalManager } from '../services/SignalManager';
 import { logger } from '../utils/logger';
-import type { SearchMarketResult, ActionType } from '../types';
+import { SearchMarketResult, ActionType } from '../types';
 
 /**
  * Crypto Trading Signal Bot
@@ -77,7 +77,7 @@ export class CryptoTradingBot {
         return;
       }
 
-      const action: ActionType = indItem.Buy_Alert ? 'Buy' : 'Sell';
+      const action: ActionType = indItem.Buy_Alert ? ActionType.Buy : indItem.Sell_Alert ? ActionType.Sell : ActionType.Neutral;
       const currentTime = Date.now();
 
       // Check if signal should be processed

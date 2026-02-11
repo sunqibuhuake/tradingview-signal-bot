@@ -5,6 +5,7 @@ import { NotificationService } from '@/src/services/NotificationService';
 import { SignalManager } from '@/src/services/SignalManager';
 import prisma from '@/lib/prisma';
 import { SignalTask, TasksResponse } from '@/app/admin/tasks/types';
+import { ActionType } from '@/src/types';
 
 /**
  * Task Executor - 执行监控任务
@@ -312,7 +313,7 @@ export class TaskExecutor {
       // }
 
       // 提取信号数据
-      const action = indItem.Buy_Alert ? 'Buy' : indItem.Sell_Alert ? 'Sell' : 'Neutral';
+      const action = indItem.Buy_Alert ? ActionType.Buy : indItem.Sell_Alert ? ActionType.Sell : ActionType.Neutral;
       const price = chartItem.close;
       const currentTime = Date.now();
 
@@ -376,7 +377,6 @@ export class TaskExecutor {
           const notificationService = await this.getNotificationService(task);
           
           if (notificationService) {
-
                await notificationService.sendCryptoSignal({
                 market:  marketKey,
                 action,

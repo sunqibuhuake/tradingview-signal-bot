@@ -50,7 +50,13 @@ export interface SignalRecord {
 
 export type SignalRecordMap = Record<string, SignalRecord | ActionType>;
 
-export type ActionType = 'Buy' | 'Sell' | 'Neutral'
+// export type ActionType = 'Buy' | 'Sell' | 'Neutral'
+
+export enum ActionType {
+  Buy = 'Buy',
+  Sell = 'Sell',
+  Neutral = 'Neutral',
+}
 
 // Re-export types from tradingview
 export type { SearchMarketResult, SearchIndicatorResult } from '@mathieuc/tradingview';

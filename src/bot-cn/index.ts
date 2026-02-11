@@ -5,7 +5,7 @@ import { NotificationService } from '../services/NotificationService';
 import { SignalManager } from '../services/SignalManager';
 import { logger } from '../utils/logger';
 import { loadJsonFile } from '../utils/fileLoader';
-import type { Stock, ActionType } from '../types';
+import { Stock, ActionType } from '../types';
 
 /**
  * China Stock Trading Signal Bot
@@ -65,7 +65,7 @@ class ChinaStockBot {
 
       // Check for trading signals
       if (indItem.Buy_Alert || indItem.Sell_Alert) {
-        const action: ActionType = indItem.Buy_Alert ? 'Buy' : 'Sell';
+        const action: ActionType = indItem.Buy_Alert ? ActionType.Buy :  ActionType.Sell
         const marketName = `${stock.name} ${stock.code}`;
 
         // Check if signal should be processed

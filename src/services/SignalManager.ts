@@ -1,4 +1,4 @@
-import type { ActionType, SignalRecord } from '../types';
+import { ActionType, SignalRecord } from '../types';
 
 /**
  * Signal Manager - manages signal deduplication and history
@@ -24,15 +24,22 @@ export class SignalManager {
     console.log(`check signal: ${marketId}, ${action}`)
     const lastSignal = this.signalRecords.get(marketId);
 
+    let duplicateWindow = this.duplicateWindow
+
+    if (action === ActionType.Neutral) {
+      // set  to 2 hours
+      duplicateWindow = 2 * 60 * 60 * 1000
+    }
+
     // No duplicate window, check only action change
-    if (this.duplicateWindow === 0) {
+    if (duplicateWindow === 0) {
       return lastSignal !== action;
     }
 
     // With duplicate window, check both action and time
     if (typeof lastSignal === 'object' && lastSignal.action === action) {
       const timeDelta = currentTime - lastSignal.time;
-      if (timeDelta < this.duplicateWindow) {
+      if (timeDelta < duplicateWindow) {
         return false;
       }
     }
