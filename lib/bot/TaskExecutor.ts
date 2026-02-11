@@ -30,7 +30,7 @@ export class TaskExecutor {
    * 获取任务对应的通知服务
    * 优先使用任务配置的 Webhook，否则使用环境变量
    */
-  private async getNotificationService(task: any): Promise<NotificationService | null> {
+  private async getNotificationService(task: SignalTask): Promise<NotificationService | null> {
     // 获取任务关联的 Webhook
     const taskWithWebhook = await prisma.task.findUnique({
       where: { id: task.id },
@@ -43,12 +43,15 @@ export class TaskExecutor {
     if (taskWithWebhook?.dingTalkWebhook?.isActive) {
       webhookUrl = taskWithWebhook.dingTalkWebhook.webhookUrl;
       safeWord = taskWithWebhook.dingTalkWebhook.safeWord;
-      console.log(`使用任务配置的 Webhook: ${taskWithWebhook.dingTalkWebhook.name}`);
-    } else if (process.env.DINGTALK_WEBHOOK && process.env.DINGTALK_SAFE_WORD) {
-      webhookUrl = process.env.DINGTALK_WEBHOOK;
-      safeWord = process.env.DINGTALK_SAFE_WORD;
-      console.log('使用环境变量配置的 Webhook');
+      console.log(`任务【${task.name}】配置的 Webhook: ${taskWithWebhook.dingTalkWebhook.name}`);
+    } else {
+      throw new Error('未配置 Webhook');
     }
+    // else if (process.env.DINGTALK_WEBHOOK && process.env.DINGTALK_SAFE_WORD) {
+    //   webhookUrl = process.env.DINGTALK_WEBHOOK;
+    //   safeWord = process.env.DINGTALK_SAFE_WORD;
+    //   console.log('使用环境变量配置的 Webhook');
+    // }
 
     if (!webhookUrl || !safeWord) {
       console.warn('未配置 Webhook 或安全词，将跳过通知发送');
@@ -162,6 +165,8 @@ export class TaskExecutor {
           range: task.range,
         },
         async (indItem, chartItem) => {
+          // console.log('indItem', indItem);
+          // console.log('chartItem', chartItem);
 
 // indItem ===>
 //    {
@@ -302,26 +307,28 @@ export class TaskExecutor {
     try {
       // 1️⃣ 先检查是否有信号触发
       // if (!indItem.Buy_Alert && !indItem.Sell_Alert) {
-      //   console.log(`[过滤] 跳过无信号触发: ${task.market.name}`);
+      //   // console.log(`[过滤] 跳过无信号触发: ${task.market.name}`);
       //   return; // 没有买入或卖出信号，跳过
       // }
 
       // 提取信号数据
-      const action = indItem.Buy_Alert ? 'Buy' : indItem.Sell_Alert ? 'Sell' : 'Ignore';
+      const action = indItem.Buy_Alert ? 'Buy' : indItem.Sell_Alert ? 'Sell' : 'Neutral';
       const price = chartItem.close;
       const currentTime = Date.now();
 
       // 2️⃣ 检查是否为重复信号（使用任务ID和市场ID作为唯一标识）
-      const signalKey = `${task.id}_${task.market.code}`;
+      const marketKey = `${task.market.exchange}:${task.market.code}`
+      const signalKey = `${task.id}_${marketKey}`;
       if (!this.signalManager.shouldProcessSignal(signalKey, action, currentTime)) {
-        console.log(`[去重] 跳过重复信号: ${task.market.name} - ${action}`);
+        // console.log(task.market)
+        console.log(`[去重] 跳过重复信号: ${marketKey} - ${action}`);
         return;
       }
 
-      if (action !== 'Ignore') {
+      console.log(`发送===> ${marketKey} - ${action} - ${price}`)
+
       // 3️⃣ 记录信号，防止后续重复处理
       this.signalManager.recordSignal(signalKey, action, currentTime);
-      }
       // 创建执行记录
       const execution = await prisma.taskExecution.create({
         data: {
@@ -351,17 +358,17 @@ export class TaskExecutor {
         },
       });
 
-      console.log(`
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-📊 交易信号
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-标的: ${task.market.name} (${task.market.code})
-操作: ${action === 'Buy' ? '🟢 买入' : '🔴 卖出'}
-价格: ${price}
-指标: ${indInfo.name}
-时间: ${new Date().toLocaleString('zh-CN')}
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-      `);
+//       console.log(`
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 📊 交易信号
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 标的: ${task.market.name} (${task.market.code})
+// 操作: ${action === 'Buy' ? '🟢 买入' : '🔴 卖出'}
+// 价格: ${price}
+// 指标: ${indInfo.name}
+// 时间: ${new Date().toLocaleString('zh-CN')}
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+//       `);
 
       // 发送通知
       if (task.enableNotification) {
@@ -369,23 +376,14 @@ export class TaskExecutor {
           const notificationService = await this.getNotificationService(task);
           
           if (notificationService) {
-            if (task.market.type === MarketType.CRYPTO) {
-              await notificationService.sendCryptoSignal({
-                market: task.market.name,
+
+               await notificationService.sendCryptoSignal({
+                market:  marketKey,
                 action,
                 price,
                 indicatorName: indInfo.name,
                 timestamp: new Date(),
               });
-            } else {
-              await notificationService.sendChinaStockSignal({
-                market: `${task.market.name} ${task.market.code}`,
-                action,
-                price,
-                indicatorName: indInfo.name,
-                timestamp: new Date(),
-              });
-            }
             
             // 更新 Webhook 使用统计
             const taskWithWebhook = await prisma.task.findUnique({
@@ -412,7 +410,7 @@ export class TaskExecutor {
       await prisma.commonLog.create({
         data: {
           action: `SIGNAL_${action.toUpperCase()}`,
-          detail: `${task.market.name} - ${action === 'Buy' ? '买入' : '卖出'}信号，价格: ${price}`,
+          detail: `${marketKey} - ${action === 'Buy' ? '买入' : '卖出'}信号，价格: ${price}`,
           userId: task.createdBy,
         },
       });
@@ -432,10 +430,21 @@ export class TaskExecutor {
 
     const chart = this.activeCharts.get(taskId);
     if (chart) {
-      if (chart.type === 'scheduled') {
-        clearInterval(chart.timer);
-      } else {
-        chart.delete();
+      try {
+        if (chart.type === 'scheduled') {
+          // 定时任务：清除定时器
+          clearInterval(chart.timer);
+          console.log(`已停止定时任务: ${taskId}`);
+        } else if (typeof chart.delete === 'function') {
+          // 实时图表：调用 delete 方法
+          chart.delete();
+          console.log(`已停止实时图表: ${taskId}`);
+        } else {
+          // 其他情况：直接清理
+          console.log(`清理任务: ${taskId}`);
+        }
+      } catch (error) {
+        console.error(`停止任务失败: ${taskId}`, error);
       }
       this.activeCharts.delete(taskId);
     }
@@ -484,7 +493,19 @@ export class TaskExecutor {
    * 关闭服务
    */
   async shutdown(): Promise<void> {
-    await this.stopAll();
-    await this.tradingViewService.close();
+    console.log('🛑 正在关闭 TaskExecutor...');
+    
+    try {
+      await this.stopAll();
+      console.log('✅ 所有任务已停止');
+      
+      await this.tradingViewService.close();
+      console.log('✅ TradingView 服务已关闭');
+      
+      console.log('✅ TaskExecutor 已安全关闭');
+    } catch (error) {
+      console.error('❌ 关闭 TaskExecutor 时发生错误:', error);
+      throw error;
+    }
   }
 }

@@ -187,8 +187,10 @@ export class CryptoTradingBot {
     let closed = 0;
     this.activeCharts.forEach(chart => {
       try {
-        chart.delete();
-        closed++;
+        if (chart && typeof chart.delete === 'function') {
+          chart.delete();
+          closed++;
+        }
       } catch (error) {
         logger.debug('关闭图表会话失败:', error);
       }

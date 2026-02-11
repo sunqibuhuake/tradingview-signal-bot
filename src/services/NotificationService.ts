@@ -1,10 +1,11 @@
 import axios from 'axios';
 import dayjs from 'dayjs';
-import type { ActionType } from '../types';
+import { ActionType } from '../types';
+import { NotificationRateLimiter } from './NotificationRateLimiter';
 
 export interface NotificationPayload {
   market: string;
-  action: ActionType | 'Ignore';
+  action: ActionType;
   price: number;
   indicatorName: string;
   timestamp: Date;
@@ -19,10 +20,13 @@ export interface NotificationConfig {
  * Notification Service - handles sending notifications via DingTalk
  * 支持使用数据库配置的 Webhook 或环境变量的 Webhook
  * 安全词会自动添加到消息内容中，确保通过钉钉自定义关键词验证
+ * 
+ * 内置频率限制：每分钟最多 15 条消息（钉钉限制为 20 条）
  */
 export class NotificationService {
   private webhookUrl: string;
   private safeWord: string;
+  private rateLimiter: NotificationRateLimiter;
 
   constructor(config: NotificationConfig) {
     if (!config.webhookUrl) {
@@ -33,6 +37,7 @@ export class NotificationService {
     }
     this.webhookUrl = config.webhookUrl;
     this.safeWord = config.safeWord;
+    this.rateLimiter = new NotificationRateLimiter(15); // 每分钟最多 15 条
   }
 
   /**
@@ -60,11 +65,12 @@ export class NotificationService {
   async sendCryptoSignal(payload: NotificationPayload): Promise<void> {
     const { market, action, price, indicatorName, timestamp } = payload;
 
-    if (action === 'Ignore') {
+    if (action === 'Neutral') {
       await this.send(
         [
           `【${this.safeWord}】`,
           `交易对：${market}`,
+          `价格：${price}`,
           `操作：忽略`,
           `时间：${dayjs(timestamp).format('YYYY-MM-DD HH:mm:ss')}`,
           `信号指标：${indicatorName}`,
@@ -100,9 +106,18 @@ export class NotificationService {
   }
 
   /**
-   * Core send method
+   * Core send method with rate limiting
    */
   private async send(content: string): Promise<void> {
+    // 检查频率限制
+    if (!this.rateLimiter.canSend()) {
+      const stats = this.rateLimiter.getStats();
+      console.warn(
+        `[限流] 跳过发送通知，已达到限制 (${stats.sentInLastMinute}/${15} 条/分钟)`
+      );
+      throw new Error(`Rate limit exceeded: ${stats.sentInLastMinute}/15 messages per minute`);
+    }
+
     try {
       const response = await axios.post(
         this.webhookUrl,
@@ -119,8 +134,13 @@ export class NotificationService {
       );
 
       if (response.data.errcode === 0) {
+        this.rateLimiter.recordSent(); // 记录成功发送
         return; // Success
       } else {
+        // 钉钉返回错误
+        if (response.data.errmsg?.includes('too many')) {
+          console.error('[钉钉限流] 触发钉钉频率限制，请降低发送频率');
+        }
         throw new Error(`DingTalk API error: ${response.data.errmsg}`);
       }
     } catch (error) {
@@ -129,5 +149,12 @@ export class NotificationService {
       }
       throw error;
     }
+  }
+
+  /**
+   * 获取当前限流统计
+   */
+  getRateLimitStats() {
+    return this.rateLimiter.getStats();
   }
 }

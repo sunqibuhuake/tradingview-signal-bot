@@ -17,9 +17,11 @@ export class SignalManager {
    */
   shouldProcessSignal(
     marketId: string,
-    action: ActionType | 'Ignore',
+    action: ActionType ,
     currentTime: number = Date.now()
   ): boolean {
+
+    console.log(`check signal: ${marketId}, ${action}`)
     const lastSignal = this.signalRecords.get(marketId);
 
     // No duplicate window, check only action change
@@ -43,7 +45,7 @@ export class SignalManager {
    */
   recordSignal(
     marketId: string,
-    action: ActionType,
+    action: ActionType ,
     currentTime: number = Date.now()
   ): void {
     if (this.duplicateWindow === 0) {
