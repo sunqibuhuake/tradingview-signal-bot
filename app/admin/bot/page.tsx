@@ -2,7 +2,7 @@
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
-import { Play, Square, RotateCw, ListTodo, CheckCircle2, PauseCircle, XCircle, Info } from 'lucide-react';
+import { Play, Square, RotateCw, ListTodo, CheckCircle2, PauseCircle, XCircle, Info, Zap } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -81,6 +81,24 @@ export default function BotControlPage() {
     },
     onError: (error: Error) => {
       toast.error(error.message || '重启失败');
+    },
+  });
+
+  const forceRestartMutation = useMutation({
+    mutationFn: async () => {
+      const res = await fetch('/api/admin/bot/force-restart', { method: 'POST' });
+      if (!res.ok) {
+        const error = await res.json();
+        throw new Error(error.error);
+      }
+      return res.json();
+    },
+    onSuccess: () => {
+      toast.success('Bot 服务强制重启成功');
+      queryClient.invalidateQueries({ queryKey: ['bot-status'] });
+    },
+    onError: (error: Error) => {
+      toast.error(error.message || '强制重启失败');
     },
   });
 
@@ -168,6 +186,27 @@ export default function BotControlPage() {
                     </Button>
                   </>
                 )}
+              </div>
+            </div>
+
+            {/* 强制重启按钮 - 独立区域 */}
+            <div className="mt-6 pt-6 border-t border-border">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h4 className="text-sm font-semibold text-foreground">紧急操作</h4>
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    当服务状态异常时使用，强制停止并重新启动
+                  </p>
+                </div>
+                <Button
+                  onClick={() => forceRestartMutation.mutate()}
+                  disabled={forceRestartMutation.isPending}
+                  variant="outline"
+                  className="gap-2 border-yellow-500/50 text-yellow-600 dark:text-yellow-500 hover:bg-yellow-500/10 hover:border-yellow-500"
+                >
+                  <Zap className="h-4 w-4" />
+                  {forceRestartMutation.isPending ? '强制重启中...' : '强制重启'}
+                </Button>
               </div>
             </div>
           </CardContent>
@@ -280,6 +319,10 @@ export default function BotControlPage() {
                     <li className="flex items-start gap-2">
                       <CheckCircle2 className="h-4 w-4 text-success mt-0.5 flex-shrink-0" />
                       <span>重启服务将停止所有任务并重新加载配置</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <Zap className="h-4 w-4 text-yellow-600 dark:text-yellow-500 mt-0.5 flex-shrink-0" />
+                      <span className="text-yellow-600 dark:text-yellow-500 font-medium">强制重启会忽略当前状态，强制停止并重新启动（用于异常情况）</span>
                     </li>
                   </ul>
                 </div>

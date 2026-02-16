@@ -103,6 +103,42 @@ class BotManager {
   }
 
   /**
+   * 强制重启 Bot 服务（忽略当前状态）
+   */
+  async forceRestart(): Promise<void> {
+    console.log('🔄 执行强制重启...');
+
+    try {
+      // 强制停止 - 即使出错也继续
+      if (this.executor) {
+        try {
+          await this.executor.shutdown();
+        } catch (error) {
+          console.warn('停止过程中出现错误，但继续执行:', error);
+        }
+        this.executor = null;
+      }
+
+      // 强制重置状态
+      this.isRunning = false;
+
+      // 等待资源释放
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      // 重新启动
+      await this.start();
+
+      console.log('✅ 强制重启完成');
+    } catch (error) {
+      console.error('❌ 强制重启失败:', error);
+      // 确保状态正确
+      this.isRunning = false;
+      this.executor = null;
+      throw error;
+    }
+  }
+
+  /**
    * 重启 Bot 服务
    */
   async restart(): Promise<void> {

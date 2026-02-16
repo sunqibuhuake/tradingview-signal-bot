@@ -26,9 +26,11 @@ export class SignalManager {
 
     let duplicateWindow = this.duplicateWindow
 
+    // update: 如果不是可以买入或卖出的信号，直接忽略不发送
     if (action === ActionType.Neutral) {
+      return false;
       // set  to 2 hours
-      duplicateWindow = 2 * 60 * 60 * 1000
+      // duplicateWindow = 2 * 60 * 60 * 1000
     }
 
     // No duplicate window, check only action change
