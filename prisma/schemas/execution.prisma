@@ -67,6 +67,8 @@ model IndicatorResult {
 
   // 提取的关键信号
   signal         SignalType? // 综合信号判断
+  signalTitle    String?
+  signalMessage    String?
   signalStrength Float? // 信号强度 (0-1)
 
   // 具体字段（方便查询和统计）
@@ -110,7 +112,7 @@ model SignalStatistics {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@unique([marketId, indicatorId, timeframe, date])
+  // @@unique([marketId, indicatorId, timeframe, date])
   @@index([marketId])
   @@index([indicatorId])
   @@index([date])

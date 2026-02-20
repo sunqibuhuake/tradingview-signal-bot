@@ -78,6 +78,7 @@ export async function POST(request: NextRequest) {
       description,
       marketId,
       indicatorIds, // 数组
+      dingTalkWebhookId, // 钉钉 Webhook ID
       timeframe,
       range,
       executionMode,
@@ -92,6 +93,27 @@ export async function POST(request: NextRequest) {
         { error: 'Missing required fields' },
         { status: 400 }
       );
+    }
+
+    // 验证钉钉 Webhook（如果提供）
+    if (dingTalkWebhookId) {
+      const webhook = await prisma.dingTalkWebhook.findUnique({
+        where: { id: dingTalkWebhookId },
+      });
+
+      if (!webhook) {
+        return NextResponse.json(
+          { error: 'DingTalk Webhook not found' },
+          { status: 404 }
+        );
+      }
+
+      if (!webhook.isActive) {
+        return NextResponse.json(
+          { error: 'Selected DingTalk Webhook is not active' },
+          { status: 400 }
+        );
+      }
     }
 
     // 验证标的存在
@@ -121,6 +143,7 @@ export async function POST(request: NextRequest) {
         name,
         description,
         marketId,
+        dingTalkWebhookId, // 保存钉钉 Webhook ID
         timeframe: timeframe || 'M5',
         range: range || 500,
         executionMode: executionMode || 'REALTIME',
@@ -138,6 +161,7 @@ export async function POST(request: NextRequest) {
       },
       include: {
         market: true,
+        dingTalkWebhook: true, // 包含 Webhook 信息
         taskIndicators: {
           include: {
             indicator: true,

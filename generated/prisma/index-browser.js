@@ -148,6 +148,8 @@ exports.Prisma.IndicatorResultScalarFieldEnum = {
   indicatorName: 'indicatorName',
   outputs: 'outputs',
   signal: 'signal',
+  signalTitle: 'signalTitle',
+  signalMessage: 'signalMessage',
   signalStrength: 'signalStrength',
   buyAlert: 'buyAlert',
   sellAlert: 'sellAlert',

@@ -9,6 +9,7 @@ import { IndicatorsHeader } from './components/IndicatorsHeader';
 import { IndicatorsTable } from './components/IndicatorsTable';
 import { IndicatorsPagination } from './components/IndicatorsPagination';
 import { CreateIndicatorDialog } from './components/CreateIndicatorDialog';
+import { EditIndicatorDialog } from './components/EditIndicatorDialog';
 import { IndicatorDetailDialog } from './components/IndicatorDetailDialog';
 import { Indicator, IndicatorsResponse } from './types';
 import { Plus } from 'lucide-react';
@@ -16,6 +17,7 @@ import { Plus } from 'lucide-react';
 export default function IndicatorsPage() {
   const [page, setPage] = useState(1);
   const [showCreateDialog, setShowCreateDialog] = useState(false);
+  const [editingIndicator, setEditingIndicator] = useState<Indicator | null>(null);
   const [selectedIndicator, setSelectedIndicator] = useState<Indicator | null>(null);
 
   const { data, isLoading, refetch } = useQuery<IndicatorsResponse>({
@@ -43,6 +45,7 @@ export default function IndicatorsPage() {
             indicators={data.indicators}
             onRefetch={refetch}
             onViewDetail={setSelectedIndicator}
+            onEdit={setEditingIndicator}
           />
 
           {data.pagination && data.pagination.totalPages > 1 && (
@@ -72,6 +75,13 @@ export default function IndicatorsPage() {
       <CreateIndicatorDialog
         open={showCreateDialog}
         onOpenChange={setShowCreateDialog}
+        onSuccess={refetch}
+      />
+
+      <EditIndicatorDialog
+        indicator={editingIndicator}
+        open={!!editingIndicator}
+        onOpenChange={(open) => !open && setEditingIndicator(null)}
         onSuccess={refetch}
       />
 

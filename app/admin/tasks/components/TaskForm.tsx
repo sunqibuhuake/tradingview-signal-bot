@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
@@ -112,7 +112,7 @@ export function TaskForm({ task, mode }: TaskFormProps) {
         },
     });
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         if (!formData.name.trim()) {
@@ -130,6 +130,12 @@ export function TaskForm({ task, mode }: TaskFormProps) {
             return;
         }
 
+        // 强制要求选择钉钉 Webhook
+        if (!formData.dingTalkWebhookId) {
+            toast.error('请选择钉钉 Webhook 通知目标');
+            return;
+        }
+
         setLoading(true);
         try {
             // API 期望 indicatorIds 是数组
@@ -137,8 +143,8 @@ export function TaskForm({ task, mode }: TaskFormProps) {
                 ...formData,
                 indicatorIds: [formData.indicatorId], // 转换为数组
                 indicatorId: undefined, // 移除单个 indicatorId 字段
-                // 如果 dingTalkWebhookId 为空字符串，转换为 null
-                dingTalkWebhookId: formData.dingTalkWebhookId || null,
+                // 确保 dingTalkWebhookId 正确传递
+                dingTalkWebhookId: formData.dingTalkWebhookId,
             };
 
             const url = mode === 'create' 
@@ -386,31 +392,42 @@ export function TaskForm({ task, mode }: TaskFormProps) {
                     </CardHeader>
                     <CardContent className="space-y-4">
                         <div className="space-y-2">
-                            <Label htmlFor="webhook">钉钉 Webhook</Label>
+                            <Label htmlFor="webhook">
+                                钉钉 Webhook <span className="text-destructive">*</span>
+                            </Label>
                             <Select
                                 value={formData.dingTalkWebhookId || undefined}
                                 onValueChange={(value) =>
                                     setFormData({ 
                                         ...formData, 
-                                        dingTalkWebhookId: value === '__none__' ? '' : value 
+                                        dingTalkWebhookId: value
                                     })
                                 }
                             >
                                 <SelectTrigger id="webhook">
-                                    <SelectValue placeholder="选择通知目标" />
+                                    <SelectValue placeholder="请选择通知目标" />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="__none__">不使用 Webhook</SelectItem>
                                     {webhooksData?.webhooks?.map((webhook) => (
                                         <SelectItem key={webhook.id} value={webhook.id}>
                                             {webhook.name}
+                                            {webhook.description && (
+                                                <span className="text-xs text-muted-foreground ml-2">
+                                                    - {webhook.description}
+                                                </span>
+                                            )}
                                         </SelectItem>
                                     ))}
                                 </SelectContent>
                             </Select>
                             <p className="text-xs text-muted-foreground">
-                                选择接收信号通知的钉钉群，未选择则使用环境变量配置
+                                选择接收信号通知的钉钉群（必选）
                             </p>
+                            {webhooksData?.webhooks?.length === 0 && (
+                                <p className="text-xs text-yellow-600 dark:text-yellow-500">
+                                    ⚠️ 暂无可用的 Webhook，请先在 <a href="/admin/webhooks" className="underline">Webhook 管理</a> 中创建
+                                </p>
+                            )}
                         </div>
 
                         <div className="flex items-center justify-between rounded-lg border p-4">

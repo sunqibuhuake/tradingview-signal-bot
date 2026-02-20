@@ -1,10 +1,11 @@
-import { ActionType, SignalRecord } from '../types';
-
 /**
  * Signal Manager - manages signal deduplication and history
  */
 export class SignalManager {
-  private signalRecords: Map<string, SignalRecord | ActionType>;
+  private signalRecords: Map<string,  {
+    signalTitle: string;
+    time: number;
+  }>;
   private duplicateWindow: number;
 
   constructor(duplicateWindow: number = 0) {
@@ -17,34 +18,40 @@ export class SignalManager {
    */
   shouldProcessSignal(
     marketId: string,
-    action: ActionType ,
+    signalTitle: string ,
     currentTime: number = Date.now()
   ): boolean {
 
-    console.log(`check signal: ${marketId}, ${action}`)
+    console.log(`check signal: ${marketId}, ${signalTitle}`)
     const lastSignal = this.signalRecords.get(marketId);
+
+
+    if (!lastSignal) {
+      return true
+    }
+
+    console.log(`Last signal ===>`, lastSignal)
 
     let duplicateWindow = this.duplicateWindow
 
-    // update: 如果不是可以买入或卖出的信号，直接忽略不发送
-    if (action === ActionType.Neutral) {
-      return false;
-      // set  to 2 hours
-      // duplicateWindow = 2 * 60 * 60 * 1000
-    }
 
-    // No duplicate window, check only action change
+    const {
+      signalTitle: lastSiganelTitle,
+      time: lastSignalTime
+    }  = lastSignal
+
     if (duplicateWindow === 0) {
-      return lastSignal !== action;
+      return lastSiganelTitle !== signalTitle;
     }
 
-    // With duplicate window, check both action and time
-    if (typeof lastSignal === 'object' && lastSignal.action === action) {
-      const timeDelta = currentTime - lastSignal.time;
+
+    const timeDelta = currentTime - lastSignalTime;
+    console.log(`timeDelta: ${timeDelta} `)
+    console.log(`duplicateWindow:  ${duplicateWindow}`)
+
       if (timeDelta < duplicateWindow) {
         return false;
       }
-    }
 
     return true;
   }
@@ -54,23 +61,22 @@ export class SignalManager {
    */
   recordSignal(
     marketId: string,
-    action: ActionType ,
+    signalTitle: string  ,
     currentTime: number = Date.now()
   ): void {
-    if (this.duplicateWindow === 0) {
-      this.signalRecords.set(marketId, action);
-    } else {
       this.signalRecords.set(marketId, {
-        action,
+        signalTitle,
         time: currentTime,
       });
-    }
   }
 
   /**
    * Get signal history for a market
    */
-  getSignalHistory(marketId: string): SignalRecord | ActionType | undefined {
+  getSignalHistory(marketId: string): {
+    signalTitle: string;
+    time: number;
+  } | undefined{
     return this.signalRecords.get(marketId);
   }
 
@@ -84,7 +90,10 @@ export class SignalManager {
   /**
    * Get all recorded signals
    */
-  getAllSignals(): Map<string, SignalRecord | ActionType> {
+  getAllSignals(): Map<string, {
+    signalTitle: string;
+    time: number;
+  }> {
     return new Map(this.signalRecords);
   }
 

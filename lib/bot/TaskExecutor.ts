@@ -1,4 +1,4 @@
-import { PrismaClient, MarketType, ExecutionMode, TaskStatus, Timeframe, Task } from '../../generated/prisma';
+import { PrismaClient, MarketType, ExecutionMode, TaskStatus, Timeframe, Task, SignalType } from '../../generated/prisma';
 import TradingView, { SearchMarketResult, TimeFrame as TvTimeFrame } from '@mathieuc/tradingview';
 import { TradingViewService } from '@/src/services/TradingViewService';
 import { NotificationService } from '@/src/services/NotificationService';
@@ -111,8 +111,8 @@ export class TaskExecutor {
     this.runningTasks.add(taskId);
   }
 
-    private mapTimeframe(timeframe: Timeframe): TvTimeFrame {
-  // export type TvTimeFrame = '1' | '3' | '5' | '15' | '30' | '45' | '60' | '120' | '180' | '240' | '1D' | '1W' | '1M' | string;
+  private mapTimeframe(timeframe: Timeframe): TvTimeFrame {
+    // export type TvTimeFrame = '1' | '3' | '5' | '15' | '30' | '45' | '60' | '120' | '180' | '240' | '1D' | '1W' | '1M' | string;
 
     const mapping: Record<Timeframe, TvTimeFrame> = {
       'M1': '1',
@@ -150,12 +150,12 @@ export class TaskExecutor {
 
       console.log(`搜索到 ${markets.length} 个市场: ${task.market.symbol}`);
 
-      console.log(`market ===>`,markets[0])
-      console.log(`indic ===>`,indic)
-      console.log(`settings===>`,{
-          timeframe: task.timeframe as any,
-          range: task.range,
-        })
+      console.log(`market ===>`, markets[0])
+      console.log(`indic ===>`, indic)
+      console.log(`settings===>`, {
+        timeframe: task.timeframe as any,
+        range: task.range,
+      })
 
       // 创建图表会话
       const chart = this.tradingViewService.createChartSession(
@@ -166,45 +166,9 @@ export class TaskExecutor {
           range: task.range,
         },
         async (indItem, chartItem) => {
-          // console.log('indItem', indItem);
-          // console.log('chartItem', chartItem);
+          console.log('indItem ===>', indItem);
+          console.log('chartItem ===>', chartItem);
 
-// indItem ===>
-//    {
-//   '$time': 1770712020,
-//   FAST_EMA: 69310.50947785689,
-//   SLOW_EMA: 69587.48010579325,
-//   fill_0_colorer: 1,
-//   fill_1_colorer: 2,
-//   FAST_EMA1: 69086.14391755861,
-//   SLOW_EMA1: 69310.50947785689,
-//   fill_2_colorer: 1,
-//   fill_3_colorer: 2,
-//   FAST_EMA2: 68961.12021061426,
-//   SLOW_EMA2: 69086.14391755861,
-//   fill_4_colorer: 1,
-//   fill_5_colorer: 3,
-//   FAST_EMA3: 68948.48557806309,
-//   SLOW_EMA3: 68961.12021061426,
-//   fill_6_colorer: 1,
-//   fill_7_colorer: 3,
-//   Show_VWAP: 69501.33190915249,
-//   Previous_Day_High: 71453.53,
-//   Previous_Day_Low: 68308,
-//   Sell_Signal: 0,
-//   Buy_Signal: 0,
-//   Buy_Alert: 0,
-//   Sell_Alert: 0
-// } 
-// chartItem ===>
-// {
-//   time: 1770712020,
-//   open: 69032.52,
-//   close: 69055.48,
-//   max: 69100,
-//   min: 69032.52,
-//   volume: 24.71
-// }
           await this.handleIndicatorUpdate(task, indInfo, indItem, chartItem);
         }
       );
@@ -306,30 +270,88 @@ export class TaskExecutor {
     chartItem: any
   ): Promise<void> {
     try {
+
+
+      console.log(`Task ===> ${JSON.stringify(task, null, 2)}`,)
+
+
+
       // 1️⃣ 先检查是否有信号触发
       // if (!indItem.Buy_Alert && !indItem.Sell_Alert) {
       //   // console.log(`[过滤] 跳过无信号触发: ${task.market.name}`);
       //   return; // 没有买入或卖出信号，跳过
       // }
 
+      //  "outputFields": {
+      //           "PRICE_IN_RANGE": "PRICE_IN_RANGE"
+      //         }
+      const outputFields: {
+        [key: string]: string
+      } = task.taskIndicators[0]?.indicator?.outputFields || {} as any
+
+
+
+
+      //       indItem {
+      //   '$time': 1771555080,
+      //   plot_0: 1,
+      //   _2: 1,
+      //   EMA252: 67151.10468190002,
+      //   _3: 67352.55799594571,
+      //   _4: 66949.65136785431,
+      //   PRICE_IN_RANGE: 1
+      // }
+
+      // parse
+      let signalMessageTitle = ''
+      for (const key in indItem) {
+        if (outputFields[key]) {
+          signalMessageTitle = key
+          break
+        }
+
+      }
+
+
+
+
+      // const outputFields:string[] = []
+
       // 提取信号数据
-      const action = indItem.Buy_Alert ? ActionType.Buy : indItem.Sell_Alert ? ActionType.Sell : ActionType.Neutral;
+      // const action = indItem.Buy_Alert ? ActionType.Buy : indItem.Sell_Alert ? ActionType.Sell : ActionType.Neutral;
       const price = chartItem.close;
       const currentTime = Date.now();
 
       // 2️⃣ 检查是否为重复信号（使用任务ID和市场ID作为唯一标识）
       const marketKey = `${task.market.exchange}:${task.market.code}`
       const signalKey = `${task.id}_${marketKey}`;
-      if (!this.signalManager.shouldProcessSignal(signalKey, action, currentTime)) {
+
+
+      // check if action is enum of ActionType
+      let actionType = ActionType.Neutral
+      if (!Object.values(ActionType).includes(signalMessageTitle as any)) {
+        actionType = signalMessageTitle as any
+      }
+
+
+
+      if (!this.signalManager.shouldProcessSignal(signalKey, signalMessageTitle, currentTime)) {
         // console.log(task.market)
-        console.log(`[去重] 跳过重复信号: ${marketKey} - ${action}`);
+        console.log(`[去重] 跳过重复信号: ${marketKey} - ${actionType}`);
+        // await prisma.commonLog.create({
+        //   data: {
+        //     action: 'DUPLICATE_SIGNAL',
+        //     detail: `去重信号: ${marketKey} - ${actionType}`,
+        //     userId: task.createdBy,
+        //   } 
+        // })
         return;
       }
 
-      console.log(`发送===> ${marketKey} - ${action} - ${price}`)
+
 
       // 3️⃣ 记录信号，防止后续重复处理
-      this.signalManager.recordSignal(signalKey, action, currentTime);
+      this.signalManager.recordSignal(signalKey, signalMessageTitle, currentTime);
       // 创建执行记录
       const execution = await prisma.taskExecution.create({
         data: {
@@ -355,42 +377,48 @@ export class TaskExecutor {
           },
           buyAlert: indItem.Buy_Alert || false,
           sellAlert: indItem.Sell_Alert || false,
-          signal: indItem.Buy_Alert ? 'BUY' : indItem.Sell_Alert ? 'SELL' : 'NEUTRAL',
+          signal: SignalType.BUY,
+          signalTitle: signalMessageTitle,
         },
       });
 
-//       console.log(`
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// 📊 交易信号
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// 标的: ${task.market.name} (${task.market.code})
-// 操作: ${action === 'Buy' ? '🟢 买入' : '🔴 卖出'}
-// 价格: ${price}
-// 指标: ${indInfo.name}
-// 时间: ${new Date().toLocaleString('zh-CN')}
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-//       `);
+      //       console.log(`
+      // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+      // 📊 交易信号
+      // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+      // 标的: ${task.market.name} (${task.market.code})
+      // 操作: ${action === 'Buy' ? '🟢 买入' : '🔴 卖出'}
+      // 价格: ${price}
+      // 指标: ${indInfo.name}
+      // 时间: ${new Date().toLocaleString('zh-CN')}
+      // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+      //       `);
+
+
+
+      console.log(`发送===> ${marketKey} - ${actionType} - ${price}`)
+
 
       // 发送通知
       if (task.enableNotification) {
         try {
           const notificationService = await this.getNotificationService(task);
-          
+
           if (notificationService) {
-               await notificationService.sendCryptoSignal({
-                market:  marketKey,
-                action,
-                price,
-                indicatorName: indInfo.name,
-                timestamp: new Date(),
-              });
-            
+            await notificationService.sendCryptoSignal({
+              market: marketKey,
+              signalTitle: signalMessageTitle,
+              price,
+              indicatorName: indInfo.name,
+              timestamp: new Date(),
+            });
+
             // 更新 Webhook 使用统计
             const taskWithWebhook = await prisma.task.findUnique({
               where: { id: task.id },
               include: { dingTalkWebhook: true },
             });
-            
+
             if (taskWithWebhook?.dingTalkWebhook) {
               await prisma.dingTalkWebhook.update({
                 where: { id: taskWithWebhook.dingTalkWebhook.id },
@@ -406,11 +434,12 @@ export class TaskExecutor {
         }
       }
 
+
       // 记录到 CommonLog
       await prisma.commonLog.create({
         data: {
-          action: `SIGNAL_${action.toUpperCase()}`,
-          detail: `${marketKey} - ${action === 'Buy' ? '买入' : '卖出'}信号，价格: ${price}`,
+          action: `SIGNAL_${signalMessageTitle}`,
+          detail: `${marketKey} - ${signalMessageTitle}信号，价格: ${price}`,
           userId: task.createdBy,
         },
       });
@@ -494,14 +523,14 @@ export class TaskExecutor {
    */
   async shutdown(): Promise<void> {
     console.log('🛑 正在关闭 TaskExecutor...');
-    
+
     try {
       await this.stopAll();
       console.log('✅ 所有任务已停止');
-      
+
       await this.tradingViewService.close();
       console.log('✅ TradingView 服务已关闭');
-      
+
       console.log('✅ TaskExecutor 已安全关闭');
     } catch (error) {
       console.error('❌ 关闭 TaskExecutor 时发生错误:', error);

@@ -3536,6 +3536,8 @@ export namespace Prisma {
     indicatorId: string | null
     indicatorName: string | null
     signal: $Enums.SignalType | null
+    signalTitle: string | null
+    signalMessage: string | null
     signalStrength: number | null
     buyAlert: boolean | null
     sellAlert: boolean | null
@@ -3548,6 +3550,8 @@ export namespace Prisma {
     indicatorId: string | null
     indicatorName: string | null
     signal: $Enums.SignalType | null
+    signalTitle: string | null
+    signalMessage: string | null
     signalStrength: number | null
     buyAlert: boolean | null
     sellAlert: boolean | null
@@ -3561,6 +3565,8 @@ export namespace Prisma {
     indicatorName: number
     outputs: number
     signal: number
+    signalTitle: number
+    signalMessage: number
     signalStrength: number
     buyAlert: number
     sellAlert: number
@@ -3584,6 +3590,8 @@ export namespace Prisma {
     indicatorId?: true
     indicatorName?: true
     signal?: true
+    signalTitle?: true
+    signalMessage?: true
     signalStrength?: true
     buyAlert?: true
     sellAlert?: true
@@ -3596,6 +3604,8 @@ export namespace Prisma {
     indicatorId?: true
     indicatorName?: true
     signal?: true
+    signalTitle?: true
+    signalMessage?: true
     signalStrength?: true
     buyAlert?: true
     sellAlert?: true
@@ -3609,6 +3619,8 @@ export namespace Prisma {
     indicatorName?: true
     outputs?: true
     signal?: true
+    signalTitle?: true
+    signalMessage?: true
     signalStrength?: true
     buyAlert?: true
     sellAlert?: true
@@ -3710,6 +3722,8 @@ export namespace Prisma {
     indicatorName: string
     outputs: JsonValue
     signal: $Enums.SignalType | null
+    signalTitle: string | null
+    signalMessage: string | null
     signalStrength: number | null
     buyAlert: boolean | null
     sellAlert: boolean | null
@@ -3743,6 +3757,8 @@ export namespace Prisma {
     indicatorName?: boolean
     outputs?: boolean
     signal?: boolean
+    signalTitle?: boolean
+    signalMessage?: boolean
     signalStrength?: boolean
     buyAlert?: boolean
     sellAlert?: boolean
@@ -3758,6 +3774,8 @@ export namespace Prisma {
     indicatorName?: boolean
     outputs?: boolean
     signal?: boolean
+    signalTitle?: boolean
+    signalMessage?: boolean
     signalStrength?: boolean
     buyAlert?: boolean
     sellAlert?: boolean
@@ -3773,6 +3791,8 @@ export namespace Prisma {
     indicatorName?: boolean
     outputs?: boolean
     signal?: boolean
+    signalTitle?: boolean
+    signalMessage?: boolean
     signalStrength?: boolean
     buyAlert?: boolean
     sellAlert?: boolean
@@ -3788,6 +3808,8 @@ export namespace Prisma {
     indicatorName?: boolean
     outputs?: boolean
     signal?: boolean
+    signalTitle?: boolean
+    signalMessage?: boolean
     signalStrength?: boolean
     buyAlert?: boolean
     sellAlert?: boolean
@@ -3795,7 +3817,7 @@ export namespace Prisma {
     createdAt?: boolean
   }
 
-  export type IndicatorResultOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "executionId" | "indicatorId" | "indicatorName" | "outputs" | "signal" | "signalStrength" | "buyAlert" | "sellAlert" | "customValues" | "createdAt", ExtArgs["result"]["indicatorResult"]>
+  export type IndicatorResultOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "executionId" | "indicatorId" | "indicatorName" | "outputs" | "signal" | "signalTitle" | "signalMessage" | "signalStrength" | "buyAlert" | "sellAlert" | "customValues" | "createdAt", ExtArgs["result"]["indicatorResult"]>
   export type IndicatorResultInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     execution?: boolean | TaskExecutionDefaultArgs<ExtArgs>
   }
@@ -3818,6 +3840,8 @@ export namespace Prisma {
       indicatorName: string
       outputs: Prisma.JsonValue
       signal: $Enums.SignalType | null
+      signalTitle: string | null
+      signalMessage: string | null
       signalStrength: number | null
       buyAlert: boolean | null
       sellAlert: boolean | null
@@ -4253,6 +4277,8 @@ export namespace Prisma {
     readonly indicatorName: FieldRef<"IndicatorResult", 'String'>
     readonly outputs: FieldRef<"IndicatorResult", 'Json'>
     readonly signal: FieldRef<"IndicatorResult", 'SignalType'>
+    readonly signalTitle: FieldRef<"IndicatorResult", 'String'>
+    readonly signalMessage: FieldRef<"IndicatorResult", 'String'>
     readonly signalStrength: FieldRef<"IndicatorResult", 'Float'>
     readonly buyAlert: FieldRef<"IndicatorResult", 'Boolean'>
     readonly sellAlert: FieldRef<"IndicatorResult", 'Boolean'>
@@ -17399,6 +17425,8 @@ export namespace Prisma {
     indicatorName: 'indicatorName',
     outputs: 'outputs',
     signal: 'signal',
+    signalTitle: 'signalTitle',
+    signalMessage: 'signalMessage',
     signalStrength: 'signalStrength',
     buyAlert: 'buyAlert',
     sellAlert: 'sellAlert',
@@ -17949,6 +17977,8 @@ export namespace Prisma {
     indicatorName?: StringFilter<"IndicatorResult"> | string
     outputs?: JsonFilter<"IndicatorResult">
     signal?: EnumSignalTypeNullableFilter<"IndicatorResult"> | $Enums.SignalType | null
+    signalTitle?: StringNullableFilter<"IndicatorResult"> | string | null
+    signalMessage?: StringNullableFilter<"IndicatorResult"> | string | null
     signalStrength?: FloatNullableFilter<"IndicatorResult"> | number | null
     buyAlert?: BoolNullableFilter<"IndicatorResult"> | boolean | null
     sellAlert?: BoolNullableFilter<"IndicatorResult"> | boolean | null
@@ -17964,6 +17994,8 @@ export namespace Prisma {
     indicatorName?: SortOrder
     outputs?: SortOrder
     signal?: SortOrderInput | SortOrder
+    signalTitle?: SortOrderInput | SortOrder
+    signalMessage?: SortOrderInput | SortOrder
     signalStrength?: SortOrderInput | SortOrder
     buyAlert?: SortOrderInput | SortOrder
     sellAlert?: SortOrderInput | SortOrder
@@ -17982,6 +18014,8 @@ export namespace Prisma {
     indicatorName?: StringFilter<"IndicatorResult"> | string
     outputs?: JsonFilter<"IndicatorResult">
     signal?: EnumSignalTypeNullableFilter<"IndicatorResult"> | $Enums.SignalType | null
+    signalTitle?: StringNullableFilter<"IndicatorResult"> | string | null
+    signalMessage?: StringNullableFilter<"IndicatorResult"> | string | null
     signalStrength?: FloatNullableFilter<"IndicatorResult"> | number | null
     buyAlert?: BoolNullableFilter<"IndicatorResult"> | boolean | null
     sellAlert?: BoolNullableFilter<"IndicatorResult"> | boolean | null
@@ -17997,6 +18031,8 @@ export namespace Prisma {
     indicatorName?: SortOrder
     outputs?: SortOrder
     signal?: SortOrderInput | SortOrder
+    signalTitle?: SortOrderInput | SortOrder
+    signalMessage?: SortOrderInput | SortOrder
     signalStrength?: SortOrderInput | SortOrder
     buyAlert?: SortOrderInput | SortOrder
     sellAlert?: SortOrderInput | SortOrder
@@ -18019,6 +18055,8 @@ export namespace Prisma {
     indicatorName?: StringWithAggregatesFilter<"IndicatorResult"> | string
     outputs?: JsonWithAggregatesFilter<"IndicatorResult">
     signal?: EnumSignalTypeNullableWithAggregatesFilter<"IndicatorResult"> | $Enums.SignalType | null
+    signalTitle?: StringNullableWithAggregatesFilter<"IndicatorResult"> | string | null
+    signalMessage?: StringNullableWithAggregatesFilter<"IndicatorResult"> | string | null
     signalStrength?: FloatNullableWithAggregatesFilter<"IndicatorResult"> | number | null
     buyAlert?: BoolNullableWithAggregatesFilter<"IndicatorResult"> | boolean | null
     sellAlert?: BoolNullableWithAggregatesFilter<"IndicatorResult"> | boolean | null
@@ -18065,7 +18103,6 @@ export namespace Prisma {
 
   export type SignalStatisticsWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    marketId_indicatorId_timeframe_date?: SignalStatisticsMarketIdIndicatorIdTimeframeDateCompoundUniqueInput
     AND?: SignalStatisticsWhereInput | SignalStatisticsWhereInput[]
     OR?: SignalStatisticsWhereInput[]
     NOT?: SignalStatisticsWhereInput | SignalStatisticsWhereInput[]
@@ -18082,7 +18119,7 @@ export namespace Prisma {
     maxPrice?: FloatNullableFilter<"SignalStatistics"> | number | null
     createdAt?: DateTimeFilter<"SignalStatistics"> | Date | string
     updatedAt?: DateTimeFilter<"SignalStatistics"> | Date | string
-  }, "id" | "marketId_indicatorId_timeframe_date">
+  }, "id">
 
   export type SignalStatisticsOrderByWithAggregationInput = {
     id?: SortOrder
@@ -18646,7 +18683,6 @@ export namespace Prisma {
 
   export type TaskIndicatorWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    taskId_indicatorId?: TaskIndicatorTaskIdIndicatorIdCompoundUniqueInput
     AND?: TaskIndicatorWhereInput | TaskIndicatorWhereInput[]
     OR?: TaskIndicatorWhereInput[]
     NOT?: TaskIndicatorWhereInput | TaskIndicatorWhereInput[]
@@ -18657,7 +18693,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"TaskIndicator"> | Date | string
     task?: XOR<TaskScalarRelationFilter, TaskWhereInput>
     indicator?: XOR<IndicatorScalarRelationFilter, IndicatorWhereInput>
-  }, "id" | "taskId_indicatorId">
+  }, "id">
 
   export type TaskIndicatorOrderByWithAggregationInput = {
     id?: SortOrder
@@ -19087,6 +19123,8 @@ export namespace Prisma {
     indicatorName: string
     outputs: JsonNullValueInput | InputJsonValue
     signal?: $Enums.SignalType | null
+    signalTitle?: string | null
+    signalMessage?: string | null
     signalStrength?: number | null
     buyAlert?: boolean | null
     sellAlert?: boolean | null
@@ -19102,6 +19140,8 @@ export namespace Prisma {
     indicatorName: string
     outputs: JsonNullValueInput | InputJsonValue
     signal?: $Enums.SignalType | null
+    signalTitle?: string | null
+    signalMessage?: string | null
     signalStrength?: number | null
     buyAlert?: boolean | null
     sellAlert?: boolean | null
@@ -19115,6 +19155,8 @@ export namespace Prisma {
     indicatorName?: StringFieldUpdateOperationsInput | string
     outputs?: JsonNullValueInput | InputJsonValue
     signal?: NullableEnumSignalTypeFieldUpdateOperationsInput | $Enums.SignalType | null
+    signalTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    signalMessage?: NullableStringFieldUpdateOperationsInput | string | null
     signalStrength?: NullableFloatFieldUpdateOperationsInput | number | null
     buyAlert?: NullableBoolFieldUpdateOperationsInput | boolean | null
     sellAlert?: NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -19130,6 +19172,8 @@ export namespace Prisma {
     indicatorName?: StringFieldUpdateOperationsInput | string
     outputs?: JsonNullValueInput | InputJsonValue
     signal?: NullableEnumSignalTypeFieldUpdateOperationsInput | $Enums.SignalType | null
+    signalTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    signalMessage?: NullableStringFieldUpdateOperationsInput | string | null
     signalStrength?: NullableFloatFieldUpdateOperationsInput | number | null
     buyAlert?: NullableBoolFieldUpdateOperationsInput | boolean | null
     sellAlert?: NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -19144,6 +19188,8 @@ export namespace Prisma {
     indicatorName: string
     outputs: JsonNullValueInput | InputJsonValue
     signal?: $Enums.SignalType | null
+    signalTitle?: string | null
+    signalMessage?: string | null
     signalStrength?: number | null
     buyAlert?: boolean | null
     sellAlert?: boolean | null
@@ -19157,6 +19203,8 @@ export namespace Prisma {
     indicatorName?: StringFieldUpdateOperationsInput | string
     outputs?: JsonNullValueInput | InputJsonValue
     signal?: NullableEnumSignalTypeFieldUpdateOperationsInput | $Enums.SignalType | null
+    signalTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    signalMessage?: NullableStringFieldUpdateOperationsInput | string | null
     signalStrength?: NullableFloatFieldUpdateOperationsInput | number | null
     buyAlert?: NullableBoolFieldUpdateOperationsInput | boolean | null
     sellAlert?: NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -19171,6 +19219,8 @@ export namespace Prisma {
     indicatorName?: StringFieldUpdateOperationsInput | string
     outputs?: JsonNullValueInput | InputJsonValue
     signal?: NullableEnumSignalTypeFieldUpdateOperationsInput | $Enums.SignalType | null
+    signalTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    signalMessage?: NullableStringFieldUpdateOperationsInput | string | null
     signalStrength?: NullableFloatFieldUpdateOperationsInput | number | null
     buyAlert?: NullableBoolFieldUpdateOperationsInput | boolean | null
     sellAlert?: NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -20610,6 +20660,8 @@ export namespace Prisma {
     indicatorName?: SortOrder
     outputs?: SortOrder
     signal?: SortOrder
+    signalTitle?: SortOrder
+    signalMessage?: SortOrder
     signalStrength?: SortOrder
     buyAlert?: SortOrder
     sellAlert?: SortOrder
@@ -20627,6 +20679,8 @@ export namespace Prisma {
     indicatorId?: SortOrder
     indicatorName?: SortOrder
     signal?: SortOrder
+    signalTitle?: SortOrder
+    signalMessage?: SortOrder
     signalStrength?: SortOrder
     buyAlert?: SortOrder
     sellAlert?: SortOrder
@@ -20639,6 +20693,8 @@ export namespace Prisma {
     indicatorId?: SortOrder
     indicatorName?: SortOrder
     signal?: SortOrder
+    signalTitle?: SortOrder
+    signalMessage?: SortOrder
     signalStrength?: SortOrder
     buyAlert?: SortOrder
     sellAlert?: SortOrder
@@ -20702,13 +20758,6 @@ export namespace Prisma {
     gt?: number | IntFieldRefInput<$PrismaModel>
     gte?: number | IntFieldRefInput<$PrismaModel>
     not?: NestedIntFilter<$PrismaModel> | number
-  }
-
-  export type SignalStatisticsMarketIdIndicatorIdTimeframeDateCompoundUniqueInput = {
-    marketId: string
-    indicatorId: string
-    timeframe: string
-    date: Date | string
   }
 
   export type SignalStatisticsCountOrderByAggregateInput = {
@@ -21212,11 +21261,6 @@ export namespace Prisma {
   export type IndicatorScalarRelationFilter = {
     is?: IndicatorWhereInput
     isNot?: IndicatorWhereInput
-  }
-
-  export type TaskIndicatorTaskIdIndicatorIdCompoundUniqueInput = {
-    taskId: string
-    indicatorId: string
   }
 
   export type TaskIndicatorCountOrderByAggregateInput = {
@@ -22375,6 +22419,8 @@ export namespace Prisma {
     indicatorName: string
     outputs: JsonNullValueInput | InputJsonValue
     signal?: $Enums.SignalType | null
+    signalTitle?: string | null
+    signalMessage?: string | null
     signalStrength?: number | null
     buyAlert?: boolean | null
     sellAlert?: boolean | null
@@ -22388,6 +22434,8 @@ export namespace Prisma {
     indicatorName: string
     outputs: JsonNullValueInput | InputJsonValue
     signal?: $Enums.SignalType | null
+    signalTitle?: string | null
+    signalMessage?: string | null
     signalStrength?: number | null
     buyAlert?: boolean | null
     sellAlert?: boolean | null
@@ -22488,6 +22536,8 @@ export namespace Prisma {
     indicatorName?: StringFilter<"IndicatorResult"> | string
     outputs?: JsonFilter<"IndicatorResult">
     signal?: EnumSignalTypeNullableFilter<"IndicatorResult"> | $Enums.SignalType | null
+    signalTitle?: StringNullableFilter<"IndicatorResult"> | string | null
+    signalMessage?: StringNullableFilter<"IndicatorResult"> | string | null
     signalStrength?: FloatNullableFilter<"IndicatorResult"> | number | null
     buyAlert?: BoolNullableFilter<"IndicatorResult"> | boolean | null
     sellAlert?: BoolNullableFilter<"IndicatorResult"> | boolean | null
@@ -23411,6 +23461,8 @@ export namespace Prisma {
     indicatorName: string
     outputs: JsonNullValueInput | InputJsonValue
     signal?: $Enums.SignalType | null
+    signalTitle?: string | null
+    signalMessage?: string | null
     signalStrength?: number | null
     buyAlert?: boolean | null
     sellAlert?: boolean | null
@@ -23424,6 +23476,8 @@ export namespace Prisma {
     indicatorName?: StringFieldUpdateOperationsInput | string
     outputs?: JsonNullValueInput | InputJsonValue
     signal?: NullableEnumSignalTypeFieldUpdateOperationsInput | $Enums.SignalType | null
+    signalTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    signalMessage?: NullableStringFieldUpdateOperationsInput | string | null
     signalStrength?: NullableFloatFieldUpdateOperationsInput | number | null
     buyAlert?: NullableBoolFieldUpdateOperationsInput | boolean | null
     sellAlert?: NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -23437,6 +23491,8 @@ export namespace Prisma {
     indicatorName?: StringFieldUpdateOperationsInput | string
     outputs?: JsonNullValueInput | InputJsonValue
     signal?: NullableEnumSignalTypeFieldUpdateOperationsInput | $Enums.SignalType | null
+    signalTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    signalMessage?: NullableStringFieldUpdateOperationsInput | string | null
     signalStrength?: NullableFloatFieldUpdateOperationsInput | number | null
     buyAlert?: NullableBoolFieldUpdateOperationsInput | boolean | null
     sellAlert?: NullableBoolFieldUpdateOperationsInput | boolean | null
@@ -23450,6 +23506,8 @@ export namespace Prisma {
     indicatorName?: StringFieldUpdateOperationsInput | string
     outputs?: JsonNullValueInput | InputJsonValue
     signal?: NullableEnumSignalTypeFieldUpdateOperationsInput | $Enums.SignalType | null
+    signalTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    signalMessage?: NullableStringFieldUpdateOperationsInput | string | null
     signalStrength?: NullableFloatFieldUpdateOperationsInput | number | null
     buyAlert?: NullableBoolFieldUpdateOperationsInput | boolean | null
     sellAlert?: NullableBoolFieldUpdateOperationsInput | boolean | null

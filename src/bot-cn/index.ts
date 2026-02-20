@@ -90,7 +90,7 @@ class ChinaStockBot {
         try {
           await this.notificationService.sendChinaStockSignal({
             market: marketName,
-            action,
+            signalTitle: 'SIGNAL_TITLE',
             price: item.close,
             indicatorName: indInfo.name,
             timestamp: new Date(),

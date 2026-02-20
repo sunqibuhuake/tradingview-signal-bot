@@ -23,7 +23,7 @@
     "prisma:migrate": "prisma migrate dev",
     "prisma:studio": "prisma studio",
     "prisma:push": "prisma db push",
-    "prisma:seed": "tsx prisma/seed.ts",
+    "seed:admin": "tsx scripts/bot/seed-admin.ts",
     "seed:markets": "tsx scripts/bot/seed-markets.ts",
     "seed:webhooks": "tsx scripts/seed-webhooks.ts",
     "pm2:start": "pm2 start ecosystem.config.js",

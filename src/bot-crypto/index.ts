@@ -20,9 +20,9 @@ export class CryptoTradingBot {
   constructor() {
     // Print banner
     logger.banner('1.0.0');
-    
+
     logger.info('正在初始化加密货币监控机器人...');
-    
+
     validateConfig();
     logger.success('配置验证通过');
 
@@ -114,7 +114,7 @@ export class CryptoTradingBot {
       try {
         await this.notificationService.sendCryptoSignal({
           market: symbol,
-          action,
+          signalTitle: 'SIGNAL_TITLE',
           price: chartItem.close,
           indicatorName: indInfo.name,
           timestamp: new Date(),
@@ -141,7 +141,7 @@ export class CryptoTradingBot {
       console.log('markets', markets);
       // 出于测试目的，只保留20 个标的，实际可以内置一组预设的标的数据
       let filteredMarkets = markets.filter(market => market.id.endsWith('USDT')).slice(0, 20);
-      
+
       logger.info(`找到 ${filteredMarkets.length} 个 USDT 交易对`);
 
       // Get indicator
@@ -180,9 +180,9 @@ export class CryptoTradingBot {
   async shutdown(): Promise<void> {
     logger.divider('═');
     logger.warn('正在关闭机器人...');
-    
+
     const spinner = logger.spinner(`正在关闭 ${this.activeCharts.size} 个监控会话...`);
-    
+
     // Close all chart sessions
     let closed = 0;
     this.activeCharts.forEach(chart => {
@@ -196,7 +196,7 @@ export class CryptoTradingBot {
       }
     });
     this.activeCharts.clear();
-    
+
     spinner.stop(true, `成功关闭 ${closed} 个监控会话`);
 
     // Close TradingView service
@@ -212,7 +212,7 @@ export class CryptoTradingBot {
       signals: this.totalSignals,
       status: 'stopped',
     });
-    
+
     logger.success('机器人已安全关闭');
     logger.divider('═');
   }

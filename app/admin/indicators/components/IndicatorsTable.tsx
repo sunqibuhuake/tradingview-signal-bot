@@ -15,7 +15,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Eye, Trash2, MoreHorizontal, Power, PowerOff } from 'lucide-react';
+import { Eye, Trash2, MoreHorizontal, Power, PowerOff, Pencil } from 'lucide-react';
 import { Indicator } from '../types';
 import { ActiveBadge } from './ActiveBadge';
 import toast from 'react-hot-toast';
@@ -24,9 +24,10 @@ interface IndicatorsTableProps {
   indicators: Indicator[];
   onRefetch: () => void;
   onViewDetail: (indicator: Indicator) => void;
+  onEdit: (indicator: Indicator) => void;
 }
 
-export function IndicatorsTable({ indicators, onRefetch, onViewDetail }: IndicatorsTableProps) {
+export function IndicatorsTable({ indicators, onRefetch, onViewDetail, onEdit }: IndicatorsTableProps) {
   const handleToggleActive = async (id: string, isActive: boolean) => {
     try {
       const res = await fetch(`/api/admin/indicators/${id}`, {
@@ -149,6 +150,10 @@ export function IndicatorsTable({ indicators, onRefetch, onViewDetail }: Indicat
                     <DropdownMenuItem onClick={() => onViewDetail(indicator)}>
                       <Eye className="mr-2 h-4 w-4" />
                       查看详情
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => onEdit(indicator)}>
+                      <Pencil className="mr-2 h-4 w-4" />
+                      编辑
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => handleToggleActive(indicator.id, indicator.isActive)}>
                       {indicator.isActive ? (

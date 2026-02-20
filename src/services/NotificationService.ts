@@ -5,7 +5,7 @@ import { NotificationRateLimiter } from './NotificationRateLimiter';
 
 export interface NotificationPayload {
   market: string;
-  action: ActionType;
+  signalTitle: string;
   price: number;
   indicatorName: string;
   timestamp: Date;
@@ -44,13 +44,13 @@ export class NotificationService {
    * Send A-share trading signal notification
    */
   async sendChinaStockSignal(payload: NotificationPayload): Promise<void> {
-    const { market, action, price, indicatorName, timestamp } = payload;
-    const actionName = action === 'Buy' ? '买入' : '卖出';
+    const { market, signalTitle, price, indicatorName, timestamp } = payload;
+    // const actionName = action === 'Buy' ? '买入' : '卖出';
 
     const content = [
       `【${this.safeWord}】A股 Trading Signal`,
       `标的：${market}`,
-      `操作：${actionName}`,
+      `信号：${signalTitle}`,
       `价格：${price}`,
       `时间：${dayjs(timestamp).format('YYYY-MM-DD')}`,
       `信号指标：日线-${indicatorName}`,
@@ -63,33 +63,18 @@ export class NotificationService {
    * Send crypto trading signal notification
    */
   async sendCryptoSignal(payload: NotificationPayload): Promise<void> {
-    const { market, action, price, indicatorName, timestamp } = payload;
-
-    if (action === 'Neutral') {
-      await this.send(
-        [
-          `【${this.safeWord}】`,
-          `交易对：${market}`,
-          `价格：${price}`,
-          `操作：忽略`,
-          `时间：${dayjs(timestamp).format('YYYY-MM-DD HH:mm:ss')}`,
-          `信号指标：${indicatorName}`,
-        ].join('\n'),
-      )
-    } else {
-      const actionType = action === 'Buy' ? 'Long' : 'Short';
+    const { market, signalTitle, price, indicatorName, timestamp } = payload;
 
       const content = [
         `【${this.safeWord}】`,
         `交易对：${market}`,
-        `操作：${action} / ${actionType}`,
+        `信号：${signalTitle}`,
         `价格：${price}`,
         `时间：${dayjs(timestamp).format('YYYY-MM-DD HH:mm:ss')}`,
-        `信号指标：5min-${indicatorName}`,
+        `信号指标：${indicatorName}`,
       ].join('\n');
 
       await this.send(content);
-    }
 
   }
 

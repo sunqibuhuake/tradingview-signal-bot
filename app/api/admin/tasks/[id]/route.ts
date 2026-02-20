@@ -59,7 +59,28 @@ export async function PATCH(
 
     const { id } = await context.params;
     const body = await request.json();
-    const { indicatorIds, ...updateData } = body;
+    const { indicatorIds, dingTalkWebhookId, ...updateData } = body;
+
+    // 验证钉钉 Webhook（如果提供）
+    if (dingTalkWebhookId) {
+      const webhook = await prisma.dingTalkWebhook.findUnique({
+        where: { id: dingTalkWebhookId },
+      });
+
+      if (!webhook) {
+        return NextResponse.json(
+          { error: 'DingTalk Webhook not found' },
+          { status: 404 }
+        );
+      }
+
+      if (!webhook.isActive) {
+        return NextResponse.json(
+          { error: 'Selected DingTalk Webhook is not active' },
+          { status: 400 }
+        );
+      }
+    }
 
     // 如果要更新指标关联
     if (indicatorIds) {
@@ -78,11 +99,18 @@ export async function PATCH(
       });
     }
 
+    // 合并 dingTalkWebhookId 到更新数据中
+    const finalUpdateData = {
+      ...updateData,
+      ...(dingTalkWebhookId !== undefined && { dingTalkWebhookId }),
+    };
+
     const task = await prisma.task.update({
       where: { id },
-      data: updateData,
+      data: finalUpdateData,
       include: {
         market: true,
+        dingTalkWebhook: true, // 包含 Webhook 信息
         taskIndicators: {
           include: {
             indicator: true,
